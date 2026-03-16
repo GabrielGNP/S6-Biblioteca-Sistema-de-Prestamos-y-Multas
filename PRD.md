@@ -7,6 +7,20 @@ Construir un sistema simple y claro para gestionar préstamos de libros y multas
 ## Problemas que resolver
 Actualmente la biblioteca necesita una forma consistente de registrar préstamos y devoluciones, evitar prestar libros a lectores morosos y calcular las multas generadas por retrasos.
 
+
+## Reglas del Negocio
+1. Un libro solo puede prestrarse si está disponible.
+2. Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
+3. Cada préstamo se registra con una fecha de inicio y una fecha de devolución calculada.
+4. Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
+5. Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
+6. Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
+7. El modelo de multa es **Fibonacci**; la deuda aumenta según esta escala por cada semana de retraso.
+8. El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+9. Cada libro conserva un historial de préstamos realizados.
+10. Cada lector se identifica con un documento oficial; cédula o DNI.
+
+
 ## Alcance del MVP
 
 | IN | OUT |
@@ -21,8 +35,6 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 | Consultar lectores con multas pendientes luego de una devolución tardía |   |
 | Bloquear préstamos a lectores con deudas impagas |  |
 | Mantener historial de préstamos por libro |  |
-
-
 
 
 ## Riesgos de Negocio y Técnicos
