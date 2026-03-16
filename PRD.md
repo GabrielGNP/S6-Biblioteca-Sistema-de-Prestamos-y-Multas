@@ -4,6 +4,9 @@
 
 Construir un sistema simple y claro para gestionar préstamos de libros y multas por retraso de estos, permitiendo a la biblioteca controlar la disponibilidad, fechas de devolución, deudas pendientes y rehabilitación del lector tras el pago.
 
+## Problemas que resolver
+Actualmente la biblioteca necesita una forma consistente de registrar préstamos y devoluciones, evitar prestar libros a lectores morosos y calcular las multas generadas por retrasos.
+
 ## Alcance del MVP
 
 | IN | OUT |
@@ -13,8 +16,11 @@ Construir un sistema simple y claro para gestionar préstamos de libros y multas
 | Calcular automáticamente la fecha de devolución | Administrar reservas de libros |
 | La multa se genera automáticamente apenas hay retraso | Administración de usuarios y membresías |
 | Aumento de multa cada semana sin devolución del libro siguiendo la formula de Fibonacci | Pagos parciales de multas |
-| Bloquear préstamos a lectores con deudas impagas | Notificaciones autómaticas |
+| Registrar el pago total de la multa | Notificaciones autómaticas |
+| Consultar préstamos vencidos |  |
+| Bloquear préstamos a lectores con deudas impagas |  |
 | Mantener historial de préstamos por libro |  |
+
 
 
 ## Riesgos de Negocio y Técnicos
