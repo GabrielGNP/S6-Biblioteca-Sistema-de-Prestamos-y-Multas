@@ -17,9 +17,11 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 | La multa se genera automáticamente apenas hay retraso | Administración de usuarios y membresías |
 | Aumento de multa cada semana sin devolución del libro siguiendo la formula de Fibonacci | Pagos parciales de multas |
 | Registrar el pago total de la multa | Notificaciones autómaticas |
-| Consultar préstamos vencidos |  |
+| Consultar préstamos vencidos y el lector responsable para gestionar deudas atrasadas |  |
+| Consultar lectores con multas pendientes luego de una devolución tardía |   |
 | Bloquear préstamos a lectores con deudas impagas |  |
 | Mantener historial de préstamos por libro |  |
+
 
 
 
