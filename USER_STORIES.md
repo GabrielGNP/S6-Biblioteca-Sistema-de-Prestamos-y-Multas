@@ -107,6 +107,60 @@
 ---
 
 # Título: HU-05 - Consultar libros fuera de plazo y lector responsable
+## Descripción
+
+```md
+**Como** Bibliotecario
+**Quiero** Observar todos los libros que estén fuera de plazo
+**Para** Monitorear el estado actual de los prestamos
+```
+
+## Valor de Negocio
+- Se puede analizar todos los prestamos fuera de tiempo para realizar una monitorización sin nececsidad de tener que revisar el historial de prestamos completo.
+- La información obtenida permite una mejor toma de decisión sobre la situación.
+
+## Reglas de Negocio relacionadas
+- Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
+- Regla 7: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de restraso completa.
+- Regla 9: Cada libto conserva un historial de préstamos realizados.
+
+## Criterio de Aceptación
+
+**Gherkin**:
+
+```gherkin
+
+```
+
+---
 
 # Título: HU-06 - Registrar el pago total de una multa y rehabilitación del lector
+## Descripción
+
+```md
+**Como** Bibliotecario
+**Quiero** Registrar el pago total de una multa
+**Para** Rehabilitar al lector y que pueda volver a llevar un libro prestado
+```
+
+## Valor de Negocio
+- El lector puede continuar utilizando el servicio una vez pagada la multa.
+
+## Reglas de Negocio relacionadas
+- Regla 2: Un lector solo puede recibir un nuevo préstamos si no tiene multas impágas.
+- Regla 8: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+
+## Criterio de Aceptación
+
+**Gherkin**:
+
+```gherkin
+
+```
+
+---
+
+
+
 
