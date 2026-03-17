@@ -3,6 +3,18 @@
 ## HU-01 - Consultar estado y disponibilidad de un libro
 
 ## HU-02 - Registrar libro disponible a un lector habilitado
+### Objetivo de la historia
+Permitir registrar un libro como prestado a un lector siempre y cuando se estén cumpliendo todas normativas de préstamo, y registrar el prestamo en el historial.
+
+### Subtareas DEV
+- UI con inputs para ingresar datos necesarios para un prestamo.
+- Endpoint POST api/v1/loan para registrar un prestamo.
+- Tabla DB con lectores morosos.
+- Método de búsqueda de lector moroso.
+
+### Subtareas QA
+
+### Riesgo o notas de calidad
 
 ## HU-03 - Registrar devolución de un libro dentro del plazo
 
