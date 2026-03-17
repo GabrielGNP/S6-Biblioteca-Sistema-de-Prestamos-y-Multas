@@ -20,6 +20,13 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 9. Cada libro conserva un historial de préstamos realizados.
 10. Cada lector se identifica con un documento oficial; cédula o DNI.
 
+### Sistema Fibonacci
+1. El retraso empieza a contarse desde el día siguiente a la fecha límite de devolución.
+2. La mora se agrupa en semanas (cada 7 días); días 1 a 7 equivalen a una (1) semana de retraso; días 8 a 14 a Semana 2, días 15 a 21 a Semana 3, y así sucesivamente.
+3. Cada semana vencida agrega una nueva porción de deuda según la secuencia Fibonacci: 1, 1, 2, 3, 5, 8...
+4. La deuda es acumulativa; no reemplaza a la multa anterior, si no que se suma el valor correspondiente a cada nueva semana de mora.
+5. La biblioteca puede definir un valor base monetario para convertir cada unidad Fibonacci en dinero; este documento fija la lógica del crecimiento, no el monto exacto a utilizar.
+
 
 ## Alcance del MVP
 

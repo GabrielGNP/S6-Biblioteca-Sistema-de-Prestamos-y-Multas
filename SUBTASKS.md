@@ -1,5 +1,17 @@
 # SUBTASKS
 
+## HU-01 - Consultar estado y disponibilidad de un libro
+
+## HU-02 - Registrar libro disponible a un lector habilitado
+
+## HU-03 - Registrar devolución de un libro dentro del plazo
+
+## HU-04 - Registrar devolución tardía y generar multa Fibonacci
+
+## HU-05 - Consultar libros fuera de plazo y lector responsable
+
+## HU-06 - Registrar el pago total de una multa y rehabilitación del lector
+
 ## PLANTILLA
 ```md
 ## HU-[00] - [Título]

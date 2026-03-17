@@ -134,9 +134,9 @@
 ## Justificación de criterios INVEST - HU-04
 
 **I (Independent)**: Sí; aunque depende de un préstamo vencido, entrega un resultado propio.
-**N (Negotiable)**: No estamos seguros; imponemos Fibonacci pero se puede ajustar la base monetaria.
+**N (Negotiable)**: Sí; puede ajustarse la base monetaria dentro de la lógica Fibonacci.
 **V (Valuable)**: Sí; es una regla central del negocio.
-**E (Estimable)**: No; no aclaramos la lógica del cálculo de Fibonacci aún.
+**E (Estimable)**: Sí; la lógica del cálculo está en el PRD.
 **S (Small)**: Sí; no incluye el pago de la multa, por ejemplo.
 **T (Testable)**: 
 
@@ -181,6 +181,7 @@
 ---
 
 # Título: HU-06 - Registrar el pago total de una multa y rehabilitación del lector
+
 ## Descripción
 
 ```md
@@ -211,7 +212,7 @@
 **I (Independent)**: Sí; resuelve un evento concreto del negocio.
 **N (Negotiable)**: Sí; se puede variar el modo de registrar el pago.
 **V (Valuable)**: Sí; sin esto, el flujo estaría incompleto.
-**E (Estimable)**: No estamos seguros.
+**E (Estimable)**: Sí; el alcance queda claro.
 **S (Small)**: Sí; se limita al pago total, que está directamente ligado a la rehabilitación del lector.
 **T (Testable)**: 
 
