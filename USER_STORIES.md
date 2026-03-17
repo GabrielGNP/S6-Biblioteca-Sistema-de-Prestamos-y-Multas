@@ -24,12 +24,12 @@
 
 ## Justificación de criterios INVEST - HU-01
 
-**I (Independent)**: Sí; tiene valor propio.
-**N (Negotiable)**: Sí; da libertad de implementación.
-**V (Valuable)**: Sí; entra dentro del operativo principal del sistema.
-**E (Estimable)**: Sí; queda claro qué hacer y reglas permiten una estimación más clara.
-**S (Small)**: Sí; es una única tarea y no se incluye ninguna otra renovación o acción.
-**T (Testable)**: Sí; permite validar casos válidos y bloqueados.
+**I (Independent)**: Sí; no depende del flujo de devolución.
+**N (Negotiable)**: Sí; se puede ajustar el nivel de detalle, por ejemplo.
+**V (Valuable)**: Sí; con esto evitas prestar a ciegas.
+**E (Estimable)**: Sí, el alcance de la consulta está acotado.
+**S (Small)**: Sí; es una necesidad puntual.
+**T (Testable)**: 
 
 ---
 
@@ -60,12 +60,12 @@
 ```
 ## Justificación de criterios INVEST - HU-02
 
-**I (Independent)**: Sí; es un cierre limpio de préstamo.
-**N (Negotiable)**: Sí; varían los detalles del registro pero no la regla central.
-**V (Valuable)**: Sí; impacta directamente a la operación diaria.
-**E (Estimable)**: Sí; el comportamiento esperado es simple.
-**S (Small)**: Sí; no metemos nada sobre las multas ni sobre el pago.
-**T (Testable)**:
+**I (Independent)**: Sí; tiene valor propio.
+**N (Negotiable)**: Sí; da libertad de implementación.
+**V (Valuable)**: Sí; entra dentro del operativo principal del sistema.
+**E (Estimable)**: Sí; queda claro qué hacer y reglas permiten una estimación más clara.
+**S (Small)**: Sí; es una única tarea y no se incluye ninguna otra renovación o acción.
+**T (Testable)**: 
 
 ---
 
@@ -92,6 +92,16 @@
 ```gherkin
     
 ```
+
+## Justificación de criterios INVEST - HU-03
+
+**I (Independent)**: Sí; es un cierre limpio de préstamo.
+**N (Negotiable)**: Sí; varían los detalles del registro pero no la regla central.
+**V (Valuable)**: Sí; impacta directamente a la operación diaria.
+**E (Estimable)**: Sí; el comportamiento esperado es simple.
+**S (Small)**: Sí; no metemos nada sobre las multas ni sobre el pago.
+**T (Testable)**:
+
 
 ---
 
@@ -121,9 +131,19 @@
     
 ```
 
+## Justificación de criterios INVEST - HU-04
+
+**I (Independent)**: Sí; aunque depende de un préstamo vencido, entrega un resultado propio.
+**N (Negotiable)**: No estamos seguros; imponemos Fibonacci pero se puede ajustar la base monetaria.
+**V (Valuable)**: Sí; es una regla central del negocio.
+**E (Estimable)**: No; no aclaramos la lógica del cálculo de Fibonacci aún.
+**S (Small)**: Sí; no incluye el pago de la multa, por ejemplo.
+**T (Testable)**: 
+
 ---
 
 # Título: HU-05 - Consultar libros fuera de plazo y lector responsable
+
 ## Descripción
 
 ```md
@@ -148,6 +168,15 @@
 ```gherkin
 
 ```
+
+## Justificación de criterios INVEST - HU-05
+
+**I (Independent)**: Sí; entrega valor de consulta y seguimiento por sí misma.
+**N (Negotiable)**: Sí; se puede ajustar el nivel de detalle mostrado, por ejemplo.
+**V (Valuable)**: Sí; apoya la gestión de deuda atrasada.
+**E (Estimable)**: Sí; el resultado esperado es a nivel de consulta.
+**S (Small)**: Sí; se limita a préstamos vencidos, lo cual está ligado directamente al responsable.
+**T (Testable)**: 
 
 ---
 
@@ -176,6 +205,15 @@
 ```gherkin
 
 ```
+
+## Justificación de criterios INVEST - HU-06
+
+**I (Independent)**: Sí; resuelve un evento concreto del negocio.
+**N (Negotiable)**: Sí; se puede variar el modo de registrar el pago.
+**V (Valuable)**: Sí; sin esto, el flujo estaría incompleto.
+**E (Estimable)**: 
+**S (Small)**: Sí; se limita al pago total, que está directamente ligado a la rehabilitación del lector.
+**T (Testable)**: 
 
 ---
 
