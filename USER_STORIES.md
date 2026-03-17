@@ -53,7 +53,37 @@
 ---
 
 # Título: HU-03 - Registrar devolución de un libro dentro del plazo
+## Descripción
+```md
+**Como** Bibliotecario
+**Quiero** Comprobar que el libro fue devuelto a tiempo 
+    **Y** Registrar la devolución del libro
+**Para** Poder tener el libro disponible nuevamente para otros lectores
+```
+
+## Valor de Negocio
+- Permite la continuación del funcionamiento correcto de la biblioteca y el sistema de préstamos.
+- Permite que los lectores puedan continuar pidiendo préstamos sin trabas.
+
+## Reglas de Negocio relacionadas
+- Regla 5: Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
+- Regla 9: Cada libro conserva un historial de préstamos realizados.
+- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+  
+## Criterio de Aceptación
+
+**Gherkin**:
+```gherkin
+    
+```
+
+---
+
+
 
 # Título: HU-04 - Registrar devolución tardía y generar multa Fibonacci
 
 # Título: HU-05 - Consultar libros fuera de plazo y lector responsable
+
+# Título: HU-06 - Registrar el pago total de una multa y rehabilitación del lector
+
