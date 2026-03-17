@@ -22,6 +22,15 @@
     
 ```
 
+## Justificación de criterios INVEST - HU-01
+
+**I (Independent)**: Sí; tiene valor propio.
+**N (Negotiable)**: Sí; da libertad de implementación.
+**V (Valuable)**: Sí; entra dentro del operativo principal del sistema.
+**E (Estimable)**: Sí; queda claro qué hacer y reglas permiten una estimación más clara.
+**S (Small)**: Sí; es una única tarea y no se incluye ninguna otra renovación o acción.
+**T (Testable)**: Sí; permite validar casos válidos y bloqueados.
+
 ---
 
 # Título: HU-02 - Registrar libro disponible a un lector habilitado
@@ -49,6 +58,14 @@
 ```gherkin
     
 ```
+## Justificación de criterios INVEST - HU-02
+
+**I (Independent)**: Sí; es un cierre limpio de préstamo.
+**N (Negotiable)**: Sí; varían los detalles del registro pero no la regla central.
+**V (Valuable)**: Sí; impacta directamente a la operación diaria.
+**E (Estimable)**: Sí; el comportamiento esperado es simple.
+**S (Small)**: Sí; no metemos nada sobre las multas ni sobre el pago.
+**T (Testable)**:
 
 ---
 
@@ -111,18 +128,18 @@
 
 ```md
 **Como** Bibliotecario
-**Quiero** Observar todos los libros que estén fuera de plazo
-**Para** Monitorear el estado actual de los prestamos
+**Quiero** Consultar los libros fuera de plazo junto al lector responsable
+**Para** Gestionar deudas atrasadas y hacer seguimiento de los prestamos vencidos
 ```
 
 ## Valor de Negocio
-- Se puede analizar todos los prestamos fuera de tiempo para realizar una monitorización sin nececsidad de tener que revisar el historial de prestamos completo.
-- La información obtenida permite una mejor toma de decisión sobre la situación.
+- Da visibilidad a préstamos vencidos sin tener que revisar todos los préstamos individualmente.
+- Permite acción operativa sobre la mora ya generada.
 
 ## Reglas de Negocio relacionadas
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
-- Regla 7: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de restraso completa.
-- Regla 9: Cada libto conserva un historial de préstamos realizados.
+- Regla 7: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
+- Regla 9: Cada libro conserva un historial de préstamos realizados.
 
 ## Criterio de Aceptación
 
@@ -139,15 +156,16 @@
 
 ```md
 **Como** Bibliotecario
-**Quiero** Registrar el pago total de una multa
-**Para** Rehabilitar al lector y que pueda volver a llevar un libro prestado
+**Quiero** Registrar el pago total de una multa pendiente
+**Para** Rehabilitar al lector y permitirle solicitar nuevos préstamos
 ```
 
 ## Valor de Negocio
-- El lector puede continuar utilizando el servicio una vez pagada la multa.
+- Cierra el ciclo de deuda del lector.
+- Reestablece su capacidad de volver a usar el servicio de préstamo.
 
 ## Reglas de Negocio relacionadas
-- Regla 2: Un lector solo puede recibir un nuevo préstamos si no tiene multas impágas.
+- Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
 - Regla 8: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
 
