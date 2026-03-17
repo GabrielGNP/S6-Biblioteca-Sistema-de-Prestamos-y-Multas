@@ -211,7 +211,7 @@
 **I (Independent)**: Sí; resuelve un evento concreto del negocio.
 **N (Negotiable)**: Sí; se puede variar el modo de registrar el pago.
 **V (Valuable)**: Sí; sin esto, el flujo estaría incompleto.
-**E (Estimable)**: 
+**E (Estimable)**: No estamos seguros.
 **S (Small)**: Sí; se limita al pago total, que está directamente ligado a la rehabilitación del lector.
 **T (Testable)**: 
 
