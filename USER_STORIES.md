@@ -128,7 +128,15 @@
 
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Registrar una devolución tardía con multa
+    Given existe un préstamo activo vencido
+    And la fecha de devolución supera la fecha límite
+    When el bibliotecario registra la devolución
+    Then el sistema cierra el préstamo
+    And calcula la multa según la lógica Fibonacci
+    And deja la deuda asociada al lector
+```
+```gherkin
 ```
 
 ## Justificación de criterios INVEST - HU-04
