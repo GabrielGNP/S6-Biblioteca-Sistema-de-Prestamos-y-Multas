@@ -3,8 +3,9 @@
 ## HU-01 - Consultar estado y disponibilidad de un libro
 
 ## HU-02 - Registrar libro disponible a un lector habilitado
+
 ### Objetivo de la historia
-Permitir registrar un libro como prestado a un lector siempre y cuando se estén cumpliendo todas normativas de préstamo, y registrar el prestamo en el historial.
+Permitir al bibliotecario registrar el préstamo de un libro disponible a un lector sin multas impagas, definiendo correctamente el plazo y la fecha de devolución.
 
 ### Subtareas DEV
 - UI con inputs para ingresar datos necesarios para un prestamo.
@@ -13,8 +14,12 @@ Permitir registrar un libro como prestado a un lector siempre y cuando se estén
 - Método de búsqueda de lector moroso.
 
 ### Subtareas QA
+- Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con multa impaga y plazo no permitido.
+- Preparar datos con al menos un libro disponible, uno prestado, un lector habilitado y un lector bloqueado por deuda.
+- Validar que el sistema registre correctamente un préstamo cuando se cumplen todas las reglas del negocio.
 
 ### Riesgo o notas de calidad
+- Riesgo: Permitir un préstamo sobre un libro no disponible o a un lector moroso rompería reglas centrales del negocio.
 
 ## HU-03 - Registrar devolución de un libro dentro del plazo
 
