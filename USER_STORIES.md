@@ -15,6 +15,9 @@
 - Regla 1: Un libro solo puede prestrarse si está disponible.
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
 
+## Dependencias
+- Requiere que existe información base del libro y sus préstamos
+
 ## Criterio de Aceptación
 
 - El bibliotecario puede consultar un libro usando un dato identificador.
@@ -28,6 +31,12 @@
     Given existe un libro registrado y no tiene un préstamo activo
     When el bibliotecario consulta ese libro
     Then el sistema muestra que el libro está disponible
+```
+```gherkin
+    Scenario: Consultar un libro inexistente
+    Given no existe un libro con el identificador consultado
+    When el bibliotecario realiza la búsqueda
+    Then el sistema informa que el libro no fue encontrado
 ```
 
 ## Justificación de criterios INVEST - HU-01

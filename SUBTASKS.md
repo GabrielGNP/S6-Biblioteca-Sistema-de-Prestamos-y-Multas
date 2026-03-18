@@ -17,10 +17,12 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 - Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
 - Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
 - Validar alternos como libro inexistente, o libro con información histórica incompleta.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
-- Mostrar un libro como disponible cuando en realidad tiene un préstamo activo llevaría a préstamos inválidos.
-- Conviene verificar que la consulta no solo traiga el libro, si no también el contexto mínimo necesario para decidir si puede prestarse.
+- Riesgo funcional: Mostrar un libro como disponible cuando en realidad tiene un préstamo activo llevaría a préstamos inválidos.
+- Riesgo técnico: Si la consulta no une bien libro e historial, la información visible puede quedar parcial o contradictoria.
+- Calidad: Conviene verificar que la consulta no solo traiga el libro, si no también el contexto mínimo necesario para decidir si puede prestarse.
 
 ## HU-02 - Registrar libro disponible a un lector habilitado
 
