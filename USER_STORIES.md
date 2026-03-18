@@ -17,9 +17,17 @@
 
 ## Criterio de Aceptación
 
+- El bibliotecario puede consultar un libro usando un dato identificador.
+- El sistema indica si el libro está disponible o si tiene un préstamo activo.
+- El sistema muestra información suficiente para interpretar el estado del libro.
+- Si el libro no existe, el sistema lo muestra sin ambiguedad.
+
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Consultar un libro disponible
+    Given existe un libro registrado y no tiene un préstamo activo
+    When el bibliotecario consulta ese libro
+    Then el sistema muestra que el libro está disponible
 ```
 
 ## Justificación de criterios INVEST - HU-01
@@ -29,7 +37,7 @@
 **V (Valuable)**: Sí; con esto evitas prestar a ciegas.
 **E (Estimable)**: Sí, el alcance de la consulta está acotado.
 **S (Small)**: Sí; es una necesidad puntual.
-**T (Testable)**: 
+**T (Testable)**: Sí; se puede evaluar disponibilidad, préstamo activo e información sociada.
 
 ---
 
@@ -54,9 +62,20 @@
   
 ## Criterio de Aceptación
 
+- El préstamo solo puede registrarse si el libro está disponible.
+- El préstamo solo puede registrarse si el lector no tiene multas pendientes.
+- 
+
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Registrar un préstamo válido
+    Given el libro está disponible
+    And el lector no tiene multas impagas
+    And el plazo elegido es permitido
+    When el bibliotecario registra el préstamo
+    Then el sistema guarda el préstamo
+    And deja el libro como no disponible
+    And muestra la fecha de devolución calculada
 ```
 ## Justificación de criterios INVEST - HU-02
 
@@ -76,6 +95,7 @@
 **Como** Bibliotecario
 **Quiero** Registrar que el libro fue devuelto en o antes de la fecha límite
 **Para** Cerrar el préstamo sin generar multa y volver a dejar el libro disponible
+```
 
 ## Valor de Negocio
 - Formaliza el cierre correcto de un préstamo.
