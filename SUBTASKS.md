@@ -18,10 +18,12 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 - Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
 - Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
 - Validar alternos como libro inexistente, o libro con información histórica incompleta.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
-- Mostrar un libro como disponible cuando en realidad tiene un préstamo activo llevaría a préstamos inválidos.
-- Conviene verificar que la consulta no solo traiga el libro, si no también el contexto mínimo necesario para decidir si puede prestarse.
+- Riesgo funcional: Mostrar un libro como disponible cuando en realidad tiene un préstamo activo llevaría a préstamos inválidos.
+- Riesgo técnico: Si la consulta no une bien libro e historial, la información visible puede quedar parcial o contradictoria.
+- Calidad: Conviene verificar que la consulta no solo traiga el libro, si no también el contexto mínimo necesario para decidir si puede prestarse.
 
 ## HU-02 - Registrar libro disponible a un lector habilitado
 
@@ -38,9 +40,13 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con multa impaga y plazo no permitido.
 - Preparar datos con al menos un libro disponible, uno prestado, un lector habilitado y un lector bloqueado por deuda.
 - Validar que el sistema registre correctamente un préstamo cuando se cumplen todas las reglas del negocio.
+- Validar alternos como libro inexistente, lector inexistente o error en el cálculo de la fecha de devolución.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
-- Riesgo: Permitir un préstamo sobre un libro no disponible o a un lector moroso rompería reglas centrales del negocio.
+- Riesgo funcional: permitir un préstamo sobre un libro no disponible o a un lector moroso rompería reglas centrales del negocio.
+- Riesgo técnico: si el sistema calcula mal la fecha límite o no persiste el estado del préstamo, se afectarían devoluciones y multas posteriores.
+- Calidad: conviene verificar los tres plazos permitidos y asegurar que cualquier otro valor quede explícitamente rechazado.
 
 ## HU-03 - Registrar devolución de un libro dentro del plazo
 
