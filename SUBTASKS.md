@@ -70,10 +70,10 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 
 **Riesgo o notas de calidad**
-- Si el identificador del lector se escribió mal previamente, no se puede recuperar la información del préstamo.
-- Si una devolución dentro del plazo genera multa o no libera el libro, se rompe el flujo operativo básico.
-- Si el cierre del préstamo y la actualización del libro no ocurren de forma consistente, el sistema puede dejar estados cruzados.
-- Conviene verificar el borde exacto de la fecha límite para evitar penalizar devoluciones válidas realizadas a tiempo.
+- Riesgo funcional: Si una devolución dentro del plazo genera multa o no libera el libro, se rompe el flujo operativo básico.
+- Riesgo funcional: Si el identificador del lector se escribió mal previamente, no se puede recuperar la información del préstamo.
+- Riesgo técnico: Si el cierre del préstamo y la actualización del libro no ocurren de forma consistente, el sistema puede dejar estados cruzados.
+- Calidad: Conviene verificar el borde exacto de la fecha límite para evitar penalizar devoluciones válidas realizadas a tiempo.
 
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
 

@@ -138,6 +138,12 @@
     And no genera multa
     And deja el libro disponible
 ```
+```gherkin
+    Scenario: Intentar devolver un préstamo no activo
+    Given no existe un préstamo activo para el libro consultado
+    When el bibliotecario intenta registrar la devolución
+    Then el sistema informa que no hay una devolución válida para procesar
+```
 
 ## Justificación de criterios INVEST - HU-03
 
