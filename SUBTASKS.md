@@ -5,6 +5,21 @@
 ## HU-02 - Registrar libro disponible a un lector habilitado
 
 ## HU-03 - Registrar devolución de un libro dentro del plazo
+**Objetivo de la historia**
+Registrar la devolución en tiempo y forma de un libro prestado sin generar ninguna multa al lector.
+
+**Subtareas DEV**
+- inputs UI para indicar nombre del libro y el identificador del lector
+- comunicación UI con endpoint
+- endpoint PUT api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
+- método para calcular el tiempo de demora
+- método para marcar como devuelto el libro
+
+**Subtareas QA**
+
+
+**Riesgo o notas de calidad**
+- Si el identificador del lector se escribió mal previamente, no se puede recuperar la información del prestamo.
 
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
 
