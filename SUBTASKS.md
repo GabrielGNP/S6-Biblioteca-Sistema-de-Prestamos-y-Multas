@@ -9,6 +9,18 @@
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
 
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
+### Objetivo de la historia
+Consultar los libros que están fuera de plazo y visualizar la información del lector responsable del préstamo y tener información para la toma de decisión.
+
+### Subtareas DEV
+- UI de lista de préstamos
+- Endpoint GET api/v1/loan/outTime
+- Comunicación UI con endpoint
+
+### Subtareas QA
+
+### Riesgo o notas de calidad
+
 
 ## HU-06 - Registrar el pago total de una multa y rehabilitación del lector
 
