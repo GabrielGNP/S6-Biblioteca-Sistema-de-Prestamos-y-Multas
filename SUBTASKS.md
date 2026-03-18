@@ -11,6 +11,24 @@
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
 
 ## HU-06 - Registrar el pago total de una multa y rehabilitación del lector
+### Objetivo de la historia
+Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado otro libro
+
+### Subtareas DEV
+- UI de multas
+- Inputs UI para indicar el identificador del lector
+- Endpoint GET api/v1/debt/{identificador} para obtener la multa
+- Comunicación UI y endpoint GEt api/v1/debt/{identificador}
+- Tabla DB con lectores morosos.
+- Método de búsqueda de lector moroso.
+- Endpoint PUT api/v1/debt{identificador} para cambiar el estado de la multa a pagado
+- Comunicación UI y endpoint PUT api/v1/debt/{identificador}
+
+### Subtareas QA
+
+
+### Riesgo o notas de calidad
+
 
 ## PLANTILLA
 ```md
