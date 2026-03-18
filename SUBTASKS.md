@@ -56,18 +56,18 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ### Subtareas QA
 - Permitir cerrar un préstamo a tiempo para que el libro vuelva a estar utilizable sin generar deuda.
-- Pensar escenarios de devolución en fecha, anticipada y no válida.
-- Preparar ejemplos de préstamos activos y casos borde de fecha.
-- Confirmar que no se genere multa cuando no corresponde.
-- Revisar errores como devoluciones duplicadas o préstamos mal identificados.
-- Guardar evidencia del comportamiento observado.
+- Diseñar escenarios para devolución en la fecha límite, devolución antes de la fecha limite y devolución sobre préstamo no activo.
+- Preparar datos con al menos un préstamo vigente, un libro asociado y casos de fecha exacta y fecha anticipada.
+- Validar que el sistema cierre correctamente el préstamo, no genere multa y deje el libro disponible para futuros préstamos.
+- Validar alternos como devolución duplicada, error en identificación del préstamo o cambio incorrecto del estado del libro.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 
 **Riesgo o notas de calidad**
 - Si el identificador del lector se escribió mal previamente, no se puede recuperar la información del préstamo.
-- Cobrar o bloquear una devolución a tiempo rompería el flujo básico.
-- Una fecha mal calculada puede contaminar puede contaminar devoluciones y multas futuras.
-- 
+- Si una devolución dentro del plazo genera multa o no libera el libro, se rompe el flujo operativo básico.
+- Si el cierre del préstamo y la actualización del libro no ocurren de forma consistente, el sistema puede dejar estados cruzados.
+- Conviene verificar el borde exacto de la fecha límite para evitar penalizar devoluciones válidas realizadas a tiempo.
 
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
 
