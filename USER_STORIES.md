@@ -125,6 +125,10 @@
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
   
 ## Criterio de Aceptación
+- Una devolución fuera de plazo genera una multa.
+- La multa debe seguir las reglas del Sistema Fibonacci definidas en el PRD.
+- El sistema deja registrada la deuda del lector.
+- El préstamo queda cerrado aunque exista deuda pendiente.
 
 **Gherkin**:
 ```gherkin
@@ -137,6 +141,10 @@
     And deja la deuda asociada al lector
 ```
 ```gherkin
+    Scenario: Registrar una devolución con ocho días de retraso
+    Given existe un préstamo vencido con ocho días de retraso
+    When el bibliotecario registra la devolución
+    Then el sistema calcula la multa correspondiente a dos semanas de mora acumulada
 ```
 
 ## Justificación de criterios INVEST - HU-04
