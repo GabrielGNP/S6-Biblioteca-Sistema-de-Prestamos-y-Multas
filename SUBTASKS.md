@@ -2,10 +2,11 @@
 
 ## HU-01 - Consultar estado y disponibilidad de un libro
 
-### Objetivos de la historia
+### Objetivo de la historia
 Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar su informacion operativa principal antes de registrar acciones sobre el.
 
 ### Subtareas DEV
+
 - Tabla DB de historial de prestamos de libros.
 - Método de busqueda de libro.
 - Exponer un endpoint GET api/v1/book/{name} que reciba el identificador del libro a buscar y devuelva el contexto mínimo necesario del libro en concreto.
@@ -42,21 +43,31 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Riesgo: Permitir un préstamo sobre un libro no disponible o a un lector moroso rompería reglas centrales del negocio.
 
 ## HU-03 - Registrar devolución de un libro dentro del plazo
-**Objetivo de la historia**
-Registrar la devolución en tiempo y forma de un libro prestado sin generar ninguna multa al lector.
 
-**Subtareas DEV**
+### Objetivo de la historia
+- Permitir al Bibliotecario registrar la devolución de un libro en o antes de la fecha límite para cerrar el préstamo sin generar multa y dejar nuevamente el libro disponible.
+
+### Subtareas DEV
 - inputs UI para indicar nombre del libro y el identificador del lector
 - comunicación UI con endpoint
 - endpoint PUT api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
 - método para calcular el tiempo de demora
 - método para marcar como devuelto el libro
 
-**Subtareas QA**
+### Subtareas QA
+- Permitir cerrar un préstamo a tiempo para que el libro vuelva a estar utilizable sin generar deuda.
+- Pensar escenarios de devolución en fecha, anticipada y no válida.
+- Preparar ejemplos de préstamos activos y casos borde de fecha.
+- Confirmar que no se genere multa cuando no corresponde.
+- Revisar errores como devoluciones duplicadas o préstamos mal identificados.
+- Guardar evidencia del comportamiento observado.
 
 
 **Riesgo o notas de calidad**
-- Si el identificador del lector se escribió mal previamente, no se puede recuperar la información del prestamo.
+- Si el identificador del lector se escribió mal previamente, no se puede recuperar la información del préstamo.
+- Cobrar o bloquear una devolución a tiempo rompería el flujo básico.
+- Una fecha mal calculada puede contaminar puede contaminar devoluciones y multas futuras.
+- 
 
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
 
