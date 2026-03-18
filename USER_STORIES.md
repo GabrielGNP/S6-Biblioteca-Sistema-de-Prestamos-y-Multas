@@ -64,7 +64,8 @@
 
 - El préstamo solo puede registrarse si el libro está disponible.
 - El préstamo solo puede registrarse si el lector no tiene multas pendientes.
-- 
+- El sistema calcula una fecha de devolución según el plazo elegido.
+- Si alguna regla falla, el sistema impide el registro y lo informa.
 
 **Gherkin**:
 ```gherkin
@@ -84,7 +85,7 @@
 **V (Valuable)**: Sí; entra dentro del operativo principal del sistema.
 **E (Estimable)**: Sí; queda claro qué hacer y reglas permiten una estimación más clara.
 **S (Small)**: Sí; es una única tarea y no se incluye ninguna otra renovación o acción.
-**T (Testable)**: 
+**T (Testable)**: Sí; permite validar casos válidos e intentos bloqueados.
 
 ---
 
@@ -107,10 +108,20 @@
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
   
 ## Criterio de Aceptación
+- Una devolución en fecha o antes de la fecha no genera multa.
+- El préstamo debe quedar cerrado al registrar la devolución válida.
+- El libro vuelve a quedar disponible.
+- Si no existe un préstamo activo, la operación no debe avanzar.
 
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Registrar una devolución en fecha
+    Given existe un préstamo activo
+    And la devolución ocurre en o antes de la fecha límite
+    When el bibliotecario registra la devolución
+    Then el sistema cierra el préstamo
+    And no genera multa
+    And deja el libro disponible
 ```
 
 ## Justificación de criterios INVEST - HU-03
@@ -145,6 +156,8 @@
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
   
 ## Criterio de Aceptación
+
+- El sistema calcula la multa usando el valor base monetario vigente configurado por la biblioteca.
 
 **Gherkin**:
 ```gherkin
