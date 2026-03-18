@@ -87,6 +87,12 @@
     And deja el libro como no disponible
     And muestra la fecha de devolución calculada
 ```
+```gherkin
+    Scenario: Intentar prestar a un lector con deuda
+    Given el lector tiene una deuda pendiente
+    When el bibliotecario intenta registrar un préstamo
+    Then el sistema rechaza la operación
+```
 ## Justificación de criterios INVEST - HU-02
 
 **I (Independent)**: Sí; tiene valor propio.

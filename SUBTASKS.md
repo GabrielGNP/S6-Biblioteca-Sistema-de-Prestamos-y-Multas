@@ -39,9 +39,13 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con multa impaga y plazo no permitido.
 - Preparar datos con al menos un libro disponible, uno prestado, un lector habilitado y un lector bloqueado por deuda.
 - Validar que el sistema registre correctamente un préstamo cuando se cumplen todas las reglas del negocio.
+- Validar alternos como libro inexistente, lector inexistente o error en el cálculo de la fecha de devolución.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
-- Riesgo: Permitir un préstamo sobre un libro no disponible o a un lector moroso rompería reglas centrales del negocio.
+- Riesgo funcional: permitir un préstamo sobre un libro no disponible o a un lector moroso rompería reglas centrales del negocio.
+- Riesgo técnico: si el sistema calcula mal la fecha límite o no persiste el estado del préstamo, se afectarían devoluciones y multas posteriores.
+- Calidad: conviene verificar los tres plazos permitidos y asegurar que cualquier otro valor quede explícitamente rechazado.
 
 ## HU-03 - Registrar devolución de un libro dentro del plazo
 
