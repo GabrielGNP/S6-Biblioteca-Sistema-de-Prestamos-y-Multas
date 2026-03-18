@@ -7,6 +7,17 @@
 ## HU-03 - Registrar devolución de un libro dentro del plazo
 
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
+### Objetivo de la historia
+Registrar la devolución fuera de tiempo de un libro prestado y generar automáticamente la multa correspondiente al lector responsable.
+
+### Subtareas DEV
+
+
+### Subtareas QA
+
+
+### Riesgo o notas de calidad
+
 
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
 
