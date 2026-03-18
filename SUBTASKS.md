@@ -6,13 +6,14 @@
 Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar su informacion operativa principal antes de registrar acciones sobre el.
 
 ### Subtareas DEV
-- Crear un almacenamiento de información para guardar de historial de prestamos de libros si no existe ya.
-- Crear una funcionalidad de busqueda dentro de la tabla para el libro consultado.
-- Exponer un endpoint GET que reciba el identificador del libro a buscar y devuelva la disponibilidad de un libro en concreto.
-- Crear una funcionalidad para comunicar al endpoint GET cual es el libro a buscar.
+- Tabla DB de historial de prestamos de libros.
+- Método de busqueda de libro.
+- Exponer un endpoint GET api/v1/book/{name} que reciba el identificador del libro a buscar y devuelva el contexto mínimo necesario del libro en concreto.
+- UI para indicar el nombre del libro a buscar
+- Integrar UI y endpoint.
 
 ### Subtareas QA
-- Disenar escenarios para consulta de libro disponible, libro prestado y libro inexistente.
+- Diseñar escenarios para consulta de libro disponible, libro prestado y libro inexistente.
 - Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
 - Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
 - Validar alternos como libro inexistente, o libro con información histórica incompleta.
