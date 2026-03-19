@@ -69,6 +69,9 @@
 - Regla 3: Cada préstamo se registra con una fecha de inicio y una fecha de devolución calculada.
 - Regla 4: Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
 
+## Dependencias
+- Se apoya en la consulta de disponibilidad del libro y el estado de deuda del lector.
+  
 ## Criterio de Aceptación
 
 - El préstamo solo puede registrarse si el libro está disponible.
@@ -123,6 +126,9 @@
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
 
+## Dependencias
+- Requiere que exista un préstamo activo registrado.
+  
 ## Criterio de Aceptación
 - Una devolución en fecha o antes de la fecha no genera multa.
 - El préstamo debe quedar cerrado al registrar la devolución válida.
