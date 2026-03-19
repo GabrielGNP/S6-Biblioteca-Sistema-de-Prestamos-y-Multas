@@ -136,7 +136,11 @@
 
 ## Dependencias
 - Requiere que exista un préstamo activo registrado.
-  
+
+## Story Points
+- 3 puntos.
+- El flujo es más simple que el préstamo y que la devolución tardía, pero igual exige validar que exista un préstamo activo, comprobar el cumplimiento de la fecha límite, cerrar correctamente el préstamo y volver a dejar el libro disponible sin generar multa.
+
 ## Criterio de Aceptación
 - Una devolución en fecha o antes de la fecha no genera multa.
 - El préstamo debe quedar cerrado al registrar la devolución válida.
@@ -194,8 +198,8 @@
 - Requiere un préstamo vencido y la fecha efectiva de devolución.
 
 ## Story Points
-- 3 puntos.
-- El flujo es más simple que el préstamo y que la devolución tardía, pero igual exige validar que exista un préstamo activo, comprobar el cumplimiento de la fecha límite, cerrar correctamente el préstamo y volver a dejar el libro disponible sin generar multa.
+- 8 puntos.
+- No solo registra la devolución; exige calcular el retraso por cortes semanales, aplicar la acumulación de deuda con lógica Fibonacci, registrar correctamente la multa, cerrar el préstamo y sincronizar el estado del lector con la nueva deuda. El riesgo de errores justifica una estimación superior.
 
 ## Criterio de Aceptación
 - Una devolución fuera de plazo genera una multa.
@@ -257,6 +261,10 @@
 - La historia cubre únicamente la visualización de préstamos vencidos y del lector responsable.
 - No incluye notificaciones, exportación de resultados, filtros avanzados, ordenamiento configurable ni paginación.
 
+## Story Points
+- 3 puntos.
+- Sigue siendo una consulta, pero requiere filtrar correctamente solo los préstamos vencidos, excluir los vigentes y cerrados, mostrar al lector responsable sin mezclar estados.
+
 ## Criterio de Aceptación
 - El sistema permite consultar los préstamos que ya están vencidos.
 - Cada resultado muestra el libro, su estado, el lector responsable, la fecha límite del préstamo y la fecha de devolución.
@@ -311,6 +319,10 @@
 
 ## Dependencias
 - Requiere que exista una multa pendiente para el lector.
+
+## Story Points
+- 3 puntos
+- Requiere validar la existencia de deuda pendiente, registrar el pago total, dejar trazabilidad y rehabilitar correctamente al lector para futuros préstamos.
 
 ## Criterio de Aceptación
 - El sistema permite registrar el pago total de una deuda pendiente.
