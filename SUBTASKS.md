@@ -91,13 +91,17 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Método de guardado de multa. 
                                             
 ### Subtareas QA
-- Diseñar escenarios con distintos niveles de retraso.
-- Preparar ejemplos que ayuden a revisar como crece la deuda.
-- Confirmar que la devolucion tardia cierre el prestamo y deje visible la multa.
+- Diseñar escenarios para devolución tardia con retrasos de una, dos, tres y cuatro semanas de mora acumulada.
+- Preparar datos con préstamos vencidos y fechas de devolución que permitan validar los cortes semanales y la acumulación Fibonacci.
+- Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por multa pendiente.
+- Validar alternos como errores en el conteo de días, préstamo sin lector asociado o multa duplicada sobre la misma devolución.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 
 ### Riesgo o notas de calidad
 - Riesgo funcional: una multa mal interpretada puede percibirse como injusta o incoherente.
+- Riesgo técnico: si la devolución, la multa y el estado del lector no se actualizan en conjunto, pueden quedar deudas inconsistentes o lectores mal bloqueados.
+- Calidad: conviene verificar explícitamente los casos borde definidos en el PRD para confirmar que la acumulación Fibonacci sea correcta.
 
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
 
