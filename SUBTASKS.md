@@ -149,9 +149,15 @@ Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado
 - Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
 
 ### Subtareas QA
-
+- Diseñar escenarios de pago válido, ausencia de deuda y errores de registro.
+- Preparar ejemplos de lectores bloqueados y lectores ya habilitados.
+- Confirmar que pagar cambie la situación del lector como se espera.
+- Revisar inconsistencias entre deuda, pago y habilitación.
+- Guardar evidencia del resultado observado.
 
 ### Riesgo o notas de calidad
+- Riesgo funcional: cobrar sin rehabilitar al lector dejaría el flujo incompleto.
+- 
 
 
 ## PLANTILLA
