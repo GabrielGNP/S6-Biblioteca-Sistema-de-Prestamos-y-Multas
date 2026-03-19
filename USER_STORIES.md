@@ -68,6 +68,9 @@
 - Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
 - Regla 3: Cada préstamo se registra con una fecha de inicio y una fecha de devolución calculada.
 - Regla 4: Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
+
+## Dependencias
+- Se apoya en la consulta de disponibilidad del libro y el estado de deuda del lector.
   
 ## Criterio de Aceptación
 
@@ -86,6 +89,12 @@
     Then el sistema guarda el préstamo
     And deja el libro como no disponible
     And muestra la fecha de devolución calculada
+```
+```gherkin
+    Scenario: Intentar prestar a un lector con deuda
+    Given el lector tiene una deuda pendiente
+    When el bibliotecario intenta registrar un préstamo
+    Then el sistema rechaza la operación
 ```
 ## Justificación de criterios INVEST - HU-02
 
@@ -117,20 +126,10 @@
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
   
 ## Criterio de Aceptación
-- Una devolución en fecha o antes de la fecha no genera multa.
-- El préstamo debe quedar cerrado al registrar la devolución válida.
-- El libro vuelve a quedar disponible.
-- Si no existe un préstamo activo, la operación no debe avanzar.
 
 **Gherkin**:
 ```gherkin
-    Scenario: Registrar una devolución en fecha
-    Given existe un préstamo activo
-    And la devolución ocurre en o antes de la fecha límite
-    When el bibliotecario registra la devolución
-    Then el sistema cierra el préstamo
-    And no genera multa
-    And deja el libro disponible
+    
 ```
 
 ## Justificación de criterios INVEST - HU-03
