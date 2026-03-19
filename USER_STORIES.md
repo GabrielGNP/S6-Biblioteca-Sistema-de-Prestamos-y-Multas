@@ -124,6 +124,9 @@
 - Regla 5: Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+
+## Dependencias
+- Requiere que exista un préstamo activo registrado.
   
 ## Criterio de Aceptación
 - Una devolución en fecha o antes de la fecha no genera multa.
