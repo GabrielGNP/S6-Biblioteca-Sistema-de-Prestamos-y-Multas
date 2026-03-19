@@ -293,12 +293,23 @@
 - Regla 8: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
 
+## Dependencias
+- Requiere que exista una multa pendiente para el lector.
+
 ## Criterio de Aceptación
+- El sistema permite registrar el pago total de una deuda pendiente.
+- Después del pago, el lector vuelve a quedar habilitado.
+- Si no existe deuda pendiente, el sistema no debe registrar el pago.
+- La operación debe dejar trazabilidad mínima del cambio.
 
 **Gherkin**:
 
 ```gherkin
-
+    Scenario: Registrar pago total de multa
+    Given el lector tiene una deuda pendiente
+    When el bibliotecario registra un pago total
+    Then el sistema deja la deuda en cero
+    And cambia el estado del lector a habilitado
 ```
 
 ## Justificación de criterios INVEST - HU-06
