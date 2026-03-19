@@ -82,6 +82,34 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
 
+### Objetivo de la historia
+- Permitir al bibliotecario registrar la devolución tardía de un libro para calcular la multa acumulada con la lógica Fibonacci y dejar trazabilidad de la deuda del lector.
+
+### Subtareas DEV
+- UI (inputs) para indicar nombre del libro y/o identificador, y el identificador del lector
+- Endpoint PATCH api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
+- Comunicación UI con endpoint PATCH api/v1/loan
+- Tabla DB de historial de prestamos de libros
+- Funcionalidad para buscar el libro en el historial
+- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+- Funcionalidad para calcular multa utilizando fibonacci
+- Funcionalidad para marcar como devuelto el libro
+- Tabla DB con lectores morosos.
+- Método de guardado de multa. 
+                                            
+### Subtareas QA
+- Diseñar escenarios para devolución tardia con retrasos de una, dos, tres y cuatro semanas de mora acumulada.
+- Preparar datos con préstamos vencidos y fechas de devolución que permitan validar los cortes semanales y la acumulación Fibonacci.
+- Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por multa pendiente.
+- Validar alternos como errores en el conteo de días, préstamo sin lector asociado o multa duplicada sobre la misma devolución.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+
+
+### Riesgo o notas de calidad
+- Riesgo funcional: una multa mal interpretada puede percibirse como injusta o incoherente.
+- Riesgo técnico: si la devolución, la multa y el estado del lector no se actualizan en conjunto, pueden quedar deudas inconsistentes o lectores mal bloqueados.
+- Calidad: conviene verificar explícitamente los casos borde definidos en el PRD para confirmar que la acumulación Fibonacci sea correcta.
+
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
 
 ## HU-06 - Registrar el pago total de una multa y rehabilitación del lector

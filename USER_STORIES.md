@@ -96,6 +96,7 @@
     When el bibliotecario intenta registrar un préstamo
     Then el sistema rechaza la operación
 ```
+
 ## Justificación de criterios INVEST - HU-02
 
 **I (Independent)**: Sí; tiene valor propio.
@@ -160,7 +161,6 @@
 **S (Small)**: Sí; no metemos nada sobre las multas ni sobre el pago.
 **T (Testable)**: Sí; incluye fecha exacta y devolución anticipada.
 
-
 ---
 
 # Título: HU-04 - Registrar devolución tardía y generar multa Fibonacci
@@ -181,14 +181,31 @@
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
 - Regla 7: El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
-  
-## Criterio de Aceptación
 
-- El sistema calcula la multa usando el valor base monetario vigente configurado por la biblioteca.
+## Dependencias
+- Requiere un préstamo vencido y la fecha efectiva de devolución.
+
+## Criterio de Aceptación
+- Una devolución fuera de plazo genera una multa.
+- La multa debe seguir las reglas del Sistema Fibonacci definidas en el PRD.
+- El sistema deja registrada la deuda del lector.
+- El préstamo queda cerrado aunque exista deuda pendiente.
 
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Registrar una devolución tardía con multa
+    Given existe un préstamo activo vencido
+    And la fecha de devolución supera la fecha límite
+    When el bibliotecario registra la devolución
+    Then el sistema cierra el préstamo
+    And calcula la multa según la lógica Fibonacci
+    And deja la deuda asociada al lector
+```
+```gherkin
+    Scenario: Registrar una devolución con ocho días de retraso
+    Given existe un préstamo vencido con ocho días de retraso
+    When el bibliotecario registra la devolución
+    Then el sistema calcula la multa correspondiente a dos semanas de mora acumulada
 ```
 
 ## Justificación de criterios INVEST - HU-04
@@ -198,7 +215,7 @@
 **V (Valuable)**: Sí; es una regla central del negocio.
 **E (Estimable)**: Sí; la lógica del cálculo está en el PRD.
 **S (Small)**: Sí; no incluye el pago de la multa, por ejemplo.
-**T (Testable)**: 
+**T (Testable)**: Si, tiene casos borde claros de 1, 7, 8, 15 y 22 dias.
 
 ---
 
@@ -236,7 +253,7 @@
 **V (Valuable)**: Sí; apoya la gestión de deuda atrasada.
 **E (Estimable)**: Sí; el resultado esperado es a nivel de consulta.
 **S (Small)**: Sí; se limita a préstamos vencidos, lo cual está ligado directamente al responsable.
-**T (Testable)**: 
+**T (Testable)**:
 
 ---
 
@@ -274,7 +291,7 @@
 **V (Valuable)**: Sí; sin esto, el flujo estaría incompleto.
 **E (Estimable)**: Sí; el alcance queda claro.
 **S (Small)**: Sí; se limita al pago total, que está directamente ligado a la rehabilitación del lector.
-**T (Testable)**: 
+**T (Testable)**:
 
 ---
 
