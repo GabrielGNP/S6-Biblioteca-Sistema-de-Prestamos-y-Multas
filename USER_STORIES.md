@@ -15,11 +15,28 @@
 - Regla 1: Un libro solo puede prestrarse si está disponible.
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
 
+## Dependencias
+- Requiere que existe información base del libro y sus préstamos
+
 ## Criterio de Aceptación
+
+- El bibliotecario puede consultar un libro usando un dato identificador.
+- El sistema indica si el libro está disponible o si tiene un préstamo activo.
+- El sistema muestra información suficiente para interpretar el estado del libro.
+- Si el libro no existe, el sistema lo muestra sin ambiguedad.
 
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Consultar un libro disponible
+    Given existe un libro registrado y no tiene un préstamo activo
+    When el bibliotecario consulta ese libro
+    Then el sistema muestra que el libro está disponible
+```
+```gherkin
+    Scenario: Consultar un libro inexistente
+    Given no existe un libro con el identificador consultado
+    When el bibliotecario realiza la búsqueda
+    Then el sistema informa que el libro no fue encontrado
 ```
 
 ## Justificación de criterios INVEST - HU-01
@@ -29,7 +46,7 @@
 **V (Valuable)**: Sí; con esto evitas prestar a ciegas.
 **E (Estimable)**: Sí, el alcance de la consulta está acotado.
 **S (Small)**: Sí; es una necesidad puntual.
-**T (Testable)**: 
+**T (Testable)**: Sí; se puede evaluar disponibilidad, préstamo activo e información sociada.
 
 ---
 
@@ -54,9 +71,27 @@
   
 ## Criterio de Aceptación
 
+- El préstamo solo puede registrarse si el libro está disponible.
+- El préstamo solo puede registrarse si el lector no tiene multas pendientes.
+- El sistema calcula una fecha de devolución según el plazo elegido.
+- Si alguna regla falla, el sistema impide el registro y lo informa.
+
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Registrar un préstamo válido
+    Given el libro está disponible
+    And el lector no tiene multas impagas
+    And el plazo elegido es permitido
+    When el bibliotecario registra el préstamo
+    Then el sistema guarda el préstamo
+    And deja el libro como no disponible
+    And muestra la fecha de devolución calculada
+```
+```gherkin
+    Scenario: Intentar prestar a un lector con deuda
+    Given el lector tiene una deuda pendiente
+    When el bibliotecario intenta registrar un préstamo
+    Then el sistema rechaza la operación
 ```
 ## Justificación de criterios INVEST - HU-02
 
@@ -65,7 +100,7 @@
 **V (Valuable)**: Sí; entra dentro del operativo principal del sistema.
 **E (Estimable)**: Sí; queda claro qué hacer y reglas permiten una estimación más clara.
 **S (Small)**: Sí; es una única tarea y no se incluye ninguna otra renovación o acción.
-**T (Testable)**: 
+**T (Testable)**: Sí; permite validar casos válidos e intentos bloqueados.
 
 ---
 
@@ -76,6 +111,7 @@
 **Como** Bibliotecario
 **Quiero** Registrar que el libro fue devuelto en o antes de la fecha límite
 **Para** Cerrar el préstamo sin generar multa y volver a dejar el libro disponible
+```
 
 ## Valor de Negocio
 - Formaliza el cierre correcto de un préstamo.
@@ -125,6 +161,8 @@
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
   
 ## Criterio de Aceptación
+
+- El sistema calcula la multa usando el valor base monetario vigente configurado por la biblioteca.
 
 **Gherkin**:
 ```gherkin
