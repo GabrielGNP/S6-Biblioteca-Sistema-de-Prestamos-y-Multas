@@ -120,6 +120,8 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - UI de lista de préstamos
 - Endpoint GET api/v1/loan/outTime
 - Comunicación UI con endpoint
+- Tabla DB de historial de prestamos de libros
+- Funcionalidad de filtrado de prestamos fuera de tiempo
 
 ### Subtareas QA
 - Diseñar escenarios para préstamos vencidos, préstamos aún vigentes y lista vacía sin atrasos.
