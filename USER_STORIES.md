@@ -124,12 +124,31 @@
 - Regla 5: Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+
+## Dependencias
+- Requiere que exista un préstamo activo registrado.
   
 ## Criterio de Aceptación
+- Una devolución en fecha o antes de la fecha no genera multa.
+- El préstamo debe quedar cerrado al registrar la devolución válida.
+- El libro vuelve a quedar disponible.
+- Si no existe un préstamo activo, la operación no debe avanzar.
 
 **Gherkin**:
 ```gherkin
-    
+    Scenario: Registrar una devolución en fecha
+    Given existe un préstamo activo
+    And la devolución ocurre en o antes de la fecha límite
+    When el bibliotecario registra la devolución
+    Then el sistema cierra el préstamo
+    And no genera multa
+    And deja el libro disponible
+```
+```gherkin
+    Scenario: Intentar devolver un préstamo no activo
+    Given no existe un préstamo activo para el libro consultado
+    When el bibliotecario intenta registrar la devolución
+    Then el sistema informa que no hay una devolución válida para procesar
 ```
 
 ## Justificación de criterios INVEST - HU-03
@@ -139,7 +158,7 @@
 **V (Valuable)**: Sí; impacta directamente a la operación diaria.
 **E (Estimable)**: Sí; el comportamiento esperado es simple.
 **S (Small)**: Sí; no metemos nada sobre las multas ni sobre el pago.
-**T (Testable)**:
+**T (Testable)**: Sí; incluye fecha exacta y devolución anticipada.
 
 
 ---

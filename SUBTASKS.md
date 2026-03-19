@@ -2,7 +2,7 @@
 
 ## HU-01 - Consultar estado y disponibilidad de un libro
 
-### Objetivos de la historia
+### Objetivo de la historia
 Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar su informacion operativa principal antes de registrar acciones sobre el.
 
 ### Subtareas DEV
@@ -52,6 +52,33 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Calidad: conviene verificar los tres plazos permitidos y asegurar que cualquier otro valor quede explícitamente rechazado.
 
 ## HU-03 - Registrar devolución de un libro dentro del plazo
+
+### Objetivo de la historia
+- Permitir al Bibliotecario registrar la devolución de un libro en o antes de la fecha límite para cerrar el préstamo sin generar multa y dejar nuevamente el libro disponible.
+
+### Subtareas DEV
+- UI (inputs) para indicar nombre del libro y/o identificador, y el identificador del lector
+- Endpoint PATCH api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
+- Comunicación UI con endpoint PATCH api/v1/loan
+- Tabla DB de historial de prestamos de libros
+- Funcionalidad para buscar el libro en el historial
+- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+- Funcionalidad para marcar como devuelto el libro
+
+### Subtareas QA
+- Permitir cerrar un préstamo a tiempo para que el libro vuelva a estar utilizable sin generar deuda.
+- Diseñar escenarios para devolución en la fecha límite, devolución antes de la fecha limite y devolución sobre préstamo no activo.
+- Preparar datos con al menos un préstamo vigente, un libro asociado y casos de fecha exacta y fecha anticipada.
+- Validar que el sistema cierre correctamente el préstamo, no genere multa y deje el libro disponible para futuros préstamos.
+- Validar alternos como devolución duplicada, error en identificación del préstamo o cambio incorrecto del estado del libro.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+
+
+**Riesgo o notas de calidad**
+- Riesgo funcional: Si una devolución dentro del plazo genera multa o no libera el libro, se rompe el flujo operativo básico.
+- Riesgo funcional: Si el identificador del lector se escribió mal previamente, no se puede recuperar la información del préstamo.
+- Riesgo técnico: Si el cierre del préstamo y la actualización del libro no ocurren de forma consistente, el sistema puede dejar estados cruzados.
+- Calidad: Conviene verificar el borde exacto de la fecha límite para evitar penalizar devoluciones válidas realizadas a tiempo.
 
 ## HU-04 - Registrar devolución tardía y generar multa Fibonacci
 
