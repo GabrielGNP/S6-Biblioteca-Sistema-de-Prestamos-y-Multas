@@ -76,13 +76,26 @@ La consulta de préstamos vencidos cubre únicamente la visualización de prést
 - Paginación
 
 
-## Riesgos de Negocio y Técnicos
+## Riesgos de Negocio
 
-### Riesgos de Negocio
+### Riesgo N-1
 - Si no se bloquean correctamente los préstamos a los lectores con deudas, la mora podría aumentar.
-- La complejidad de la escala de Fibonacci puede generar confusión en los usuarios; si el cálculo no es transparente o varía por errores de carga, el usuario lo percibirá como arbitrario o injusto.
+    **Mitigaciones**
 
-### Riesgo Técnico
+  - Definir en historias y criterios de aceptación que la validación de deuda es obligatoria antes de registrar el préstamo.
+  - Incluir un escenario Gherkin explícito de rechazo a lector con multa impaga.
+  - Verificar en Subtareas QA datos de prueba con lector habilitado y lector bloqueado.
+### Riesgo N-2
+- La complejidad de la escala de Fibonacci puede generar confusión en los usuarios; si el cálculo no es transparente o varía por errores de carga, el usuario lo percibirá como arbitrario o injusto.
+    **Mitigaciones**
+
+    - Mantener en el PRD una definición operativa inequívoca del cálculo por semanas.
+    - Incluir tabla de ejemplos oficiales de retraso y deuda acumulada.
+    - Alinear USER_STORIES y SUBTASKS con esos mismos ejemplos sin redefinir la regla en cada documento.
+
+
+
+## Riesgos Técnicos
 - Una implementación inconsciente del estado de deuda puede impedir o habilitar préstamos de forma errónea.
 - Si el historial de préstamos no se registra bien, se pierde trazabilidad del libro.
 - Calcular mal la fecha de vencimiento puede generar multas incorrectas.

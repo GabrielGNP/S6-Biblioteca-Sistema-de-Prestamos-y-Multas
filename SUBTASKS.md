@@ -98,9 +98,10 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Método de guardado de multa. 
                                             
 ### Subtareas QA
-- Diseñar escenarios para devolución tardia con retrasos de una, dos, tres y cuatro semanas de mora acumulada.
+- Diseñar escenarios para retrasos de 1, 7, 8, 15 y 22 días.
 - Preparar datos con préstamos vencidos y fechas de devolución que permitan validar los cortes semanales y la acumulación Fibonacci.
 - Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por multa pendiente.
+- Validar deuda acumulada esperada de 1, 1, 2, 4 y 7 unidades Fibonacci.
 - Validar alternos como errores en el conteo de días, préstamo sin lector asociado o multa duplicada sobre la misma devolución.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 

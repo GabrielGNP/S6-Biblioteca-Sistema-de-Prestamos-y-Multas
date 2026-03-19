@@ -191,8 +191,8 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
-- Regla 7: El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+- Regla 8: El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
+- Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
 - Requiere un préstamo vencido y la fecha efectiva de devolución.
@@ -203,7 +203,7 @@
 
 ## Criterio de Aceptación
 - Una devolución fuera de plazo genera una multa.
-- La multa debe seguir las reglas del Sistema Fibonacci definidas en el PRD.
+- El cálculo de la multa debe coincidir con los ejemplos oficiales del PRD para retrasos de 1, 7, 8, 15 y 22 días.
 - El sistema deja registrada la deuda del lector.
 - El préstamo queda cerrado aunque exista deuda pendiente.
 
@@ -251,7 +251,7 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
-- Regla 7: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
+- Regla 8: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
  
 ## Dependencias
