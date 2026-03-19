@@ -68,6 +68,9 @@
 - Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
 - Regla 3: Cada préstamo se registra con una fecha de inicio y una fecha de devolución calculada.
 - Regla 4: Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
+
+## Dependencias
+- Se apoya en la consulta de disponibilidad del libro y el estado de deuda del lector.
   
 ## Criterio de Aceptación
 

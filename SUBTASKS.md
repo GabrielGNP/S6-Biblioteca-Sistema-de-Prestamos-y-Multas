@@ -31,10 +31,14 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 Permitir al bibliotecario registrar el préstamo de un libro disponible a un lector sin multas impagas, definiendo correctamente el plazo y la fecha de devolución.
 
 ### Subtareas DEV
-- UI con inputs para ingresar datos necesarios para un prestamo.
-- Endpoint POST api/v1/loan para registrar un prestamo.
+- UI (inputs) para ingresar datos necesarios para un préstamo.
+- Exponer endpoint POST api/v1/loan para registrar un préstamo.
+- Integrar UI y endpoint POST api/v1/loan
 - Tabla DB con lectores morosos.
-- Método de búsqueda de lector moroso.
+- Funcionalidad de búsqueda de lector moroso. 
+- Verificación de morosidad del lector.
+- Tabla DB de historial de prestamos de libros.
+- Guardado de préstamo en el historial
 
 ### Subtareas QA
 - Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con multa impaga y plazo no permitido.
