@@ -54,6 +54,27 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 | Bloquear préstamos a lectores con deudas impagas |  |
 | Mantener historial de préstamos por libro |  |
 
+### Consulta de préstamos vencidos
+
+La consulta de préstamos vencidos cubre únicamente la visualización de préstamos fuera de plazo y del lector responsable.
+
+#### Salida mínima esperada
+- Identificador del libro
+- Título del libro
+- Estado del libro: disponible o prestado
+- Identificador del lector
+- Nombre del lector responsable
+- Fecha límite del préstamo
+- Fecha de devolución
+
+#### Fuera de alcance de esta consulta
+- Envío de notificaciones
+- Pago de multas
+- Exportación de resultados
+- Filtros por lector o por rango de fechas
+- Ordenamiento configurable
+- Paginación
+
 
 ## Riesgos de Negocio y Técnicos
 

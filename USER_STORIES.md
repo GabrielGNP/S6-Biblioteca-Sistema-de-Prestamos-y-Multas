@@ -241,9 +241,13 @@
 ## Dependencias
 - Requiere préstamos activos y lógica para identificar vencidos.
 
+## Alcance específico
+- La historia cubre únicamente la visualización de préstamos vencidos y del lector responsable.
+- No incluye notificaciones, exportación de resultados, filtros avanzados, ordenamiento configurable ni paginación.
+
 ## Criterio de Aceptación
 - El sistema permite consultar los préstamos que ya están vencidos.
-- Cada resultado muestra el libro y el lector responsable.
+- Cada resultado muestra el libro, su estado, el lector responsable, la fecha límite del préstamo y la fecha de devolución.
 - Los préstamos aún vigentes no deben aparecer en la lista.
 - Si no hay atrasos, la consulta debe indicarlo claramente.
 
@@ -265,7 +269,7 @@
 
 ## Justificación de criterios INVEST - HU-05
 
-**I (Independent)**: Sí; entrega valor de consulta y seguimiento por sí misma.
+**I (Independent)**: Sí; entrega valor propio de consulta, aunque requiere datos de préstamos activos y una regla para identificar vencidos.
 **N (Negotiable)**: Sí; se puede ajustar el nivel de detalle mostrado, por ejemplo.
 **V (Valuable)**: Sí; apoya la gestión de deuda atrasada.
 **E (Estimable)**: Sí; el resultado esperado es a nivel de consulta.
