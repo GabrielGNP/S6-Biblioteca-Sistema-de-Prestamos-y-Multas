@@ -136,6 +136,32 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 
 ## HU-06 - Registrar el pago total de una multa y rehabilitación del lector
+### Objetivo de la historia
+Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado otro libro
+
+### Subtareas DEV
+- UI de multas
+- UI (Inputs) para indicar el identificador del lector
+- Endpoint GET api/v1/debt/{identificador} para obtener la multa
+- Comunicación UI y endpoint GEt api/v1/debt/{identificador}
+- Tabla DB con lectores morosos.
+- Método de búsqueda de lector moroso.
+- UI (elemento de confirmación) para confirmar el pago de la multa
+- Endpoint PATCH api/v1/debt{identificador} para cambiar el estado de la multa a pagado
+- Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
+
+### Subtareas QA
+- Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
+- Preparar datos con al menos un lector bloqueado por multa pendiente y otro lector ya habilitado sin deuda.
+- Validar que el pago elimine la deuda pendiente y rehabilite correctamente al lector para futuros préstamos.
+- Validar alternos como multa ya pagada, identificación incorrecta del lector o inconsistencia entre deuda y estado de habilitación.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+
+### Riesgo o notas de calidad
+- Riesgo funcional: si el sistema registra el pago pero no rehabilita al lector, se rompe la regla de negocio y el flujo queda incompleto.
+- Riesgo técnico: si el pago no deja trazabilidad o no sincroniza deuda y estado del lector, pueden aparecer bloqueos o habilitaciones indebidas.
+- Calidad: conviene verificar explícitamente que solo se permita pago total en el MVP y que no queden saldos residuales por error.
+
 
 ## PLANTILLA
 ```md
