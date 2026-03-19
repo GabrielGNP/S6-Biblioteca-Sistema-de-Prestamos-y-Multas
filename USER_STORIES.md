@@ -182,6 +182,9 @@
 - Regla 7: El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
 - Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
 
+## Dependencias
+- Requiere un préstamo vencido y la fecha efectiva de devolución.
+
 ## Criterio de Aceptación
 - Una devolución fuera de plazo genera una multa.
 - La multa debe seguir las reglas del Sistema Fibonacci definidas en el PRD.
