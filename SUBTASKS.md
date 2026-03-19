@@ -54,11 +54,13 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Permitir al Bibliotecario registrar la devolución de un libro en o antes de la fecha límite para cerrar el préstamo sin generar multa y dejar nuevamente el libro disponible.
 
 ### Subtareas DEV
-- inputs UI para indicar nombre del libro y el identificador del lector
-- comunicación UI con endpoint
-- endpoint PUT api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
-- método para calcular el tiempo de demora
-- método para marcar como devuelto el libro
+- UI (inputs) para indicar nombre del libro y/o identificador, y el identificador del lector
+- Endpoint PATCH api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
+- Comunicación UI con endpoint PATCH api/v1/loan
+- Tabla DB de historial de prestamos de libros
+- Funcionalidad para buscar el libro en el historial
+- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+- Funcionalidad para marcar como devuelto el libro
 
 ### Subtareas QA
 - Permitir cerrar un préstamo a tiempo para que el libro vuelva a estar utilizable sin generar deuda.
