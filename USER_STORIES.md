@@ -226,7 +226,7 @@
 ```md
 **Como** Bibliotecario
 **Quiero** Consultar los libros fuera de plazo junto al lector responsable
-**Para** Gestionar deudas atrasadas y hacer seguimiento de los prestamos vencidos
+**Para** Gestionar deudas atrasadas y hacer seguimiento de los préstamos vencidos
 ```
 
 ## Valor de Negocio
@@ -237,13 +237,30 @@
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
 - Regla 7: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
+ 
+## Dependencias
+- Requiere préstamos activos y lógica para identificar vencidos.
 
 ## Criterio de Aceptación
+- El sistema permite consultar los préstamos que ya están vencidos.
+- Cada resultado muestra el libro y el lector responsable.
+- Los préstamos aún vigentes no deben aparecer en la lista.
+- Si no hay atrasos, la consulta debe indicarlo claramente.
 
 **Gherkin**:
 
 ```gherkin
-
+    Scenario: Consultar préstamos vencidos
+    Given existen préstamos fuera de plazo
+    When el bibliotecario consulta préstamos vencidos
+    Then el sistema lista solo los préstamos atrasados
+    And muestra el lector responsable de cada uno
+```
+```gherkin
+    Scenario: Consultar cuando no hay atrasos
+    Given no existen préstamos vencidos
+    When el bibliotecario consulta la lista de atrasos
+    Then el sistema informa que no hay libros fuera de plazo
 ```
 
 ## Justificación de criterios INVEST - HU-05
@@ -253,7 +270,7 @@
 **V (Valuable)**: Sí; apoya la gestión de deuda atrasada.
 **E (Estimable)**: Sí; el resultado esperado es a nivel de consulta.
 **S (Small)**: Sí; se limita a préstamos vencidos, lo cual está ligado directamente al responsable.
-**T (Testable)**:
+**T (Testable)**: Si; se puede validar inclusion y exclusion por fechas.
 
 ---
 

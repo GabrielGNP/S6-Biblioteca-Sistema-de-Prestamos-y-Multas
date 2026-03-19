@@ -112,6 +112,29 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
 
+### Objetivo de la historia
+- Permitir al bibliotecario consultar los préstamos vencidos junto con el lector responsable y la información mínima de seguimiento para gestionar deudas atrasadas.
+
+### Subtareas DEV
+- UI de lista de préstamos
+- Endpoint GET api/v1/loan/outTime
+- Comunicación UI con endpoint
+- Tabla DB de historial de prestamos de libros
+- Funcionalidad de filtrado de prestamos fuera de tiempo
+
+### Subtareas QA
+- Diseñar escenarios para préstamos vencidos, préstamos aún vigentes y lista vacía sin atrasos.
+- Preparar datos con al menos un libro fuera de plazo, uno dentro del plazo y lectores distintos sin validar asignación correcta.
+- Validar que el sistema liste sólo los préstamos vencidos y muestre el lector responsable correcto en cada caso.
+- Validar alternos como fechas límite mal calculadas, préstamos ya cerrados o datos incompletos del lector.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+
+### Riesgo o notas de calidad
+- Riesgo funcional: incluir préstamos vigentes o excluir préstamos vencidos distorsionaría la gestión de mora y seguimiento.
+- Riesgo técnico: si la consulta no cruza bien préstamo, libro y lector, el responsable visible puede quedar errado o incompleto. 
+- Calidad: conviene verificar el criterio exacto de vencimiento sobre la fecha límite para evitar falsos positivos en el borde del plazo.
+
+
 ## HU-06 - Registrar el pago total de una multa y rehabilitación del lector
 
 ## PLANTILLA
