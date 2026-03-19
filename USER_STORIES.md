@@ -206,7 +206,7 @@
 **V (Valuable)**: Sí; es una regla central del negocio.
 **E (Estimable)**: Sí; la lógica del cálculo está en el PRD.
 **S (Small)**: Sí; no incluye el pago de la multa, por ejemplo.
-**T (Testable)**:
+**T (Testable)**: Si, tiene casos borde claros de 1, 7, 8, 15 y 22 dias.
 
 ---
 
