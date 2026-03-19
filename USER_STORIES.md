@@ -18,6 +18,10 @@
 ## Dependencias
 - Requiere que existe información base del libro y sus préstamos
 
+## Story Points
+- 3 puntos
+- Aunque es una historia de consulta, no se limita a darte un solo dato aislado: requiere búsqueda del libro, cruce con el historial de préstamos, determinación de su disponibilidad actual y presentación de información suficiente (campos mínimos) para la toma de decisiones.
+
 ## Criterio de Aceptación
 
 - El bibliotecario puede consultar un libro usando un dato identificador.
