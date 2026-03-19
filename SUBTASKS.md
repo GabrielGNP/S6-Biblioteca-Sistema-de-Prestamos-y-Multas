@@ -104,8 +104,9 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Calidad: conviene verificar explícitamente los casos borde definidos en el PRD para confirmar que la acumulación Fibonacci sea correcta.
 
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
+
 ### Objetivo de la historia
-Consultar los libros que están fuera de plazo y visualizar la información del lector responsable del préstamo y tener información para la toma de decisión.
+- Permitir al bibliotecario consultar los préstamos vencidos junto con el lector responsable y la información mínima de seguimiento para gestionar deudas atrasadas.
 
 ### Subtareas DEV
 - UI de lista de préstamos
@@ -113,8 +114,16 @@ Consultar los libros que están fuera de plazo y visualizar la información del 
 - Comunicación UI con endpoint
 
 ### Subtareas QA
+- Diseñar escenarios con distintos niveles de retraso.
+- Preparar ejemplos que ayuden a revisar cómo crece la deuda.
+- Confirmar que la devolución cierre el préstamo y deje visible la multa.
+- Revisar casos raros o inconsistentes alrededor del cálculo.
+- Guardar evidencia del resultado en cada prueba.
 
 ### Riesgo o notas de calidad
+- Riesgo funcional: una multa mal interpretada puede interpretarse como injusta o incoherente.
+- Riesgo técnico: si deuda, devolución y estado del lector no se sincronizan, el sistema puede quedar cruzado.
+- Calidad: los cortes del retraso deben revisarse con ejemplos concretos.
 
 
 ## HU-06 - Registrar el pago total de una multa y rehabilitación del lector

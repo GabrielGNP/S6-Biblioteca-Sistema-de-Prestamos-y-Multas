@@ -217,7 +217,7 @@
 ```md
 **Como** Bibliotecario
 **Quiero** Consultar los libros fuera de plazo junto al lector responsable
-**Para** Gestionar deudas atrasadas y hacer seguimiento de los prestamos vencidos
+**Para** Gestionar deudas atrasadas y hacer seguimiento de los préstamos vencidos
 ```
 
 ## Valor de Negocio
