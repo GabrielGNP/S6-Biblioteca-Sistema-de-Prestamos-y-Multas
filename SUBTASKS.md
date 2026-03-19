@@ -21,8 +21,8 @@ Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado
 - Comunicación UI y endpoint GEt api/v1/debt/{identificador}
 - Tabla DB con lectores morosos.
 - Método de búsqueda de lector moroso.
-- Endpoint PUT api/v1/debt{identificador} para cambiar el estado de la multa a pagado
-- Comunicación UI y endpoint PUT api/v1/debt/{identificador}
+- Endpoint PATCH api/v1/debt{identificador} para cambiar el estado de la multa a pagado
+- Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
 
 ### Subtareas QA
 
