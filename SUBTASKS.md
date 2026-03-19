@@ -37,7 +37,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Funcionalidad de búsqueda de lector moroso. 
 - Verificación de morosidad del lector.
 - Tabla DB de historial de prestamos de libros.
-- Guardado de préstamo en el historial.
+- Guardado de préstamo en el historial
 
 ### Subtareas QA
 - Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con multa impaga y plazo no permitido.
