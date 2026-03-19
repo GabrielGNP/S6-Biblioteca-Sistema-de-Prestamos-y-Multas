@@ -122,16 +122,16 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Comunicación UI con endpoint
 
 ### Subtareas QA
-- Diseñar escenarios con distintos niveles de retraso.
-- Preparar ejemplos que ayuden a revisar cómo crece la deuda.
-- Confirmar que la devolución cierre el préstamo y deje visible la multa.
-- Revisar casos raros o inconsistentes alrededor del cálculo.
-- Guardar evidencia del resultado en cada prueba.
+- Diseñar escenarios para préstamos vencidos, préstamos aún vigentes y lista vacía sin atrasos.
+- Preparar datos con al menos un libro fuera de plazo, uno dentro del plazo y lectores distintos sin validar asignación correcta.
+- Validar que el sistema liste sólo los préstamos vencidos y muestre el lector responsable correcto en cada caso.
+- Validar alternos como fechas límite mal calculadas, préstamos ya cerrados o datos incompletos del lector.
+- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
-- Riesgo funcional: una multa mal interpretada puede interpretarse como injusta o incoherente.
-- Riesgo técnico: si deuda, devolución y estado del lector no se sincronizan, el sistema puede quedar cruzado.
-- Calidad: los cortes del retraso deben revisarse con ejemplos concretos.
+- Riesgo funcional: incluir préstamos vigentes o excluir préstamos vencidos distorsionaría la gestión de mora y seguimiento.
+- Riesgo técnico: si la consulta no cruza bien préstamo, libro y lector, el responsable visible puede quedar errado o incompleto. 
+- Calidad: conviene verificar el criterio exacto de vencimiento sobre la fecha límite para evitar falsos positivos en el borde del plazo.
 
 
 ## HU-06 - Registrar el pago total de una multa y rehabilitación del lector

@@ -237,6 +237,9 @@
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
 - Regla 7: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
 - Regla 9: Cada libro conserva un historial de préstamos realizados.
+ 
+## Dependencias
+- Requiere préstamos activos y lógica para identificar vencidos.
 
 ## Criterio de Aceptación
 - El sistema permite consultar los préstamos que ya están vencidos.
