@@ -75,6 +75,10 @@
 
 ## Dependencias
 - Se apoya en la consulta de disponibilidad del libro y el estado de deuda del lector.
+
+## Story Points
+- 5 puntos
+- Combina varias reglas centrales del negocio en un mismo flujo: validación de disponibilidad del libro, validación de deuda del lector, control de plazos, cálculo de fecha de devolución y cambió de estado del préstamo.
   
 ## Criterio de Aceptación
 
@@ -188,6 +192,10 @@
 
 ## Dependencias
 - Requiere un préstamo vencido y la fecha efectiva de devolución.
+
+## Story Points
+- 3 puntos.
+- El flujo es más simple que el préstamo y que la devolución tardía, pero igual exige validar que exista un préstamo activo, comprobar el cumplimiento de la fecha límite, cerrar correctamente el préstamo y volver a dejar el libro disponible sin generar multa.
 
 ## Criterio de Aceptación
 - Una devolución fuera de plazo genera una multa.
