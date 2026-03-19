@@ -15,10 +15,11 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 4. Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
 5. Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
 6. Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
-7. El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-8. El pago de la multa habilita nuevamente al lector para solicitar préstamos.
-9. Cada libro conserva un historial de préstamos realizados.
-10. Cada lector se identifica con un documento oficial; cédula o DNI.
+7. La fecha límite se evalúa por fecha calendario de la biblioteca. Si la devolución ocurre el mismo día de la fecha límite, no genera multa. La mora inicia al día calendario siguiente.
+8. El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
+9. El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+10. Cada libro conserva un historial de préstamos realizados.
+11. Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ### Sistema Fibonacci
 1. El retraso empieza a contarse desde el día siguiente a la fecha límite de devolución.
@@ -26,6 +27,16 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 3. Cada semana vencida agrega una nueva porción de deuda según la secuencia Fibonacci: 1, 1, 2, 3, 5, 8...
 4. La deuda es acumulativa; no reemplaza a la multa anterior, si no que se suma el valor correspondiente a cada nueva semana de mora.
 5. La biblioteca puede definir un valor base monetario para convertir cada unidad Fibonacci en dinero; este documento fija la lógica del crecimiento, no el monto exacto a utilizar.
+
+### Ejemplo de interpretación
+
+| Retraso | Semanas de mora consideradas | Incremento aplicado | Deuda acumulada en unidades Fibonacci |
+| :-- | :-- | :-- | :-- |
+| 1 día | 1 | 1 | 1 |
+| 7 días | 1 | 1 | 1 |
+| 8 días | 2 | 1 + 1 | 2 |
+| 15 días | 3 | 1 + 1 + 2 | 4 |
+| 22 días | 4 | 1 + 1 + 2 + 3 | 7 |
 
 
 ## Alcance del MVP

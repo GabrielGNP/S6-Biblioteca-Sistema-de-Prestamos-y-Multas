@@ -154,7 +154,7 @@
 
 ## Justificación de criterios INVEST - HU-03
 
-**I (Independent)**: Sí; es un cierre limpio de préstamo.
+**I (Independent)**: Sí; como caso de uso de devolución; requiere como precondición que exista un préstamo activo.
 **N (Negotiable)**: Sí; varían los detalles del registro pero no la regla central.
 **V (Valuable)**: Sí; impacta directamente a la operación diaria.
 **E (Estimable)**: Sí; el comportamiento esperado es simple.
