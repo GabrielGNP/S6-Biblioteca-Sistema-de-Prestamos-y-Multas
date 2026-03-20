@@ -447,183 +447,196 @@ Una vez hecha la modificación en la DB se devuelve la respuesta 200
 - Permitir al bibliotecario registrar la devolución tardía de un libro para calcular la multa acumulada con la lógica Fibonacci y dejar trazabilidad de la deuda del lector.
 
 ### Subtareas DEV
-- UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
->inputs necesarios: 
->    - [input] id del libro (integer)
->    - [input] nombre del libro (string)
->    - [select] selector de DNI o Cédula (opciones: DNI o Cédula)
->    - [input] id del lector (integer) 
->
->uno de los siguientes inputs puede estar vacío
->    - [input] id del libro (integer)
->    - [input] id del lector (integer) 
-> Ambos pueden estar con datos, pero no pueden estar vacíos o nulos los dos campos
-> 
-> nombre del libro puede ser nulo solo si se define el la id del libro.
-> 
-> Cada input debe tener un placeholder de ejemplo : \
-> id del libro = 000000 \
-> nombre del libro = "el señor de los anillos" \
-> Id del lector = 00000000
-> 
-> Se debe controlar bien la combinación de campos vacíos.
-> 
-> - un botón de "confirmar"
+>TDEV04-01: UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
+inputs necesarios: 
+    - [input] id del libro (integer)
+    - [input] nombre del libro (string)
+    - [select] selector de DNI o Cédula (opciones: DNI o Cédula)
+    - [input] id del lector (integer) 
 
-- Endpoint PATCH api/v1/loan con la información actualizada del libro
->Body del endpoint: \
->{ \
->  "date_return": Date \
->  "name_reader" : string (puede ser null) \
->  "id_book" : integer (puede ser null) \
->  "type_id_reader" : string (Opciones: DNI o CEDULA) \
->  "Id_reader" : integer (puede ser null) \
->}
->
->Respuestas posibles:
->
->200=> \
->{ \
->  "loan_id": integer \
->  "id_book": integer \
->  "title" : string \
->  "date_limit": date \
->  "status": "RETURNED" \
->  "id_reader": integer \
->  "name_reader": string \
->}
->
->404 =>
->- si no se encuentra el préstamo (porque no existe o porque se encontraon varias opciones)
->
-> 409 =>
-> - si el estado del préstamo ya está en "RETURNED"
-> 
-> 400 => 
-> - Si el alguno de los parámetros es inválido o faltan datos
-> 
-> 500 =>
-> - Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+uno de los siguientes inputs puede estar vacío
+    - [input] id del libro (integer)
+    - [input] id del lector (integer) 
+Ambos pueden estar con datos, pero no pueden estar vacíos o nulos los dos campos
+ 
+nombre del libro puede ser nulo solo si se define el la id del libro.
+ 
+Cada input debe tener un placeholder de ejemplo : \
+id del libro = 000000 \
+nombre del libro = "el señor de los anillos" \
+Id del lector = 00000000
+ 
+Se debe controlar bien la combinación de campos vacíos.
+ 
+- un botón de "confirmar"
 
-- Comunicación UI con endpoint PATCH api/v1/loan
->Si devuelve:
->200 => 
->- se muestra confirmación de devolución exitosa
->400 => 
->- se muestra el error indicando que hay parámetros inválidos
->409 =>
->- se muestra un mensaje indicando que el préstamo ya está marcado como devuelto
->500 => 
->- Se muestra el mensaje de error surgido en el servidor
+---
 
-- Tabla DB de historial de prestamos de libros
->Tabla de la DB llamada loan_books que contiene los siguientes atributos:
->    - loan_id : integer (ID del préstamo) (único y autoincremental)
->    - id_book : integer (Identificador del libro)
->    - title : string (Título del libro)
->    - state: string (Estado del libro: RETURNED o ON_LOAN)
->    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
->    - Id_reader : integer (Identificador del lector)
->    - name_reader : string (Nombre del lector responsable)
->    - date_limite : Date (Fecha límite del préstamo)
->    - date_return : Date (Fecha de devolución)
+>TDEV04-02: Endpoint PATCH api/v1/loan con la información actualizada del libro
+Body del endpoint: \
+{ \
+  "date_return": Date \
+  "name_reader" : string (puede ser null) \
+  "id_book" : integer (puede ser null) \
+  "type_id_reader" : string (Opciones: DNI o CEDULA) \
+  "Id_reader" : integer (puede ser null) \
+}
 
-- Funcionalidad para buscar el libro en el historial
->Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
->
->Para esto busca en la tabla:
->- la tupla que tenga el "id_book" = id_book_recibida
->- que la tupla sea la más actual según la fecha "date_return"
->
->Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
->
->Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+Respuestas posibles:
 
+200=> \
+{ \
+  "loan_id": integer \
+  "id_book": integer \
+  "title" : string \
+  "date_limit": date \
+  "status": "RETURNED" \
+  "id_reader": integer \
+  "name_reader": string \
+}
 
-- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
->Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
->
->se necesita que:
->- el servicio obtiene la fecha actual
->- se obtuviera el "date_limite" de la consulta a la DB
->
->Se calcula la diferencia de tiempo entre "date_limite" y "fecha actual". \
->Si el resultado es 0 o un número negativo de días, entonces significa que está dentro del tiempo estipulado. \
->Si es superior a 0 días entonces está fuera del tiempo
+404 =>
+- si no se encuentra el préstamo (porque no existe o porque se encontraon varias opciones)
 
+409 =>
+- si el estado del préstamo ya está en "RETURNED"
+ 
+400 => 
+- Si el alguno de los parámetros es inválido o faltan datos
+ 
+500 =>
+- Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
 
-- Funcionalidad para calcular multa utilizando fibonacci
->Si la diferencia obtenida de de los días es superior a 0, significa que se extendió del tiempo.
->
->Para calcular la multa se utiliza la fórmula Fibonacci: \
->1, 1, 2, 3, 5, 8, 13, 21, 34, ...
->
->Lo primero será calcular la cantidad de semanas de demora, para esto se dividirá la cantidad de días de demora por 7. \
->El resultado de esto se redondeará hacia arriba para obtener la semana de demora teniendo como resultado:
->- 1-7 días → 1 semana
->- 8-14 días → 2 semanas
->- 15-21 días → 3 semanas
->- 22-28 días → 4 semanas
->- ...
->
->la cantidad de semanas será la cantidad de iteraciones de fibonacci. Se debe tener en cuenta que la secuencia se relacionará de la siguiente manera: \
->1 -> semana 1 \
->2 -> semana 2 \
->3 -> semana 3 \
->5 -> semana 4 \
->8 -> semana 5 \
->13 -> semana 6 \
->... -> ...
->
->
->Esto se multiplicará por el valor de multa especificado por la biblioteca. 
->
->Por ejemplo, si la multa es de 2 U$D (dólares) como valor base, entonces:
->- 1-7 días → 1 semana -> 1 * 2 = 2 U$D (dólares)
->- 8-14 días → 2 semanas -> 2 * 2 = 4 U$D (dólares)
->- 15-21 días → 3 semanas -> 3 * 2 = 6 U$D (dólares)
->- 22-28 días → 4 semanas -> 5 * 2 = 10 U$D (dólares)
->- 29-35 días → 5 semanas -> 8 * 2 = 16 U$D (dólares)
->- ...
->
->Este resultado final será guardado en la carga de la multa
+---
 
-- Funcionalidad para marcar como devuelto el libro
->- Si se cuenta con la "loan_id"
->
->entonces se actualiza en la DB el state: string (se pone en RETURNED)
->
->para encontrar la tupla en la DB se utiliza la "loan_id".
->
->Una vez hecha la modificación en la DB se devuelve la respuesta 200
+>TDEV04-02:- Comunicación UI con endpoint PATCH api/v1/loan
+Si devuelve:
+200 => 
+- se muestra confirmación de devolución exitosa
+400 => 
+- se muestra el error indicando que hay parámetros inválidos
+409 =>
+- se muestra un mensaje indicando que el préstamo ya está marcado como devuelto
+500 => 
+- Se muestra el mensaje de error surgido en el servidor
+
+---
+
+>TDEV04-03:- Tabla DB de historial de prestamos de libros
+Tabla de la DB llamada loan_books que contiene los siguientes atributos:
+    - loan_id : integer (ID del préstamo) (único y autoincremental)
+    - id_book : integer (Identificador del libro)
+    - title : string (Título del libro)
+    - state: string (Estado del libro: RETURNED o ON_LOAN)
+    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
+    - Id_reader : integer (Identificador del lector)
+    - name_reader : string (Nombre del lector responsable)
+    - date_limite : Date (Fecha límite del préstamo)
+    - date_return : Date (Fecha de devolución)
+
+---
+
+>TDEV04-04:- Funcionalidad para buscar el libro en el historial
+Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
+
+Para esto busca en la tabla:
+- la tupla que tenga el "id_book" = id_book_recibida
+- que la tupla sea la más actual según la fecha "date_return"
+
+Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
+
+Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+
+---
+
+>TDEV04-05:- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
+
+se necesita que:
+- el servicio obtiene la fecha actual
+- se obtuviera el "date_limite" de la consulta a la DB
+
+Se calcula la diferencia de tiempo entre "date_limite" y "fecha actual". \
+Si el resultado es 0 o un número negativo de días, entonces significa que está dentro del tiempo estipulado. \
+Si es superior a 0 días entonces está fuera del tiempo
+
+---
+
+>TDEV04-06:- Funcionalidad para calcular multa utilizando fibonacci
+Si la diferencia obtenida de de los días es superior a 0, significa que se extendió del tiempo.
+
+Para calcular la multa se utiliza la fórmula Fibonacci: \
+1, 1, 2, 3, 5, 8, 13, 21, 34, ...
+
+Lo primero será calcular la cantidad de semanas de demora, para esto se dividirá la cantidad de días de demora por 7. \
+El resultado de esto se redondeará hacia arriba para obtener la semana de demora teniendo como resultado:
+- 1-7 días → 1 semana
+- 8-14 días → 2 semanas
+- 15-21 días → 3 semanas
+- 22-28 días → 4 semanas
+- ...
+
+la cantidad de semanas será la cantidad de iteraciones de fibonacci. Se debe tener en cuenta que la secuencia se relacionará de la siguiente manera: \
+1 -> semana 1 \
+2 -> semana 2 \
+3 -> semana 3 \
+5 -> semana 4 \
+8 -> semana 5 \
+13 -> semana 6 \
+... -> ...
 
 
-- Tabla DB con lectores morosos.
->Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
->    - id_dept : integer (id de la multa) (único y autoincremental)
->    - loan_id : integer (ID del préstamo) (clave foranea)
->    - type_id_reader : string, (CEDULA o DNI)
->    - Id_reader : integer (Identificador del lector)
->    - name_reader : string (Nombre del lector responsable)
->    - amount_dept : real (monto de la deuda)
->    - state_dept : string (estado de la deuda: PENDING o PAID)
+Esto se multiplicará por el valor de multa especificado por la biblioteca. 
 
+Por ejemplo, si la multa es de 2 U$D (dólares) como valor base, entonces:
+- 1-7 días → 1 semana -> 1 * 2 = 2 U$D (dólares)
+- 8-14 días → 2 semanas -> 2 * 2 = 4 U$D (dólares)
+- 15-21 días → 3 semanas -> 3 * 2 = 6 U$D (dólares)
+- 22-28 días → 4 semanas -> 5 * 2 = 10 U$D (dólares)
+- 29-35 días → 5 semanas -> 8 * 2 = 16 U$D (dólares)
+- ...
 
+Este resultado final será guardado en la carga de la multa
 
-- Método de guardado de multa. 
->- si el tiempo de demora es > 0, entonces se debe generar una multa.
->- se requiere "loan_id", "id_reader", "name_reader" obtenidos de la lectura del préstamo en la DB  
->- se utiliza el monto de la multa en la funcionalidad para almacenarlo en "amount_dept"
->- se establece el "state_dept" como "PENDING"
->- la DB debe generar la "id_dept" automática
->
->Si se cuenta con toda esta información, entonces se guarda en la DB la siguiente información:
->   - id_dept : integer (id de la multa) (único y autoincremental)
->    - loan_id : integer (ID del préstamo) (clave foranea)
->    - id_reader : integer (Identificador del lector)
->    - name_reader : string (Nombre del lector responsable)
->    - amount_dept : real (monto de la deuda)
->    - state_dept : string (estado de la deuda: PENDING o PAID)
+---
+
+>TDEV04-07: Funcionalidad para marcar como devuelto el libro
+- Si se cuenta con la "loan_id"
+
+entonces se actualiza en la DB el state: string (se pone en RETURNED)
+
+para encontrar la tupla en la DB se utiliza la "loan_id".
+
+Una vez hecha la modificación en la DB se devuelve la respuesta 200
+
+---
+
+>TDEV04-08:Tabla DB con lectores morosos.
+Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
+    - id_dept : integer (id de la multa) (único y autoincremental)
+    - loan_id : integer (ID del préstamo) (clave foranea)
+    - type_id_reader : string, (CEDULA o DNI)
+    - Id_reader : integer (Identificador del lector)
+    - name_reader : string (Nombre del lector responsable)
+    - amount_dept : real (monto de la deuda)
+    - state_dept : string (estado de la deuda: PENDING o PAID)
+
+---
+
+>TDEV04-09: Método de guardado de multa. 
+- si el tiempo de demora es > 0, entonces se debe generar una multa.
+- se requiere "loan_id", "id_reader", "name_reader" obtenidos de la lectura del préstamo en la DB  
+- se utiliza el monto de la multa en la funcionalidad para almacenarlo en "amount_dept"
+- se establece el "state_dept" como "PENDING"
+- la DB debe generar la "id_dept" automática
+
+Si se cuenta con toda esta información, entonces se guarda en la DB la siguiente información:
+   - id_dept : integer (id de la multa) (único y autoincremental)
+    - loan_id : integer (ID del préstamo) (clave foranea)
+    - id_reader : integer (Identificador del lector)
+    - name_reader : string (Nombre del lector responsable)
+    - amount_dept : real (monto de la deuda)
+    - state_dept : string (estado de la deuda: PENDING o PAID)
                                             
 ### Subtareas QA
 - Diseñar matriz de validación para retrasos de 1, 7, 8, 15 y 22 días.
