@@ -9,7 +9,7 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 
 
 ### Reglas del Negocio
-1. Un libro solo puede prestrarse si está disponible.
+1. Un libro solo puede prestarse si está disponible.
 2. Un lector solo puede recibir un nuevo préstamo si no tiene deuda pendiente por multa.
 3. Cada préstamo se registra con una fecha de inicio y una fecha de devolución calculada.
 4. Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.

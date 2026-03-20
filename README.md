@@ -83,24 +83,24 @@ Esta entrega no construye todavía el software. Su objetivo es dejar una base de
 
 ## Tablero de trabajo
 
-- GitHub Projects del repositorio: https://github.com/users/GabrielGNP/projects/8/
+- [GitHub Projects del repositorio](https://github.com/users/GabrielGNP/projects/8/)
 
 ## Definition of Ready
 
 Una historia se considera lista cuando:
 
 - Tiene valor de negocio claro.
-- Sus reglas relacionadas estan identificadas.
-- Sus criterios de aceptacion son entendibles y verificables.
+- Sus reglas relacionadas están identificadas.
+- Sus criterios de aceptación son entendibles y verificables.
 - Tiene subtareas DEV y QA coherentes.
-- Tiene una estimacion razonable en Story Points.
+- Tiene una estimación razonable en Story Points.
 
 ## Definition of Done
 
 Para esta entrega documental, una historia se considera terminada cuando:
 
-- Queda redactada en USER_STORIES.md.
-- Tiene criterios de aceptacion y escenarios Gherkin.
+- Queda redactada en [USER_STORIES.md](https://github.com/GabrielGNP/S6-Biblioteca-Sistema-de-Prestamos-y-Multas/blob/main/USER_STORIES.md).
+- Tiene criterios de aceptación y escenarios Gherkin.
 - Tiene subtareas DEV y QA en SUBTASKS.md.
-- Su estimacion es coherente con el trabajo descrito.
+- Su estimación es coherente con el trabajo descrito.
 - Mantiene consistencia con el PRD y con el tablero.

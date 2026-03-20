@@ -12,7 +12,7 @@
 - Permitiría validar disponibilidad sin depender de pura memoria o un registro manual disperso.
 
 ## Reglas de Negocio relacionadas
-- Regla 1: Un libro solo puede prestrarse si está disponible.
+- Regla 1: Un libro solo puede prestarse si está disponible.
 - Regla 10: Cada libro conserva un historial de préstamos realizados.
 
 ## Dependencias
