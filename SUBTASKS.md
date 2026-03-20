@@ -7,6 +7,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 
 ### Subtareas DEV
 > TDEV01-01: UI (input) para indicar el nombre del libro a buscar
+
 inputs necesarios: 
     - Nombre del libro (string)
 
@@ -19,6 +20,7 @@ Debe haber:
 ---
 
 > TDEV01-02: Exponer un endpoint GET api/v1/loan/{name} que reciba el identificador del libro a buscar y devuelva el contexto mínimo necesario del libro en concreto. (ID, nombre, disponibilidad)
+
 La ruta debe recibir name como parámetro \
 El name será el nombre del libro
 
@@ -42,6 +44,7 @@ si no se encuentra el libro en la tabla de historial, quiere decir que nunca fue
 ---
 
 >TDEV01-03: Integrar UI y endpoint.
+
 Si devuelve: \
 200 => 
 - se renderiza en pantalla todas las opciones del libro disponible devueltas por el endpoint
@@ -53,6 +56,7 @@ Si devuelve: \
 ---
 
 >TDEV01-04: Tabla DB de historial de prestamos de libros.
+
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
     - id_book : integer (Identificador del libro)
@@ -67,6 +71,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 ---
 
 >TDEV01-05: Funcionalidad de búsqueda de libro en la DB.
+
 Se busca todas las coincidencias del nombre pasado mediante el endpoint  \
 La búsqueda no es key sensitive
 
@@ -99,6 +104,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ### Subtareas DEV
 >TDEV02-01 UI (inputs) para ingresar datos necesarios para un préstamo.
+
 inputs necesarios: 
     - [input] id del libro (integer)
     - [input] nombre del lector (string)
@@ -122,6 +128,7 @@ Según el tiempo de préstamo seleccionado. Se calcula y se muestra la fecha lí
 ---
 
 >TDEV02-02: Funcionalidad para calcular fecha límite de devolución del libro (FRONT)
+
 Funcionalidad para dar feedback visual de la fecha resultante antes de la confirmación
 
 se toma el valor indicado en el select de tiempo de préstamo (7, 14, 21) \
@@ -167,6 +174,7 @@ Respuestas posibles:
 --- 
 
 >TDEV02-04: Integrar UI y endpoint POST api/v1/loan
+
 Si devuelve:
 201 => 
 - se muestra confirmación de carga exitosa
@@ -180,6 +188,7 @@ Si devuelve:
 ---
 
 >TDEV02-05:- Tabla DB con lectores morosos.
+
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
     - id_dept : integer (id de la multa) (único y autoincremental)
     - loan_id : integer (ID del préstamo) (clave foranea)
@@ -192,6 +201,7 @@ Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 ---
 
 >TDEV02-06:- Funcionalidad de búsqueda de lector moroso.
+
 El servicio busca en la DB si el lector con la ID recibida en el body del endpoint tiene alguna multa
  
 Para esto busca en la tabla:
@@ -202,11 +212,13 @@ Y se devuelve el state_dept de la tupla recuperada.
 
 
 >TDEV02-07: Verificación de morosidad del lector.
+
 si el state_dept es "PENDING" entonces se finaliza la carga del prestamo y el endpoint devuelve el código 409
 
 ---
 
 >TDEV02-08:- Funcionalidad para calcular fecha límite de devolución del libro (servicio)
+
 Funcionalidad para evaluación temporal en el servicio. \
 Se valida que la opción recibida en "loan_days" es alguna de las opciones permitidas (7, 14 o 21)
  
@@ -221,6 +233,7 @@ Por ejemplo: si tomamos prestado el libro por 7 días \
 ---
 
 >TDEV02-09: Tabla DB de historial de prestamos de libros.
+
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
     - id_book : integer (Identificador del libro)
@@ -235,6 +248,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 ---
 
 >TDEV02-10: Funcionalidad de verificación de si el libro está prestado
+
 Se busca todas las coincidencia más actual del id del libro pasado mediante el endpoint
  
 Para esto busca en la tabla:
@@ -245,8 +259,10 @@ Y se devuelve el "state" de la tupla recuperada.
  
 Si el state es ON_LOAN, entonces se devuelve código 409. En caso contrario se continúa con el proceso
 
+---
 
 >TDEV02-11: Guardado de préstamo en el historial
+
 Si todas las comprobaciones pasan, entonces se guarda en la tabla "loan_books" los datos:
     - loan_id : integer (generado automáticamente por la DB)
     - id_book : integer (obtenido del body del endpoint)
@@ -277,121 +293,136 @@ Si todas las comprobaciones pasan, entonces se guarda en la tabla "loan_books" l
 - Permitir al Bibliotecario registrar la devolución de un libro en o antes de la fecha límite para cerrar el préstamo sin generar multa y dejar nuevamente el libro disponible.
 
 ### Subtareas DEV
-- UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
-> inputs necesarios: 
->    - [input] id del libro (integer)
->    - [input] nombre del libro (string)
->    - [select] selector de DNI o Cédula (opciones: DNI o Cédula)
->    - [input] id del lector (integer) 
->
-> uno de los siguientes inputs puede estar vacío
->    - [input] id del libro (integer)
->    - [input] id del lector (integer) 
-> Ambos pueden estar con datos, pero no pueden estar vacíos o nulos los dos campos
-> 
-> nombre del libro puede ser nulo solo si se define el la id del libro.
-> 
-> Cada input debe tener un placeholder de ejemplo: \
-> id del libro = 000000 \
-> nombre del libro = "el señor de los anillos" \
-> Id del lector = 00000000 \
-> 
-> Se debe controlar bien la combinación de campos vacíos.
-> 
-> - un botón de "confirmar"
+>TDEV03-01: UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
 
+inputs necesarios: 
+    - [input] id del libro (integer)
+    - [input] nombre del libro (string)
+    - [select] selector de DNI o Cédula (opciones: DNI o Cédula)
+    - [input] id del lector (integer) 
 
-- Endpoint PATCH api/v1/loan con la información actualizada del libro
-> Body del endpoint: \
-> { \
->  "date_return": Date \
->  "name_reader" : string (puede ser null) \
->  "id_book" : integer (puede ser null) \
->  "type_id_reader" : string (Opciones: DNI o CEDULA) \
->  "Id_reader" : integer (puede ser null) \
-> }
-> 
-> Respuestas posibles:
-> 
-> 200=> \
-> { \
->  "loan_id": integer \
->  "id_book": integer \
->  "title" : string \
->  "date_limit": date \
->  "status": "RETURNED" \
->  "id_reader": integer \
->  "name_reader": string \
-> }
-> 
-> 404 =>
-> - si no se encuentra el préstamo (porque no existe o porque se encontraon varias opciones)
-> 
-> 409 =>
-> - si el estado del préstamo ya está en "RETURNED"
-> 
-> 400 => 
-> - Si el alguno de los parámetros es inválido o faltan datos
-> 
-> 500 =>
-> - Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+uno de los siguientes inputs puede estar vacío
+    - [input] id del libro (integer)
+    - [input] id del lector (integer) 
+Ambos pueden estar con datos, pero no pueden estar vacíos o nulos los dos campos
+ 
+nombre del libro puede ser nulo solo si se define el la id del libro.
 
+Cada input debe tener un placeholder de ejemplo: \
+id del libro = 000000 \
+nombre del libro = "el señor de los anillos" \
+Id del lector = 00000000 \
+ 
+Se debe controlar bien la combinación de campos vacíos.
+ 
+- un botón de "confirmar"
 
-- Comunicación UI con endpoint PATCH api/v1/loan
-> Si devuelve: \
-> 200 => 
-> - se muestra confirmación de devolución exitosa
-> 400 => 
-> - se muestra el error indicando que hay parámetros inválidos
-> 409 =>
-> - se muestra un mensaje indicando que el préstamo ya está marcado como devuelto
-> 500 => 
-> - Se muestra el mensaje de error surgido en el servidor
+---
 
-- Tabla DB de historial de prestamos de libros
-> Tabla de la DB llamada loan_books que contiene los siguientes atributos: \
->    - loan_id : integer (ID del préstamo) (único y autoincremental) \
->    - id_book : integer (Identificador del libro) \
->    - title : string (Título del libro) \
->    - state: string (Estado del libro: RETURNED o ON_LOAN) \
->    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA) \
->    - Id_reader : integer (Identificador del lector) \
->    - name_reader : string (Nombre del lector responsable) \
->    - date_limite : Date (Fecha límite del préstamo) \
->    - date_return : Date (Fecha de devolución) \
+>TDEV03-02: Endpoint PATCH api/v1/loan con la información actualizada del libro
 
-- Funcionalidad para buscar el libro en el historial
-> Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
->
-> Para esto busca en la tabla:
-> - la tupla que tenga el "id_book" = id_book_recibida
-> - que la tupla sea la más actual según la fecha "date_return"
-> 
-> Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
-> 
-> Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+Body del endpoint: \
+{ \
+  "date_return": Date \
+  "name_reader" : string (puede ser null) \
+  "id_book" : integer (puede ser null) \
+  "type_id_reader" : string (Opciones: DNI o CEDULA) \
+  "Id_reader" : integer (puede ser null) \
+}
+ 
+Respuestas posibles:
+ 
+200=> \
+{ \
+  "loan_id": integer \
+  "id_book": integer \
+  "title" : string \
+  "date_limit": date \
+  "status": "RETURNED" \
+  "id_reader": integer \
+  "name_reader": string \
+}
+ 
+404 =>
+- si no se encuentra el préstamo (porque no existe o porque se encontraon varias opciones)
+ 
+409 =>
+- si el estado del préstamo ya está en "RETURNED"
+ 
+400 => 
+- Si el alguno de los parámetros es inválido o faltan datos
+ 
+500 =>
+- Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
 
+---
 
-- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
-> Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
->
-> se necesita que:
-> - el servicio obtiene la fecha actual
-> - se obtuviera el "date_limite" de la consulta a la DB
->
-> Se calcula la diferencia de tiempo entre "date_limite" y "fecha actual". \
-> Si el resultado es 0 o un número negativo de días, entonces significa que está dentro del tiempo estipulado. \
-> Si es superior a 0 días entonces está fuera del tiempo
+>TDEV03-03: Comunicación UI con endpoint PATCH api/v1/loan
 
+Si devuelve: \
+200 => 
+- se muestra confirmación de devolución exitosa
+400 => 
+- se muestra el error indicando que hay parámetros inválidos
+409 =>
+- se muestra un mensaje indicando que el préstamo ya está marcado como devuelto
+500 => 
+- Se muestra el mensaje de error surgido en el servidor
 
-- Funcionalidad para marcar como devuelto el libro
-> - Si se cuenta con la "loan_id"
-> 
-> entonces se actualiza en la DB el state: string (se pone en RETURNED)
-> 
-> para encontrar la tupla en la DB se utiliza la "loan_id".
-> 
-> Una vez hecha la modificación en la DB se devuelve la respuesta 200
+---
+
+>TDEV03-04: Tabla DB de historial de prestamos de libros
+
+Tabla de la DB llamada loan_books que contiene los siguientes atributos: \
+    - loan_id : integer (ID del préstamo) (único y autoincremental) \
+    - id_book : integer (Identificador del libro) \
+    - title : string (Título del libro) \
+    - state: string (Estado del libro: RETURNED o ON_LOAN) \
+    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA) \
+    - Id_reader : integer (Identificador del lector) \
+    - name_reader : string (Nombre del lector responsable) \
+    - date_limite : Date (Fecha límite del préstamo) \
+    - date_return : Date (Fecha de devolución) \
+
+---
+
+>TDEV03-05: Funcionalidad para buscar el libro en el historial
+
+Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
+
+Para esto busca en la tabla:
+- la tupla que tenga el "id_book" = id_book_recibida
+- que la tupla sea la más actual según la fecha "date_return"
+ 
+Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
+
+Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+
+---
+
+>TDEV03-06: Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+
+Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
+
+se necesita que:
+- el servicio obtiene la fecha actual
+- se obtuviera el "date_limite" de la consulta a la DB
+
+Se calcula la diferencia de tiempo entre "date_limite" y "fecha actual". \
+Si el resultado es 0 o un número negativo de días, entonces significa que está dentro del tiempo estipulado. \
+Si es superior a 0 días entonces está fuera del tiempo
+
+---
+
+>TDEV03-07: Funcionalidad para marcar como devuelto el libro
+
+- Si se cuenta con la "loan_id"
+
+entonces se actualiza en la DB el state: string (se pone en RETURNED)
+
+para encontrar la tupla en la DB se utiliza la "loan_id".
+
+Una vez hecha la modificación en la DB se devuelve la respuesta 200
 
 
 
