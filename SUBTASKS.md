@@ -19,7 +19,7 @@ Debe haber:
 
 ---
 
-> TDEV01-02: Exponer un endpoint GET api/v1/loan/{name} que reciba el identificador del libro a buscar y devuelva el contexto mínimo necesario del libro en concreto. (ID, nombre, disponibilidad)
+#### TDEV01-02: Exponer un endpoint GET api/v1/loan/{name} que reciba el identificador del libro a buscar y devuelva el contexto mínimo necesario del libro en concreto. (ID, nombre, disponibilidad)
 
 La ruta debe recibir name como parámetro \
 El name será el nombre del libro
@@ -43,7 +43,7 @@ si no se encuentra el libro en la tabla de historial, quiere decir que nunca fue
 
 ---
 
->TDEV01-03: Integrar UI y endpoint.
+#### TDEV01-03: Integrar UI y endpoint.
 
 Si devuelve: \
 200 => 
@@ -55,7 +55,7 @@ Si devuelve: \
 
 ---
 
->TDEV01-04: Tabla DB de historial de prestamos de libros.
+#### TDEV01-04: Tabla DB de historial de prestamos de libros.
 
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
@@ -70,7 +70,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 
 ---
 
->TDEV01-05: Funcionalidad de búsqueda de libro en la DB.
+#### TDEV01-05: Funcionalidad de búsqueda de libro en la DB.
 
 Se busca todas las coincidencias del nombre pasado mediante el endpoint  \
 La búsqueda no es key sensitive
@@ -85,12 +85,12 @@ La información recuperada en esta funcionalidad es:
 
 
 ### Subtareas QA
-- Diseñar escenarios para consulta de libro disponible, libro prestado y libro inexistente.
-- Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
-- Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
-- Validar alternos como libro inexistente, o libro con información histórica incompleta.
-- Validar que la consulta del libro distinga préstamos activos y préstamos cerrados dentro del historial.
-- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+-  TQA01-01: Diseñar escenarios para consulta de libro disponible, libro prestado y libro inexistente.
+- TQA01-02: Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
+- TQA01-03: Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
+- TQA01-04: Validar alternos como libro inexistente, o libro con información histórica incompleta.
+- TQA01-05: Validar que la consulta del libro distinga préstamos activos y préstamos cerrados dentro del historial.
+- TQA01-06: Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
 - Riesgo funcional: Mostrar un libro como disponible cuando en realidad tiene un préstamo activo llevaría a préstamos inválidos.
@@ -103,7 +103,7 @@ La información recuperada en esta funcionalidad es:
 Permitir al bibliotecario registrar el préstamo de un libro disponible a un lector sin deuda pendiente por multa, definiendo correctamente el plazo y la fecha de devolución.
 
 ### Subtareas DEV
->TDEV02-01 UI (inputs) para ingresar datos necesarios para un préstamo.
+#### TDEV02-01 UI (inputs) para ingresar datos necesarios para un préstamo.
 
 inputs necesarios: 
     - [input] id del libro (integer)
@@ -127,7 +127,7 @@ Según el tiempo de préstamo seleccionado. Se calcula y se muestra la fecha lí
 
 ---
 
->TDEV02-02: Funcionalidad para calcular fecha límite de devolución del libro (FRONT)
+#### TDEV02-02: Funcionalidad para calcular fecha límite de devolución del libro (FRONT)
 
 Funcionalidad para dar feedback visual de la fecha resultante antes de la confirmación
 
@@ -136,7 +136,7 @@ se toma la fecha actual y se aumenta la cantidad de días en la cantidad de día
 Por ejemplo: si tomamos prestado el libro por 7 días \
 01/01/2026 => 08/01/2026
 
->TDEV02-03:- Exponer endpoint POST api/v1/loan para registrar un préstamo.
+#### TDEV02-03:- Exponer endpoint POST api/v1/loan para registrar un préstamo.
 
 Request Body recivido:
 { \
@@ -174,7 +174,7 @@ Respuestas posibles:
 
 --- 
 
->TDEV02-04: Integrar UI y endpoint POST api/v1/loan
+#### TDEV02-04: Integrar UI y endpoint POST api/v1/loan
 
 Si devuelve:
 201 => 
@@ -188,7 +188,7 @@ Si devuelve:
 
 ---
 
->TDEV02-05:- Tabla DB con lectores morosos.
+#### TDEV02-05:- Tabla DB con lectores morosos.
 
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
     - id_dept : integer (id de la multa) (único y autoincremental)
@@ -201,7 +201,7 @@ Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 
 ---
 
->TDEV02-06:- Funcionalidad de búsqueda de lector moroso.
+#### TDEV02-06:- Funcionalidad de búsqueda de lector moroso.
 
 El servicio busca en la DB si el lector con la ID recibida en el body del endpoint tiene alguna multa
  
@@ -212,13 +212,13 @@ Para esto busca en la tabla:
 Y se devuelve el state_dept de la tupla recuperada.
 
 
->TDEV02-07: Verificación de morosidad del lector.
+#### TDEV02-07: Verificación de morosidad del lector.
 
 si el state_dept es "PENDING" entonces se finaliza la carga del prestamo y el endpoint devuelve el código 409
 
 ---
 
->TDEV02-08:- Funcionalidad para calcular fecha límite de devolución del libro (servicio)
+#### TDEV02-08:- Funcionalidad para calcular fecha límite de devolución del libro (servicio)
 
 Funcionalidad para evaluación temporal en el servicio. \
 Se valida que la opción recibida en "loan_days" es alguna de las opciones permitidas (7, 14 o 21)
@@ -233,7 +233,7 @@ Por ejemplo: si tomamos prestado el libro por 7 días \
 
 ---
 
->TDEV02-09: Tabla DB de historial de prestamos de libros.
+#### TDEV02-09: Tabla DB de historial de prestamos de libros.
 
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
@@ -248,7 +248,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 
 ---
 
->TDEV02-10: Funcionalidad de verificación de si el libro está prestado
+#### TDEV02-10: Funcionalidad de verificación de si el libro está prestado
 
 Se busca todas las coincidencia más actual del id del libro pasado mediante el endpoint
  
@@ -262,7 +262,7 @@ Si el state es ON_LOAN, entonces se devuelve código 409. En caso contrario se c
 
 ---
 
->TDEV02-11: Guardado de préstamo en el historial
+#### TDEV02-11: Guardado de préstamo en el historial
 
 Si todas las comprobaciones pasan, entonces se guarda en la tabla "loan_books" los datos:
     - loan_id : integer (generado automáticamente por la DB)
@@ -277,11 +277,11 @@ Si todas las comprobaciones pasan, entonces se guarda en la tabla "loan_books" l
 
 
 ### Subtareas QA
-- Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con deuda pendiente y plazo no permitido.
-- Preparar datos con al menos un libro disponible, uno prestado, un lector habilitado y un lector bloqueado por deuda.
-- Validar que el sistema registre correctamente un préstamo cuando se cumplen todas las reglas del negocio.
-- Validar alternos como libro inexistente, lector inexistente o error en el cálculo de la fecha de devolución.
-- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+- TQA02-01: Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con deuda pendiente y plazo no permitido.
+- TQA02-02: Preparar datos con al menos un libro disponible, uno prestado, un lector habilitado y un lector bloqueado por deuda.
+- TQA02-03: Validar que el sistema registre correctamente un préstamo cuando se cumplen todas las reglas del negocio.
+- TQA02-04: Validar alternos como libro inexistente, lector inexistente o error en el cálculo de la fecha de devolución.
+- TQA02-05: Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
 - Riesgo funcional: permitir un préstamo sobre un libro no disponible o a un lector con deuda pendiente rompería reglas centrales del negocio.
@@ -294,7 +294,7 @@ Si todas las comprobaciones pasan, entonces se guarda en la tabla "loan_books" l
 - Permitir al Bibliotecario registrar la devolución de un libro en o antes de la fecha límite para cerrar el préstamo sin generar multa y dejar nuevamente el libro disponible.
 
 ### Subtareas DEV
->TDEV03-01: UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
+#### TDEV03-01: UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
 
 inputs necesarios: 
     - [input] id del libro (integer)
@@ -320,7 +320,7 @@ Se debe controlar bien la combinación de campos vacíos.
 
 ---
 
->TDEV03-02: Endpoint PATCH api/v1/loan con la información actualizada del libro
+#### TDEV03-02: Endpoint PATCH api/v1/loan con la información actualizada del libro
 
 Body del endpoint: \
 { \
@@ -358,7 +358,7 @@ Respuestas posibles:
 
 ---
 
->TDEV03-03: Comunicación UI con endpoint PATCH api/v1/loan
+#### TDEV03-03: Comunicación UI con endpoint PATCH api/v1/loan
 
 Si devuelve: \
 200 => 
@@ -372,7 +372,7 @@ Si devuelve: \
 
 ---
 
->TDEV03-04: Tabla DB de historial de prestamos de libros
+#### TDEV03-04: Tabla DB de historial de prestamos de libros
 
 Tabla de la DB llamada loan_books que contiene los siguientes atributos: \
     - loan_id : integer (ID del préstamo) (único y autoincremental) \
@@ -387,7 +387,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos: \
 
 ---
 
->TDEV03-05: Funcionalidad para buscar el libro en el historial
+#### TDEV03-05: Funcionalidad para buscar el libro en el historial
 
 Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
 
@@ -401,7 +401,7 @@ Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se 
 
 ---
 
->TDEV03-06: Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+#### TDEV03-06: Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
 
 Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
 
@@ -415,7 +415,7 @@ Si es superior a 0 días entonces está fuera del tiempo
 
 ---
 
->TDEV03-07: Funcionalidad para marcar como devuelto el libro
+#### TDEV03-07: Funcionalidad para marcar como devuelto el libro
 
 - Si se cuenta con la "loan_id"
 
@@ -428,12 +428,12 @@ Una vez hecha la modificación en la DB se devuelve la respuesta 200
 
 
 ### Subtareas QA
-- Diseñar validaciones para confirmar el cierre de un préstamo a tiempo sin generación de deuda.
-- Diseñar escenarios para devolución en la fecha límite, devolución antes de la fecha limite y devolución sobre préstamo no activo.
-- Preparar datos con al menos un préstamo vigente, un libro asociado y casos de fecha exacta y fecha anticipada.
-- Validar que el sistema cierre correctamente el préstamo, no genere multa y deje el libro disponible para futuros préstamos.
-- Validar alternos como devolución duplicada, error en identificación del préstamo o cambio incorrecto del estado del libro.
-- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+- TQA03-01: Diseñar validaciones para confirmar el cierre de un préstamo a tiempo sin generación de deuda.
+- TQA03-02: Diseñar escenarios para devolución en la fecha límite, devolución antes de la fecha limite y devolución sobre préstamo no activo.
+- TQA03-04: Preparar datos con al menos un préstamo vigente, un libro asociado y casos de fecha exacta y fecha anticipada.
+- TQA03-05: Validar que el sistema cierre correctamente el préstamo, no genere multa y deje el libro disponible para futuros préstamos.
+- TQA03-06: Validar alternos como devolución duplicada, error en identificación del préstamo o cambio incorrecto del estado del libro.
+- TQA03-07: Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 
 **Riesgo o notas de calidad**
@@ -448,7 +448,7 @@ Una vez hecha la modificación en la DB se devuelve la respuesta 200
 - Permitir al bibliotecario registrar la devolución tardía de un libro para calcular la multa acumulada con la lógica Fibonacci y dejar trazabilidad de la deuda del lector.
 
 ### Subtareas DEV
->TDEV04-01: UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
+#### TDEV04-01: UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
 
 inputs necesarios: 
 - [input] id del libro (integer)
@@ -477,7 +477,7 @@ Se debe controlar bien la combinación de campos vacíos.
 
 ---
 
->TDEV04-02: Endpoint PATCH api/v1/loan con la información actualizada del libro
+#### TDEV04-02: Endpoint PATCH api/v1/loan con la información actualizada del libro
 
 Body del endpoint: \
 { \
@@ -515,7 +515,7 @@ Respuestas posibles:
 
 ---
 
->TDEV04-02:- Comunicación UI con endpoint PATCH api/v1/loan
+#### TDEV04-02:- Comunicación UI con endpoint PATCH api/v1/loan
 
 Si devuelve:
 200 => 
@@ -529,7 +529,7 @@ Si devuelve:
 
 ---
 
->TDEV04-03:- Tabla DB de historial de prestamos de libros
+#### TDEV04-03:- Tabla DB de historial de prestamos de libros
 
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
@@ -544,7 +544,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 
 ---
 
->TDEV04-04:- Funcionalidad para buscar el libro en el historial
+#### TDEV04-04:- Funcionalidad para buscar el libro en el historial
 
 Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
 
@@ -558,7 +558,7 @@ Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se 
 
 ---
 
->TDEV04-05:- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+#### TDEV04-05:- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
 
 Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
 
@@ -572,7 +572,7 @@ Si es superior a 0 días entonces está fuera del tiempo
 
 ---
 
->TDEV04-06:- Funcionalidad para calcular multa utilizando fibonacci
+#### TDEV04-06:- Funcionalidad para calcular multa utilizando fibonacci
 
 Si la diferencia obtenida de de los días es superior a 0, significa que se extendió del tiempo.
 
@@ -611,7 +611,7 @@ Este resultado final será guardado en la carga de la multa
 
 ---
 
->TDEV04-07: Funcionalidad para marcar como devuelto el libro
+#### TDEV04-07: Funcionalidad para marcar como devuelto el libro
 
 - Si se cuenta con la "loan_id"
 
@@ -623,7 +623,7 @@ Una vez hecha la modificación en la DB se devuelve la respuesta 200
 
 ---
 
->TDEV04-08:Tabla DB con lectores morosos.
+#### TDEV04-08:Tabla DB con lectores morosos.
 
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
     - id_dept : integer (id de la multa) (único y autoincremental)
@@ -636,7 +636,7 @@ Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 
 ---
 
->TDEV04-09: Método de guardado de multa. 
+#### TDEV04-09: Método de guardado de multa. 
 
 - si el tiempo de demora es > 0, entonces se debe generar una multa.
 - se requiere "loan_id", "id_reader", "name_reader" obtenidos de la lectura del préstamo en la DB  
@@ -653,12 +653,12 @@ Si se cuenta con toda esta información, entonces se guarda en la DB la siguient
     - state_dept : string (estado de la deuda: PENDING o PAID)
                                             
 ### Subtareas QA
-- Diseñar matriz de validación para retrasos de 1, 7, 8, 15 y 22 días.
-- Preparar datos con préstamos vencidos y fechas de devolución que permitan validar los cortes semanales y la acumulación Fibonacci.
-- Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por deuda pendiente.
-- Validar deuda acumulada esperada de 1, 1, 2, 4 y 7 unidades Fibonacci para cada caso definido en la matriz.
-- Validar alternos como errores en el conteo de días, préstamo sin lector asociado o multa duplicada sobre la misma devolución.
-- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+- TQA04-01: Diseñar matriz de validación para retrasos de 1, 7, 8, 15 y 22 días.
+- TQA04-02: Preparar datos con préstamos vencidos y fechas de devolución que permitan validar los cortes semanales y la acumulación Fibonacci.
+- TQA04-03: Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por deuda pendiente.
+- TQA04-04: Validar deuda acumulada esperada de 1, 1, 2, 4 y 7 unidades Fibonacci para cada caso definido en la matriz.
+- TQA04-05: Validar alternos como errores en el conteo de días, préstamo sin lector asociado o multa duplicada sobre la misma devolución.
+- TQA04-06: Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 
 ### Riesgo o notas de calidad
@@ -672,7 +672,7 @@ Si se cuenta con toda esta información, entonces se guarda en la DB la siguient
 - Permitir al bibliotecario consultar los préstamos vencidos junto con el lector responsable y la información mínima de seguimiento para gestionar deudas atrasadas.
 
 ### Subtareas DEV
->TDEV05-01: UI de lista de préstamos
+#### TDEV05-01: UI de lista de préstamos
 
 Elementos importantes:
 - Tabla con columnas:
@@ -694,7 +694,7 @@ Elementos importantes:
 
 ---
 
->TDEV05-02: Endpoint GET api/v1/loan/outTime
+#### TDEV05-02: Endpoint GET api/v1/loan/outTime
 
 el endpoint no recibe parámetros, solo tiene una tarea no configurable. Traer todos los préstamos con fechas límites excedidas en orden alfabético según el título del libro
 
@@ -734,7 +734,7 @@ Los valores devueltos son:  \
 
 ---
 
->TDEV05-03: Comunicación UI con endpoint
+#### TDEV05-03: Comunicación UI con endpoint
 
 Si devuelve:
 200 => 
@@ -745,7 +745,7 @@ Si devuelve:
 
 ---
 
->TDEV05-04:- Tabla DB de historial de prestamos de libros
+#### TDEV05-04:- Tabla DB de historial de prestamos de libros
 
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 - loan_id : integer (ID del préstamo) (único y autoincremental)
@@ -760,7 +760,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 
 ---
 
->TDEV05-05: Funcionalidad de filtrado de prestamos fuera de tiempo
+#### TDEV05-05: Funcionalidad de filtrado de prestamos fuera de tiempo
 
 debe buscar todos los préstamos fuera de tiempo en la base de datos y que aún no estén devueltos \
 Las condiciones son:
@@ -780,7 +780,7 @@ Debe recuperar:
 
 ---
 
->TDEV05-06: Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+#### TDEV05-06: Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
 
 Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
 
@@ -796,11 +796,11 @@ Este valor será devuelto en el parámetro "exceeded_days" de la respuesta del e
 
 
 ### Subtareas QA
-- Diseñar escenarios para préstamos vencidos, préstamos aún vigentes y lista vacía sin atrasos.
-- Preparar datos con al menos un libro fuera de plazo, uno dentro del plazo y lectores distintos para validar la asignación correcta.
-- Validar que el sistema liste sólo los préstamos vencidos y muestre el lector responsable correcto en cada caso.
-- Validar alternos como fechas límite mal calculadas, préstamos ya cerrados o datos incompletos del lector.
-- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+- TQA05-01: Diseñar escenarios para préstamos vencidos, préstamos aún vigentes y lista vacía sin atrasos.
+- TQA05-02: Preparar datos con al menos un libro fuera de plazo, uno dentro del plazo y lectores distintos para validar la asignación correcta.
+- TQA05-03: Validar que el sistema liste sólo los préstamos vencidos y muestre el lector responsable correcto en cada caso.
+- TQA05-04: Validar alternos como fechas límite mal calculadas, préstamos ya cerrados o datos incompletos del lector.
+- TQA05-05: Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
 - Riesgo funcional: incluir préstamos vigentes o excluir préstamos vencidos distorsionaría la gestión de mora y seguimiento.
@@ -813,7 +813,7 @@ Este valor será devuelto en el parámetro "exceeded_days" de la respuesta del e
 Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado otro libro
 
 ### Subtareas DEV
->TDEV06-01: UI (Inputs) para indicar el identificador del lector
+#### TDEV06-01: UI (Inputs) para indicar el identificador del lector
 
 inputs necesarios: 
     - [input] nombre del lector (string)
@@ -834,7 +834,7 @@ Cada input debe tener validación para impedir que los campos estén vacíos
 
 ---
 
->TDEV06-02: Endpoint GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre* para obtener la multa
+#### TDEV06-02: Endpoint GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre* para obtener la multa
 
 el endpoint puede recibir 3 parámetros:
 - "name" : string 
@@ -872,7 +872,7 @@ Respuestas posibles:
 
 ---
 
->TDEV06-03: Comunicación UI y endpoint GEt api/v1/debt/{identificador}
+#### TDEV06-03: Comunicación UI y endpoint GEt api/v1/debt/{identificador}
 
 Si devuelve:
 200 => 
@@ -890,7 +890,7 @@ Si devuelve:
 
 ---
 
->TDEV06-04: Tabla DB con lectores morosos.
+#### TDEV06-04: Tabla DB con lectores morosos.
 
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
     - id_dept : integer (id de la multa) (único y autoincremental)
@@ -903,7 +903,7 @@ Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 
 ---
 
->TDEV06-05: Método de búsqueda de lector moroso.
+#### TDEV06-05: Método de búsqueda de lector moroso.
 
 El servicio busca en la DB si el lector con la ID o el nombre recibida en el body del endpoint tiene alguna multa
 
@@ -916,7 +916,7 @@ Y se devuelve toda la información correspondiente a esta multa obtenida
 
 ---
 
->TDEV06-06: UI (elemento de confirmación) para confirmar el pago de la multa
+#### TDEV06-06: UI (elemento de confirmación) para confirmar el pago de la multa
 
 se renderiza toda la información devuelta por el endpoint:
 GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre*
@@ -930,7 +930,7 @@ pasándole como parámetro en identificador el "id_dept" de la multa
 
 ---
 
->TDEV06-07: Endpoint PATCH api/v1/debt/{identificador} para cambiar el estado de la multa a pagado
+#### TDEV06-07: Endpoint PATCH api/v1/debt/{identificador} para cambiar el estado de la multa a pagado
 
 Endpoint encargado de editar  el estado de la multa cuando se confirma el pago de esta. Permitiendo que el lector pueda volver a tomar prestado un libro
 
@@ -961,7 +961,7 @@ Respuestas posibles:
 
 ---
 
->TDEV06-08: Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
+#### TDEV06-08: Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
 
 Si devuelve:
 200 => 
@@ -977,12 +977,12 @@ Si devuelve:
 - Se muestra un mensaje indicando el error que surgió
 
 ### Subtareas QA
-- Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
-- Preparar datos con al menos un lector bloqueado por deuda pendiente y otro lector ya habilitado sin deuda.
-- Validar que el pago elimine la deuda pendiente y rehabilite correctamente al lector para futuros préstamos.
-- Validar que, después del pago total, el lector pueda registrar un nuevo préstamo válido sin ser rechazado por deuda previa.
-- Validar alternos como multa ya pagada, identificación incorrecta del lector o inconsistencia entre deuda y estado de habilitación.
-- Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
+- TQA06-01: Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
+- TQA06-02: Preparar datos con al menos un lector bloqueado por deuda pendiente y otro lector ya habilitado sin deuda.
+- TQA06-03: Validar que el pago elimine la deuda pendiente y rehabilite correctamente al lector para futuros préstamos.
+- TQA06-04: Validar que, después del pago total, el lector pueda registrar un nuevo préstamo válido sin ser rechazado por deuda previa.
+- TQA06-05: Validar alternos como multa ya pagada, identificación incorrecta del lector o inconsistencia entre deuda y estado de habilitación.
+- TQA06-06: Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
 - Riesgo funcional: si el sistema registra el pago pero no rehabilita al lector, se rompe la regla de negocio y el flujo queda incompleto.
