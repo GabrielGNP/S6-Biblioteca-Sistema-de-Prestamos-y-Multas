@@ -101,6 +101,6 @@ Para esta entrega documental, una historia se considera terminada cuando:
 
 - Queda redactada en [USER_STORIES.md](https://github.com/GabrielGNP/S6-Biblioteca-Sistema-de-Prestamos-y-Multas/blob/main/USER_STORIES.md).
 - Tiene criterios de aceptación y escenarios Gherkin.
-- Tiene subtareas DEV y QA en SUBTASKS.md.
+- Tiene subtareas DEV y QA en [SUBTASKS.md](https://github.com/GabrielGNP/S6-Biblioteca-Sistema-de-Prestamos-y-Multas/blob/main/SUBTASKS.md).
 - Su estimación es coherente con el trabajo descrito.
 - Mantiene consistencia con el PRD y con el tablero.
