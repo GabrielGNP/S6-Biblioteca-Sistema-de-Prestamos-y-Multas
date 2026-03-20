@@ -331,16 +331,51 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > - Se muestra el mensaje de error surgido en el servidor
 
 - Tabla DB de historial de prestamos de libros
->
+> Tabla de la DB llamada loan_books que contiene los siguientes atributos: \
+>    - loan_id : integer (ID del préstamo) (único y autoincremental) \
+>    - id_book : integer (Identificador del libro) \
+>    - title : string (Título del libro) \
+>    - state: string (Estado del libro: AVAILABLE o ON_LOAN) \
+>    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA) \
+>    - Id_reader : integer (Identificador del lector) \
+>    - name_reader : string (Nombre del lector responsable) \
+>    - date_limite : Date (Fecha límite del préstamo) \
+>    - date_return : Date (Fecha de devolución) \
 
 - Funcionalidad para buscar el libro en el historial
+> Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
 >
+> Para esto busca en la tabla:
+> - la tupla que tenga el "id_book" = id_book_recivida
+> - que la tupla sea la más actual según la fecha "date_return"
+> 
+> Y se devuelve el "loan_id" y el "date_limite" de la tupla recuperada.
+> 
+> Si el state es AVAILABLE, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+
 
 - Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
->
+> Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
+
+> se necesita que:
+> - el servicio obtiene la fecha actual
+> - se obtuviera el "date_limite" de la consulta a la DB
+
+> Se calcula la diferencia de tiempo entre "date_limite" y "fecha actual". \
+> Si el resultado es 0 o un número negativo de días, entonces significa que está dentro del tiempo estipulado. \
+> Si es superior a 0 días entonces está fuera del tiempo
+
 
 - Funcionalidad para marcar como devuelto el libro
->
+> - Si el tiempo obtenido en la funcionalidad de evaluación de tiempo es <= 0 entonces se continúa
+> - Si se cuenta con la "loan_id"
+> 
+> entonces se actualiza en la DB el state: string (se pone en AVAILABLE)
+> 
+> para encontrar la tupla en la DB se utiliza la "loan_id".
+> 
+> Una vez hecha la modificación en la DB se devuelve la respuesta 200
+
 
 
 ### Subtareas QA
