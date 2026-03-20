@@ -15,10 +15,11 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 4. Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
 5. Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
 6. Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
-7. El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-8. El pago de la multa habilita nuevamente al lector para solicitar préstamos.
-9. Cada libro conserva un historial de préstamos realizados.
-10. Cada lector se identifica con un documento oficial; cédula o DNI.
+7. La fecha límite se evalúa por fecha calendario de la biblioteca. Si la devolución ocurre el mismo día de la fecha límite, no genera multa. La mora inicia al día calendario siguiente.
+8. El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
+9. El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+10. Cada libro conserva un historial de préstamos realizados.
+11. Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ### Sistema Fibonacci
 1. El retraso empieza a contarse desde el día siguiente a la fecha límite de devolución.
@@ -26,6 +27,16 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 3. Cada semana vencida agrega una nueva porción de deuda según la secuencia Fibonacci: 1, 1, 2, 3, 5, 8...
 4. La deuda es acumulativa; no reemplaza a la multa anterior, si no que se suma el valor correspondiente a cada nueva semana de mora.
 5. La biblioteca puede definir un valor base monetario para convertir cada unidad Fibonacci en dinero; este documento fija la lógica del crecimiento, no el monto exacto a utilizar.
+
+### Ejemplo de interpretación
+
+| Retraso | Semanas de mora consideradas | Incremento aplicado | Deuda acumulada en unidades Fibonacci |
+| :-- | :-- | :-- | :-- |
+| 1 día | 1 | 1 | 1 |
+| 7 días | 1 | 1 | 1 |
+| 8 días | 2 | 1 + 1 | 2 |
+| 15 días | 3 | 1 + 1 + 2 | 4 |
+| 22 días | 4 | 1 + 1 + 2 + 3 | 7 |
 
 
 ## Alcance del MVP
@@ -43,15 +54,74 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 | Bloquear préstamos a lectores con deudas impagas |  |
 | Mantener historial de préstamos por libro |  |
 
+### Consulta de préstamos vencidos
 
-## Riesgos de Negocio y Técnicos
+La consulta de préstamos vencidos cubre únicamente la visualización de préstamos fuera de plazo y del lector responsable.
 
-### Riesgos de Negocio
+#### Salida mínima esperada
+- Identificador del libro
+- Título del libro
+- Estado del libro: disponible o prestado
+- Identificador del lector
+- Nombre del lector responsable
+- Fecha límite del préstamo
+- Fecha de devolución
+
+#### Fuera de alcance de esta consulta
+- Envío de notificaciones
+- Pago de multas
+- Exportación de resultados
+- Filtros por lector o por rango de fechas
+- Ordenamiento configurable
+- Paginación
+
+
+## Riesgos de Negocio
+
+### Riesgo N-1
 - Si no se bloquean correctamente los préstamos a los lectores con deudas, la mora podría aumentar.
-- La complejidad de la escala de Fibonacci puede generar confusión en los usuarios; si el cálculo no es transparente o varía por errores de carga, el usuario lo percibirá como arbitrario o injusto.
+    **Mitigaciones**
 
-### Riesgo Técnico
+  - Definir en historias y criterios de aceptación que la validación de deuda es obligatoria antes de registrar el préstamo.
+  - Incluir un escenario Gherkin explícito de rechazo a lector con multa impaga.
+  - Verificar en Subtareas QA datos de prueba con lector habilitado y lector bloqueado.
+### Riesgo N-2
+- La complejidad de la escala de Fibonacci puede generar confusión en los usuarios; si el cálculo no es transparente o varía por errores de carga, el usuario lo percibirá como arbitrario o injusto.
+    **Mitigaciones**
+
+    - Mantener en el PRD una definición operativa inequívoca del cálculo por semanas.
+    - Incluir tabla de ejemplos oficiales de retraso y deuda acumulada.
+    - Alinear USER_STORIES y SUBTASKS con esos mismos ejemplos sin redefinir la regla en cada documento.
+
+
+
+## Riesgos Técnicos
+
+### Riesgo T-1
 - Una implementación inconsciente del estado de deuda puede impedir o habilitar préstamos de forma errónea.
+    **Mitigaciones**
+
+    - Definir que la deuda pendiente y la habilitación del lector se revisan como una sola regla de negocio coherente.
+    - Incluir criterios de aceptación para el antes y después del pago.
+    - Validar en QA que pagar elimine deuda y rehabilite al lector, y que sin deuda no se registre pago.
+### Riesgo T-2
 - Si el historial de préstamos no se registra bien, se pierde trazabilidad del libro.
+    **Mitigaciones**
+
+    - Exigir trazabilidad mínima en préstamo, devolución y pago cuando afecten el estado del lector o del libro.
+    - Añadir criterio explícito de que el préstamo cerrado siga quedando en historial.
+    - Incluir pruebas de consulta de libro con historial y préstamo activo/inactivo.
+### Riesgo T-3
 - Calcular mal la fecha de vencimiento puede generar multas incorrectas.
+    **Mitigaciones**
+
+    - Restringir explícitamente los únicos plazos válidos a 7, 14 y 21 días.
+    - Agregar validaciones para rechazar cualquier plazo fuera de esas opciones.
+    - Probar borde exacto de devolución en fecha límite y antes/después de ella.
+### Riesgo T-4
 - Interpretar mal los cortes semanales o la acumulación Fibonacci puede generar multas inconsistentes.
+    **Mitigaciones**
+
+    - Dejar una sola definición oficial en el PRD y referenciarla desde las historias.
+    - Cubrir en Gherkin los casos 1, 7, 8, 15 y 22 días.
+    - En subtareas QA, exigir validación del conteo por corte semanal.

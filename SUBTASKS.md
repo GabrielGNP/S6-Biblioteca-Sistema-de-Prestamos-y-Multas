@@ -77,6 +77,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 - Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
 - Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
 - Validar alternos como libro inexistente, o libro con información histórica incompleta.
+- Validar que la consulta del libro distinga préstamos activos y préstamos cerrados dentro del historial.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
@@ -299,9 +300,10 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Método de guardado de multa. 
                                             
 ### Subtareas QA
-- Diseñar escenarios para devolución tardia con retrasos de una, dos, tres y cuatro semanas de mora acumulada.
+- Diseñar escenarios para retrasos de 1, 7, 8, 15 y 22 días.
 - Preparar datos con préstamos vencidos y fechas de devolución que permitan validar los cortes semanales y la acumulación Fibonacci.
 - Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por multa pendiente.
+- Validar deuda acumulada esperada de 1, 1, 2, 4 y 7 unidades Fibonacci.
 - Validar alternos como errores en el conteo de días, préstamo sin lector asociado o multa duplicada sobre la misma devolución.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
@@ -309,7 +311,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 ### Riesgo o notas de calidad
 - Riesgo funcional: una multa mal interpretada puede percibirse como injusta o incoherente.
 - Riesgo técnico: si la devolución, la multa y el estado del lector no se actualizan en conjunto, pueden quedar deudas inconsistentes o lectores mal bloqueados.
-- Calidad: conviene verificar explícitamente los casos borde definidos en el PRD para confirmar que la acumulación Fibonacci sea correcta.
+- Calidad: la validación de la multa debe contrastarse explícitamente contra los ejemplos oficiales definidos en el PRD para los retrasos de 1, 7, 8, 15 y 22 días; cualquier diferencia entre el resultado obtenido y la deuda esperada debe registrarse como defecto.
 
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
 
@@ -355,6 +357,7 @@ Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado
 - Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
 - Preparar datos con al menos un lector bloqueado por multa pendiente y otro lector ya habilitado sin deuda.
 - Validar que el pago elimine la deuda pendiente y rehabilite correctamente al lector para futuros préstamos.
+- Validar que, después del pago total, el lector pueda registrar un nuevo préstamo válido sin ser rechazado por deuda previa.
 - Validar alternos como multa ya pagada, identificación incorrecta del lector o inconsistencia entre deuda y estado de habilitación.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 

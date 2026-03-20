@@ -13,10 +13,14 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 1: Un libro solo puede prestrarse si está disponible.
-- Regla 9: Cada libro conserva un historial de préstamos realizados.
+- Regla 10: Cada libro conserva un historial de préstamos realizados.
 
 ## Dependencias
 - Requiere que existe información base del libro y sus préstamos
+
+## Story Points
+- 3 puntos
+- Aunque es una historia de consulta, no se limita a darte un solo dato aislado: requiere búsqueda del libro, cruce con el historial de préstamos, determinación de su disponibilidad actual y presentación de información suficiente (campos mínimos) para la toma de decisiones.
 
 ## Criterio de Aceptación
 
@@ -71,11 +75,16 @@
 
 ## Dependencias
 - Se apoya en la consulta de disponibilidad del libro y el estado de deuda del lector.
+
+## Story Points
+- 5 puntos
+- Combina varias reglas centrales del negocio en un mismo flujo: validación de disponibilidad del libro, validación de deuda del lector, control de plazos, cálculo de fecha de devolución y cambió de estado del préstamo.
   
 ## Criterio de Aceptación
 
 - El préstamo solo puede registrarse si el libro está disponible.
 - El préstamo solo puede registrarse si el lector no tiene multas pendientes.
+- El lector se considera habilitado únicamente cuando no tiene deuda pendiente activa.
 - El sistema calcula una fecha de devolución según el plazo elegido.
 - Si alguna regla falla, el sistema impide el registro y lo informa.
 
@@ -91,9 +100,25 @@
     And muestra la fecha de devolución calculada
 ```
 ```gherkin
+    Scenario: Registrar préstamo a lector rehabilitado tras pago
+    Given el lector tuvo una deuda pendiente
+    And la deuda fue pagada totalmente
+    And el libro está disponible
+    When el bibliotecario registra un préstamo
+    Then el sistema permite la operación
+```
+```gherkin
     Scenario: Intentar prestar a un lector con deuda
     Given el lector tiene una deuda pendiente
     When el bibliotecario intenta registrar un préstamo
+    Then el sistema rechaza la operación
+```
+```gherkin
+    Scenario: Intentar registrar un préstamo con plazo no permitido
+    Given el libro está disponible
+    And el lector no tiene multas impagas
+    And el plazo elegido no es de 7, 14 ni 21 días
+    When el bibliotecario registra el préstamo
     Then el sistema rechaza la operación
 ```
 
@@ -123,15 +148,20 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 5: Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
-- Regla 9: Cada libro conserva un historial de préstamos realizados.
-- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+- Regla 10: Cada libro conserva un historial de préstamos realizados.
+- Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
-- Requiere que exista un préstamo activo registrado.
-  
+- Requiere que exista un préstamo activo asociado al libro.
+
+## Story Points
+- 3 puntos.
+- El flujo es más simple que el préstamo y que la devolución tardía, pero igual exige validar que exista un préstamo activo, comprobar el cumplimiento de la fecha límite, cerrar correctamente el préstamo y volver a dejar el libro disponible sin generar multa.
+
 ## Criterio de Aceptación
-- Una devolución en fecha o antes de la fecha no genera multa.
+- Una devolución realizada antes o el mismo día de la fecha límite no genera multa.
 - El préstamo debe quedar cerrado al registrar la devolución válida.
+- El préstamo cerrado debe permanecer visible en el historial del libro con su fecha de devolución.
 - El libro vuelve a quedar disponible.
 - Si no existe un préstamo activo, la operación no debe avanzar.
 
@@ -149,17 +179,17 @@
     Scenario: Intentar devolver un préstamo no activo
     Given no existe un préstamo activo para el libro consultado
     When el bibliotecario intenta registrar la devolución
-    Then el sistema informa que no hay una devolución válida para procesar
+    Then el sistema informa que no hay un préstamo activo para procesar
 ```
 
 ## Justificación de criterios INVEST - HU-03
 
-**I (Independent)**: Sí; es un cierre limpio de préstamo.
+**I (Independent)**: Sí; resuelve el cierre de un préstamo dentro del plazo.
 **N (Negotiable)**: Sí; varían los detalles del registro pero no la regla central.
 **V (Valuable)**: Sí; impacta directamente a la operación diaria.
 **E (Estimable)**: Sí; el comportamiento esperado es simple.
 **S (Small)**: Sí; no metemos nada sobre las multas ni sobre el pago.
-**T (Testable)**: Sí; incluye fecha exacta y devolución anticipada.
+**T (Testable)**: Sí; permite validar devolución anticipada, devolución en fecha exacta y rechazo sin préstamo activo.
 
 ---
 
@@ -179,17 +209,23 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
-- Regla 7: El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+- Regla 8: El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
+- Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
 - Requiere un préstamo vencido y la fecha efectiva de devolución.
 
+## Story Points
+- 8 puntos.
+- No solo registra la devolución; exige calcular el retraso por cortes semanales, aplicar la acumulación de deuda con lógica Fibonacci, registrar correctamente la multa, cerrar el préstamo y sincronizar el estado del lector con la nueva deuda. El riesgo de errores justifica una estimación superior.
+
 ## Criterio de Aceptación
 - Una devolución fuera de plazo genera una multa.
-- La multa debe seguir las reglas del Sistema Fibonacci definidas en el PRD.
+- El cálculo de la multa debe coincidir con los ejemplos oficiales del PRD para retrasos de 1, 7, 8, 15 y 22 días.
+- Los ejemplos oficiales de cálculo para retrasos de 1, 7, 8, 15 y 22 días se mantienen como referencia en el PRD y deben usarse como base de validación.
 - El sistema deja registrada la deuda del lector.
 - El préstamo queda cerrado aunque exista deuda pendiente.
+- El préstamo cerrado por devolución tardía debe permanecer en el historial del libro, junto con la deuda generada para trazabilidad.
 
 **Gherkin**:
 ```gherkin
@@ -202,10 +238,11 @@
     And deja la deuda asociada al lector
 ```
 ```gherkin
-    Scenario: Registrar una devolución con ocho días de retraso
-    Given existe un préstamo vencido con ocho días de retraso
-    When el bibliotecario registra la devolución
-    Then el sistema calcula la multa correspondiente a dos semanas de mora acumulada
+        Scenario: Calcular deuda acumulada por devolución tardía
+        Given existe un préstamo activo vencido
+        And la devolución ocurre después de la fecha límite
+        When el bibliotecario registra la devolución
+        Then el sistema calcula la deuda acumulada correspondiente según la lógica Fibonacci
 ```
 
 ## Justificación de criterios INVEST - HU-04
@@ -235,15 +272,23 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
-- Regla 7: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-- Regla 9: Cada libro conserva un historial de préstamos realizados.
+- Regla 8: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
+- Regla 10: Cada libro conserva un historial de préstamos realizados.
  
 ## Dependencias
 - Requiere préstamos activos y lógica para identificar vencidos.
 
+## Alcance específico
+- La historia cubre únicamente la visualización de préstamos vencidos y del lector responsable.
+- No incluye notificaciones, exportación de resultados, filtros avanzados, ordenamiento configurable ni paginación.
+
+## Story Points
+- 3 puntos.
+- Sigue siendo una consulta, pero requiere filtrar correctamente solo los préstamos vencidos, excluir los vigentes y cerrados, mostrar al lector responsable sin mezclar estados.
+
 ## Criterio de Aceptación
 - El sistema permite consultar los préstamos que ya están vencidos.
-- Cada resultado muestra el libro y el lector responsable.
+- Cada resultado muestra el libro, su estado, el lector responsable, la fecha límite del préstamo y la fecha de devolución.
 - Los préstamos aún vigentes no deben aparecer en la lista.
 - Si no hay atrasos, la consulta debe indicarlo claramente.
 
@@ -265,7 +310,7 @@
 
 ## Justificación de criterios INVEST - HU-05
 
-**I (Independent)**: Sí; entrega valor de consulta y seguimiento por sí misma.
+**I (Independent)**: Sí; entrega valor propio de consulta, aunque requiere datos de préstamos activos y una regla para identificar vencidos.
 **N (Negotiable)**: Sí; se puede ajustar el nivel de detalle mostrado, por ejemplo.
 **V (Valuable)**: Sí; apoya la gestión de deuda atrasada.
 **E (Estimable)**: Sí; el resultado esperado es a nivel de consulta.
@@ -290,17 +335,22 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
-- Regla 8: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
-- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+- Regla 9: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+- Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
 - Requiere que exista una multa pendiente para el lector.
 
+## Story Points
+- 3 puntos
+- Requiere validar la existencia de deuda pendiente, registrar el pago total, dejar trazabilidad y rehabilitar correctamente al lector para futuros préstamos.
+
 ## Criterio de Aceptación
 - El sistema permite registrar el pago total de una deuda pendiente.
 - Después del pago, el lector vuelve a quedar habilitado.
+- Después del pago total, el lector no debe seguir figurando como bloqueado por deuda.
 - Si no existe deuda pendiente, el sistema no debe registrar el pago.
-- La operación debe dejar trazabilidad mínima del cambio.
+- El pago debe dejar registro mínimo del lector, la deuda cancelada y la fecha en que se realizó.
 
 **Gherkin**:
 
