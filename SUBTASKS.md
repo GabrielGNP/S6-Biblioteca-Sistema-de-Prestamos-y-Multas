@@ -283,7 +283,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > - un botón de "confirmar"
 
 
-- Endpoint PATCH api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
+- Endpoint PATCH api/v1/loan con la información actualizada del libro
 > Body del endpoint: \
 > { \
 >  "date_return": Date \
@@ -349,25 +349,24 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > - la tupla que tenga el "id_book" = id_book_recivida
 > - que la tupla sea la más actual según la fecha "date_return"
 > 
-> Y se devuelve el "loan_id" y el "date_limite" de la tupla recuperada.
+> Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
 > 
 > Si el state es AVAILABLE, entonces se devuelve código 409. En caso contrario se continúa con el proceso
 
 
 - Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
 > Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
-
+>
 > se necesita que:
 > - el servicio obtiene la fecha actual
 > - se obtuviera el "date_limite" de la consulta a la DB
-
+>
 > Se calcula la diferencia de tiempo entre "date_limite" y "fecha actual". \
 > Si el resultado es 0 o un número negativo de días, entonces significa que está dentro del tiempo estipulado. \
 > Si es superior a 0 días entonces está fuera del tiempo
 
 
 - Funcionalidad para marcar como devuelto el libro
-> - Si el tiempo obtenido en la funcionalidad de evaluación de tiempo es <= 0 entonces se continúa
 > - Si se cuenta con la "loan_id"
 > 
 > entonces se actualiza en la DB el state: string (se pone en AVAILABLE)
@@ -400,7 +399,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ### Subtareas DEV
 - UI (inputs) para indicar nombre del libro y/o identificador, y el identificador del lector
-- Endpoint PATCH api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
+- Endpoint PATCH api/v1/loan con la información actualizada del libro
 - Comunicación UI con endpoint PATCH api/v1/loan
 - Tabla DB de historial de prestamos de libros
 - Funcionalidad para buscar el libro en el historial
