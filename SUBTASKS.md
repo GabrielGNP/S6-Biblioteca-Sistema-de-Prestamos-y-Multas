@@ -25,7 +25,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
     >200=>
     >{
     >    "results": [
-    >    {"id":integer,"name":string,"status":"AVAILABLE"},
+    >    {"id":integer,"name":string,"status":"RETURNED"},
     >    {"id":integer,"name":string,"status":"ON_LOAN"}
     >    ],
     >}
@@ -52,7 +52,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
     >    - loan_id : integer (ID del préstamo) (único y autoincremental)
     >    - id_book : integer (Identificador del libro)
     >    - title : string (Título del libro)
-    >    - state: string (Estado del libro: AVAILABLE o ON_LOAN)
+    >    - state: string (Estado del libro: RETURNED o ON_LOAN)
     >    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
     >    - Id_reader : integer (Identificador del lector)
     >    - name_reader : string (Nombre del lector responsable)
@@ -63,7 +63,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
     >Se busca todas las coincidencias del nombre pasado mediante el endpoint  \
     >La búsqueda no es key sensitive
     >
-    >Se devuelven todos los libros con el mismo nombre pero distinto ID y que tengan state en AVAILABLE.  \
+    >Se devuelven todos los libros con el mismo nombre pero distinto ID y que tengan state en RETURNED.  \
     >Si se repite ID se devuelve el más actual según date_return
     >
     >La información recuperada en esta funcionalidad es:
@@ -211,7 +211,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >    - loan_id : integer (ID del préstamo) (único y autoincremental)
 >    - id_book : integer (Identificador del libro)
 >    - title : string (Título del libro)
->    - state: string (Estado del libro: AVAILABLE o ON_LOAN)
+>    - state: string (Estado del libro: RETURNED o ON_LOAN)
 >    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
 >    - Id_reader : integer (Identificador del lector)
 >    - name_reader : string (Nombre del lector responsable)
@@ -303,7 +303,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >  "id_book": integer \
 >  "title" : string \
 >  "date_limit": date \
->  "status": "AVAILABLE" \
+>  "status": "RETURNED" \
 >  "id_reader": integer \
 >  "name_reader": string \
 > }
@@ -312,7 +312,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > - si no se encuentra el préstamo (porque no existe o porque se encontraon varias opciones)
 > 
 > 409 =>
-> - si el estado del préstamo ya está en "AVAILABLE"
+> - si el estado del préstamo ya está en "RETURNED"
 > 
 > 400 => 
 > - Si el alguno de los parámetros es inválido o faltan datos
@@ -337,7 +337,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >    - loan_id : integer (ID del préstamo) (único y autoincremental) \
 >    - id_book : integer (Identificador del libro) \
 >    - title : string (Título del libro) \
->    - state: string (Estado del libro: AVAILABLE o ON_LOAN) \
+>    - state: string (Estado del libro: RETURNED o ON_LOAN) \
 >    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA) \
 >    - Id_reader : integer (Identificador del lector) \
 >    - name_reader : string (Nombre del lector responsable) \
@@ -353,7 +353,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > 
 > Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
 > 
-> Si el state es AVAILABLE, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+> Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se continúa con el proceso
 
 
 - Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
@@ -371,7 +371,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Funcionalidad para marcar como devuelto el libro
 > - Si se cuenta con la "loan_id"
 > 
-> entonces se actualiza en la DB el state: string (se pone en AVAILABLE)
+> entonces se actualiza en la DB el state: string (se pone en RETURNED)
 > 
 > para encontrar la tupla en la DB se utiliza la "loan_id".
 > 
@@ -441,7 +441,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >  "id_book": integer \
 >  "title" : string \
 >  "date_limit": date \
->  "status": "AVAILABLE" \
+>  "status": "RETURNED" \
 >  "id_reader": integer \
 >  "name_reader": string \
 >}
@@ -450,7 +450,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >- si no se encuentra el préstamo (porque no existe o porque se encontraon varias opciones)
 >
 > 409 =>
-> - si el estado del préstamo ya está en "AVAILABLE"
+> - si el estado del préstamo ya está en "RETURNED"
 > 
 > 400 => 
 > - Si el alguno de los parámetros es inválido o faltan datos
@@ -474,7 +474,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >    - loan_id : integer (ID del préstamo) (único y autoincremental)
 >    - id_book : integer (Identificador del libro)
 >    - title : string (Título del libro)
->    - state: string (Estado del libro: AVAILABLE o ON_LOAN)
+>    - state: string (Estado del libro: RETURNED o ON_LOAN)
 >    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
 >    - Id_reader : integer (Identificador del lector)
 >    - name_reader : string (Nombre del lector responsable)
@@ -490,7 +490,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >
 >Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
 >
->Si el state es AVAILABLE, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+>Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se continúa con el proceso
 
 
 - Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
@@ -544,7 +544,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Funcionalidad para marcar como devuelto el libro
 >- Si se cuenta con la "loan_id"
 >
->entonces se actualiza en la DB el state: string (se pone en AVAILABLE)
+>entonces se actualiza en la DB el state: string (se pone en RETURNED)
 >
 >para encontrar la tupla en la DB se utiliza la "loan_id".
 >
@@ -670,7 +670,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >    - loan_id : integer (ID del préstamo) (único y autoincremental)
 >    - id_book : integer (Identificador del libro)
 >    - title : string (Título del libro)
->    - state: string (Estado del libro: AVAILABLE o ON_LOAN)
+>    - state: string (Estado del libro: RETURNED o ON_LOAN)
 >    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
 >    - Id_reader : integer (Identificador del lector)
 >    - name_reader : string (Nombre del lector responsable)
