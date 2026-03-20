@@ -152,7 +152,7 @@
 - Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
-- Requiere que exista un préstamo activo registrado.
+- Requiere que exista un préstamo activo asociado al libro.
 
 ## Story Points
 - 3 puntos.
@@ -176,29 +176,20 @@
     And deja el libro disponible
 ```
 ```gherkin
-    Scenario: Registrar devolución sin multa dentro del plazo permitido
-    Given existe un préstamo activo
-    And la devolución ocurre dentro del plazo permitido
-    When el bibliotecario registra la devolución
-    Then el sistema cierra el préstamo
-    And no genera multa
-    And deja el libro disponible
-```
-```gherkin
     Scenario: Intentar devolver un préstamo no activo
     Given no existe un préstamo activo para el libro consultado
     When el bibliotecario intenta registrar la devolución
-    Then el sistema informa que no hay una devolución válida para procesar
+    Then el sistema informa que no hay un préstamo activo para procesar
 ```
 
 ## Justificación de criterios INVEST - HU-03
 
-**I (Independent)**: Sí; como caso de uso de devolución; requiere como precondición que exista un préstamo activo.
+**I (Independent)**: Sí; resuelve el cierre de un préstamo dentro del plazo.
 **N (Negotiable)**: Sí; varían los detalles del registro pero no la regla central.
 **V (Valuable)**: Sí; impacta directamente a la operación diaria.
 **E (Estimable)**: Sí; el comportamiento esperado es simple.
 **S (Small)**: Sí; no metemos nada sobre las multas ni sobre el pago.
-**T (Testable)**: Sí; incluye fecha exacta y devolución anticipada.
+**T (Testable)**: Sí; permite validar devolución anticipada, devolución en fecha exacta y rechazo sin préstamo activo.
 
 ---
 
