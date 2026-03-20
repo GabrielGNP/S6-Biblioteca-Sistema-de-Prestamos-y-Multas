@@ -59,7 +59,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
     >    - date_limite : Date (Fecha límite del préstamo)
     >    - date_return : Date (Fecha de devolución)
 
-- Funcionalidad de búsqueda de libro que busque en la DB.
+- Funcionalidad de búsqueda de libro en la DB.
     >Se busca todas las coincidencias del nombre pasado mediante el endpoint  \
     >La búsqueda no es key sensitive
     >
@@ -91,15 +91,145 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ### Subtareas DEV
 - UI (inputs) para ingresar datos necesarios para un préstamo.
-- Funcionalidad para calcular fecha límite de devolución del libro
+> inputs necesarios: 
+>    - [input] id del libro (integer)
+>    - [input] nombre del lector (string)
+>    - [select] selector de DNI o Cédula
+>    - [input] id del lector (integer) (opciones: DNI o Cédula)
+>    - [select] selector de tiempo de préstamo (integer) (opciones: 7, 14, 21)
+> 
+> Ninguno puede ser una cadena vacía
+> 
+> Debe haber: \
+> Cada input debe tener un placeholder de ejemplo \
+> id = 000000 \
+> nombre del lector = "Pedro Hugo Ramon Castillo de la Rosa" \
+> Id del lector = 00000000 \
+> 
+> Cada input debe tener validación para impedir campos vacíos \
+> Según el tiempo de préstamo seleccionado. Se calcula y se muestra la fecha límite de devolución
+> 
+> - un botón de "registrar"
+
+
+- Funcionalidad para calcular fecha límite de devolución del libro (FRONT)
+> Funcionalidad para dar feedback visual de la fecha resultante antes de la confirmación
+> 
+> se toma el valor indicado en el select de tiempo de préstamo (7, 14, 21) \
+> se toma la fecha actual y se aumenta la cantidad de días en la cantidad de días de préstamo especificados. \
+> Por ejemplo: si tomamos prestado el libro por 7 días \
+> 01/01/2026 => 08/01/2026
+
 - Exponer endpoint POST api/v1/loan para registrar un préstamo.
+> Request Body recivido:
+> { \
+>  "id_book": integer \
+>  "name_reader": string \
+>  "type_id_reader": DNI | CEDULA \
+>  "id_reader": integer \
+>  "loan_days": 7 | 14 | 21 \
+>}
+>
+> Respuestas posibles:
+>
+> 201 =>
+> { \
+>  "loan_id": integer \
+>  "id_book": integer \
+>  "title" : string \
+>  "date_limit": date \
+>  "status": "ON_LOAN" \
+>  "id_reader": integer, \
+>  "name_reader": string \
+> }
+> 
+> 400=>
+> - si el parámetro loan_days es distinto de 7, 14 o 21
+> - si el campo type_id_reader es distinto de DNI | CEDULA
+> - si el campo "id_book", "name_reader" o "id_reader" están vacíos
+> 
+> 409 => 
+> - si el libro no está disponible
+> - si el lector tiene multa pendiente
+> 
+> 500 =>
+> - Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+> 
+
+
 - Integrar UI y endpoint POST api/v1/loan
+> Si devuelve:
+> 201 => 
+> - se muestra confirmación de carga exitosa
+> 400 => 
+> - se muestra los campos con valores incorrectos
+> 409 =>
+> - se muestra un mensaje con el error resultante
+> 500 => 
+> - Se muestra el mensaje de error surjido en el servidor
+
 - Tabla DB con lectores morosos.
-- Funcionalidad de búsqueda de lector moroso. 
+> Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
+>    - id_dept : integer (id de la multa) (único y autoincremental)
+>    - loan_id : integer (ID del préstamo) (clave foranea)
+>    - id_reader : integer (Identificador del lector)
+>    - name_reader : string (Nombre del lector responsable)
+>    - amount_dept : real (monto de la deuda)
+>    - state_dept : string (estado de la deuda: PENDING o PAID)
+
+- Funcionalidad de búsqueda de lector moroso.
+> El servicio busca en la DB si el lector con la ID recibida en el body del endpoint tiene alguna multa
+> 
+> Para esto busca en la tabla:
+> - la tupla que tenga la "id_reader" = id_reader_recivida
+> - que la tupla sea la más actual
+> 
+> Y se devuelve el state_dept de la tupla recuperada.
+
+
 - Verificación de morosidad del lector.
+> si el state_dept es "PENDING" entonces se finaliza la carga del prestamo y el endpoint devuelve el código 409
+
+
+- Funcionalidad para calcular fecha límite de devolución del libro (servicio)
+> Funcionalidad para evaluación temporal en el servicio. \
+> Se valida que la opción recibida en "loan_days" es alguna de las opciones permitidas (7, 14 o 21)
+> 
+> Si no es permitido se devuelve código 400.
+> 
+> Si es correcto entonces se genera la fecha para su posterior guardado
+> 
+> para obtener la fecha se toma la fecha actual y se aumenta la cantidad de días en la cantidad de días de préstamo especificados. \
+> Por ejemplo: si tomamos prestado el libro por 7 días \
+> 01/01/2026 => 08/01/2026
+
 - Tabla DB de historial de prestamos de libros.
+> Tabla de la DB llamada loan_books que contiene los siguientes atributos:
+>    - loan_id : integer (ID del préstamo) (único y autoincremental)
+>    - id_book : integer (Identificador del libro)
+>    - title : string (Título del libro)
+>    - state: string (Estado del libro: AVAILABLE o ON_LOAN)
+>    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
+>    - Id_reader : integer (Identificador del lector)
+>    - name_reader : string (Nombre del lector responsable)
+>    - date_limite : Date (Fecha límite del préstamo)
+>    - date_return : Date (Fecha de devolución)
+
 - Funcionalidad de verificación de si el libro está prestado
+> Se busca todas las coincidencia más actual del id del libro pasado mediante el endpoint
+> 
+> Para esto busca en la tabla:
+> - la tupla que tenga el "id_book" = id_book_recivida
+> - que la tupla sea la más actual según la fecha "date_return"
+> 
+> Y se devuelve el "state" de la tupla recuperada.
+> 
+> Si el state es ON_LOAN, entonces se devuelve código 409. En caso contrario se continúa con el proceso
+
+
 - Guardado de préstamo en el historial
+>
+
 
 ### Subtareas QA
 - Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con multa impaga y plazo no permitido.
