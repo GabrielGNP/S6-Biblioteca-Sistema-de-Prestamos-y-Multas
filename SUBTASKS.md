@@ -109,7 +109,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 ### Riesgo o notas de calidad
 - Riesgo funcional: una multa mal interpretada puede percibirse como injusta o incoherente.
 - Riesgo técnico: si la devolución, la multa y el estado del lector no se actualizan en conjunto, pueden quedar deudas inconsistentes o lectores mal bloqueados.
-- Calidad: conviene verificar explícitamente los casos borde definidos en el PRD para confirmar que la acumulación Fibonacci sea correcta.
+- Calidad: la validación de la multa debe contrastarse explícitamente contra los ejemplos oficiales definidos en el PRD para los retrasos de 1, 7, 8, 15 y 22 días; cualquier diferencia entre el resultado obtenido y la deuda esperada debe registrarse como defecto.
 
 ## HU-05 - Consultar libros fuera de plazo y lector responsable
 

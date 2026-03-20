@@ -13,7 +13,7 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 1: Un libro solo puede prestrarse si está disponible.
-- Regla 9: Cada libro conserva un historial de préstamos realizados.
+- Regla 10: Cada libro conserva un historial de préstamos realizados.
 
 ## Dependencias
 - Requiere que existe información base del libro y sus préstamos
@@ -131,8 +131,8 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 5: Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
-- Regla 9: Cada libro conserva un historial de préstamos realizados.
-- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+- Regla 10: Cada libro conserva un historial de préstamos realizados.
+- Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
 - Requiere que exista un préstamo activo registrado.
@@ -274,7 +274,7 @@
 ## Reglas de Negocio relacionadas
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
 - Regla 8: El modelo de multa es Fibonacci; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-- Regla 9: Cada libro conserva un historial de préstamos realizados.
+- Regla 10: Cada libro conserva un historial de préstamos realizados.
  
 ## Dependencias
 - Requiere préstamos activos y lógica para identificar vencidos.
@@ -336,8 +336,8 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
-- Regla 8: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
-- Regla 10: Cada lector se identifica con un documento oficial; cédula o DNI.
+- Regla 9: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+- Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
 - Requiere que exista una multa pendiente para el lector.
