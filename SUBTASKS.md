@@ -259,13 +259,89 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Permitir al Bibliotecario registrar la devolución de un libro en o antes de la fecha límite para cerrar el préstamo sin generar multa y dejar nuevamente el libro disponible.
 
 ### Subtareas DEV
-- UI (inputs) para indicar nombre del libro y/o identificador, y el identificador del lector
+- UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
+> inputs necesarios: 
+>    - [input] id del libro (integer)
+>    - [input] nombre del libro (string)
+>    - [select] selector de DNI o Cédula (opciones: DNI o Cédula)
+>    - [input] id del lector (integer) 
+>
+> uno de los siguientes inputs puede estar vacío
+>    - [input] id del libro (integer)
+>    - [input] id del lector (integer) 
+> Ambos pueden estar con datos, pero no pueden estar vacíos o nulos los dos campos
+> 
+> nombre del libro puede ser nulo solo si se define el la id del libro.
+> 
+> Cada input debe tener un placeholder de ejemplo: \
+> id del libro = 000000 \
+> nombre del libro = "el señor de los anillos" \
+> Id del lector = 00000000 \
+> 
+> Se debe controlar bien la combinación de campos vacíos.
+> 
+> - un botón de "confirmar"
+
+
 - Endpoint PATCH api/v1/loan con la información actualizada del libro (fecha actual y confirmación de devolución)
+> Body del endpoint: \
+> { \
+>  "date_return": Date \
+>  "name_reader" : string (puede ser null) \
+>  "id_book" : integer (puede ser null) \
+>  "type_id_reader" : string (Opciones: DNI o CEDULA) \
+>  "Id_reader" : integer (puede ser null) \
+> }
+> 
+> Respuestas posibles:
+> 
+> 200=> \
+> { \
+>  "loan_id": integer \
+>  "id_book": integer \
+>  "title" : string \
+>  "date_limit": date \
+>  "status": "AVAILABLE" \
+>  "id_reader": integer \
+>  "name_reader": string \
+> }
+> 
+> 404 =>
+> - si no se encuentra el préstamo (porque no existe o porque se encontraon varias opciones)
+> 
+> 409 =>
+> - si el estado del préstamo ya está en "AVAILABLE"
+> 
+> 400 => 
+> - Si el alguno de los parámetros es inválido o faltan datos
+> 
+> 500 =>
+> - Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+
+
 - Comunicación UI con endpoint PATCH api/v1/loan
+> Si devuelve: \
+> 200 => 
+> - se muestra confirmación de devolución exitosa
+> 400 => 
+> - se muestra el error indicando que hay parámetros inválidos
+> 409 =>
+> - se muestra un mensaje indicando que el préstamo ya está marcado como devuelto
+> 500 => 
+> - Se muestra el mensaje de error surgido en el servidor
+
 - Tabla DB de historial de prestamos de libros
+>
+
 - Funcionalidad para buscar el libro en el historial
+>
+
 - Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+>
+
 - Funcionalidad para marcar como devuelto el libro
+>
+
 
 ### Subtareas QA
 - Permitir cerrar un préstamo a tiempo para que el libro vuelva a estar utilizable sin generar deuda.
