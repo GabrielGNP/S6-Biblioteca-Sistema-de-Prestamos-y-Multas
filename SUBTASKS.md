@@ -170,19 +170,21 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > - Se muestra el mensaje de error surjido en el servidor
 
 - Tabla DB con lectores morosos.
-> Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
+>Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 >    - id_dept : integer (id de la multa) (único y autoincremental)
 >    - loan_id : integer (ID del préstamo) (clave foranea)
->    - id_reader : integer (Identificador del lector)
+>    - type_id_reader : string, (CEDULA o DNI)
+>    - Id_reader : integer (Identificador del lector)
 >    - name_reader : string (Nombre del lector responsable)
 >    - amount_dept : real (monto de la deuda)
 >    - state_dept : string (estado de la deuda: PENDING o PAID)
+
 
 - Funcionalidad de búsqueda de lector moroso.
 > El servicio busca en la DB si el lector con la ID recibida en el body del endpoint tiene alguna multa
 > 
 > Para esto busca en la tabla:
-> - la tupla que tenga la "id_reader" = id_reader_recivida
+> - la tupla que tenga la "id_reader" = id_reader_recibida
 > - que la tupla sea la más actual
 > 
 > Y se devuelve el state_dept de la tupla recuperada.
@@ -220,7 +222,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > Se busca todas las coincidencia más actual del id del libro pasado mediante el endpoint
 > 
 > Para esto busca en la tabla:
-> - la tupla que tenga el "id_book" = id_book_recivida
+> - la tupla que tenga el "id_book" = id_book_recibida
 > - que la tupla sea la más actual según la fecha "date_return"
 > 
 > Y se devuelve el "state" de la tupla recuperada.
@@ -346,7 +348,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 > Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
 >
 > Para esto busca en la tabla:
-> - la tupla que tenga el "id_book" = id_book_recivida
+> - la tupla que tenga el "id_book" = id_book_recibida
 > - que la tupla sea la más actual según la fecha "date_return"
 > 
 > Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
@@ -483,7 +485,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
 >
 >Para esto busca en la tabla:
->- la tupla que tenga el "id_book" = id_book_recivida
+>- la tupla que tenga el "id_book" = id_book_recibida
 >- que la tupla sea la más actual según la fecha "date_return"
 >
 >Y se devuelve el "loan_id", el "date_limite", "name_reader", "id_reader" de la tupla recuperada.
@@ -553,10 +555,12 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 >Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 >    - id_dept : integer (id de la multa) (único y autoincremental)
 >    - loan_id : integer (ID del préstamo) (clave foranea)
->    - id_reader : integer (Identificador del lector)
+>    - type_id_reader : string, (CEDULA o DNI)
+>    - Id_reader : integer (Identificador del lector)
 >    - name_reader : string (Nombre del lector responsable)
 >    - amount_dept : real (monto de la deuda)
 >    - state_dept : string (estado de la deuda: PENDING o PAID)
+
 
 
 - Método de guardado de multa. 
@@ -756,12 +760,99 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado otro libro
 
 ### Subtareas DEV
-- UI de multas
 - UI (Inputs) para indicar el identificador del lector
-- Endpoint GET api/v1/debt/{identificador} para obtener la multa
+> inputs necesarios: 
+>    - [input] nombre del lector (string)
+>    - [select] selector de DNI o Cédula
+>    - [input] id del lector (integer) (opciones: DNI o Cédula)
+>
+>Solo una de las dos opciones es necesaria, pueden escribirse los dos. \
+>No pueden estar vacíos los dos campos
+>
+>Debe haber: \
+>Cada input debe tener un placeholder de ejemplo  \
+>nombre del lector = "Pedro Hugo Ramon Castillo de la Rosa" \
+>Id del lector = 00000000
+>
+>Cada input debe tener validación para impedir que los campos estén vacíos
+>
+>- un botón de "buscar"
+
+
+- Endpoint GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre* para obtener la multa
+>el endpoint puede recibir 3 parámetros:
+>- "name" : string 
+>y
+>- "id" : integer
+>- "typeId : string (CEDULA o DNI)
+>
+>si se incluye "id", entonces debe estar también "typeId"
+>
+>Pueden incluirse los tres a la vez. El endpoint no debe aceptar no recibir parámetros
+>
+>utilizará el nombre del lector, la id del lector o ambos para buscar la multa correspondiente al lector
+>>
+>Respuestas posibles:
+>
+>200 => \
+>{ \
+>    "id_dept" : integer, \
+>    "load_id" : integer, \
+>    "type_id_reader" : string, (CEDULA o DNI) \
+>    "id_reader" : integer, \
+>    "name_reader" string, \
+>    "amount" : real, \
+>    "state_dept" : string (PENDING o PAID) \
+>}
+>
+>404 =>
+>- si el lector no existe
+>
+>400 =>
+>- si alguno de los campos obligatorios no es correcto
+>
+>500 =>
+>- Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+
+
 - Comunicación UI y endpoint GEt api/v1/debt/{identificador}
+>Si devuelve:
+>200 => 
+>- se renderiza la información en la UI
+>- se debe poder utilizar un botón para confirmar el pago de la multa y cambiar el estado
+>
+>404 =>
+>- se muestra un mensaje de feedback indicando que no existe este lector
+>
+>400 =>
+>- se muestra un mensaje indicando que alguno de los campos es inválido. Si es posible, se debe indicar cual es el campo incorrecto
+>
+>500 =>
+>- Error interno del servidor. Se devuelve un mensaje de error que de información sobre el error resultante
+
+
 - Tabla DB con lectores morosos.
+>Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
+>    - id_dept : integer (id de la multa) (único y autoincremental)
+>    - loan_id : integer (ID del préstamo) (clave foranea)
+>    - type_id_reader : string, (CEDULA o DNI)
+>    - Id_reader : integer (Identificador del lector)
+>    - name_reader : string (Nombre del lector responsable)
+>    - amount_dept : real (monto de la deuda)
+>    - state_dept : string (estado de la deuda: PENDING o PAID)
+
+
 - Método de búsqueda de lector moroso.
+>El servicio busca en la DB si el lector con la ID o el nombre recibida en el body del endpoint tiene alguna multa
+>
+>Para esto busca en la tabla:
+>- la tupla que tenga la "id_reader" = id_reader_recibida
+>- la tupla que tenga "name_reader" = name_reader_recibido
+>- que la tupla sea la más actual
+>
+>Y se devuelve toda la información correspondiente a esta multa obtenida
+
+
 - UI (elemento de confirmación) para confirmar el pago de la multa
 - Endpoint PATCH api/v1/debt{identificador} para cambiar el estado de la multa a pagado
 - Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
