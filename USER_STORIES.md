@@ -210,7 +210,6 @@
 ## Reglas de Negocio relacionadas
 - Regla 6: Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
 - Regla 8: El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-- Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
 - Requiere un préstamo vencido y la fecha efectiva de devolución.
@@ -221,9 +220,8 @@
 
 ## Criterio de Aceptación
 - Una devolución fuera de plazo genera una multa.
-- El cálculo de la multa debe coincidir con los ejemplos oficiales del PRD para retrasos de 1, 7, 8, 15 y 22 días.
-- Los ejemplos oficiales de cálculo para retrasos de 1, 7, 8, 15 y 22 días se mantienen como referencia en el PRD y deben usarse como base de validación.
-- El sistema deja registrada la deuda del lector.
+- La multa se calcula según la regla Fibonacci definida en el PRD.
+- El sistema deja registrada la deuda del lector responsable.
 - El préstamo queda cerrado aunque exista deuda pendiente.
 - El préstamo cerrado por devolución tardía debe permanecer en el historial del libro, junto con la deuda generada para trazabilidad.
 
@@ -238,11 +236,12 @@
     And deja la deuda asociada al lector
 ```
 ```gherkin
-        Scenario: Calcular deuda acumulada por devolución tardía
-        Given existe un préstamo activo vencido
-        And la devolución ocurre después de la fecha límite
-        When el bibliotecario registra la devolución
-        Then el sistema calcula la deuda acumulada correspondiente según la lógica Fibonacci
+    Scenario: Registrar una devolución tardía con cambio de tramo semanal
+    Given existe un préstamo activo vencido
+    And la devolución ocurre ocho días después de la fecha límite
+    When el bibliotecario registra la devolución
+    Then el sistema calcula la deuda acumulada correspondiente a dos semanas de mora
+    And deja registrada la deuda del lector
 ```
 
 ## Justificación de criterios INVEST - HU-04
@@ -252,7 +251,7 @@
 **V (Valuable)**: Sí; es una regla central del negocio.
 **E (Estimable)**: Sí; la lógica del cálculo está en el PRD.
 **S (Small)**: Sí; no incluye el pago de la multa, por ejemplo.
-**T (Testable)**: Si, tiene casos borde claros de 1, 7, 8, 15 y 22 dias.
+**T (Testable)**: Sí; permite validar generación de multa, registro de deuda, cierre del préstamo y trazabilidad en historial.
 
 ---
 

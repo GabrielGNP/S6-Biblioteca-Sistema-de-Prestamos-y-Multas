@@ -123,5 +123,5 @@ La consulta de préstamos vencidos cubre únicamente la visualización de prést
     **Mitigaciones**
 
     - Dejar una sola definición oficial en el PRD y referenciarla desde las historias.
-    - Cubrir en Gherkin los casos 1, 7, 8, 15 y 22 días.
+    - Cubrir en Gherkin el comportamiento general de devolución tardía y al menos un caso borde representativo del cambio de tramo semanal.
     - En subtareas QA, exigir validación del conteo por corte semanal.
