@@ -159,7 +159,7 @@
 - El flujo es más simple que el préstamo y que la devolución tardía, pero igual exige validar que exista un préstamo activo, comprobar el cumplimiento de la fecha límite, cerrar correctamente el préstamo y volver a dejar el libro disponible sin generar multa.
 
 ## Criterio de Aceptación
-- Una devolución en fecha o antes de la fecha no genera multa.
+- Una devolución realizada antes o el mismo día de la fecha límite no genera multa.
 - El préstamo debe quedar cerrado al registrar la devolución válida.
 - El préstamo cerrado debe permanecer visible en el historial del libro con su fecha de devolución.
 - El libro vuelve a quedar disponible.
@@ -176,18 +176,13 @@
     And deja el libro disponible
 ```
 ```gherkin
-    Scenario Outline: Registrar devolución sin multa dentro del plazo permitido
+    Scenario: Registrar devolución sin multa dentro del plazo permitido
     Given existe un préstamo activo
-    And la devolución ocurre <momento> de la fecha límite
+    And la devolución ocurre dentro del plazo permitido
     When el bibliotecario registra la devolución
     Then el sistema cierra el préstamo
     And no genera multa
     And deja el libro disponible
-
-  Examples:
-    | momento                      |
-    | antes de la fecha límite     |
-    | el mismo día de la fecha límite |
 ```
 ```gherkin
     Scenario: Intentar devolver un préstamo no activo
@@ -236,6 +231,7 @@
 ## Criterio de Aceptación
 - Una devolución fuera de plazo genera una multa.
 - El cálculo de la multa debe coincidir con los ejemplos oficiales del PRD para retrasos de 1, 7, 8, 15 y 22 días.
+- Los ejemplos oficiales de cálculo para retrasos de 1, 7, 8, 15 y 22 días se mantienen como referencia en el PRD y deben usarse como base de validación.
 - El sistema deja registrada la deuda del lector.
 - El préstamo queda cerrado aunque exista deuda pendiente.
 - El préstamo cerrado por devolución tardía debe permanecer en el historial del libro, junto con la deuda generada para trazabilidad.
@@ -251,18 +247,11 @@
     And deja la deuda asociada al lector
 ```
 ```gherkin
-    Scenario Outline: Calcular deuda acumulada según los cortes oficiales de mora
-    Given existe un préstamo vencido con <dias_retraso> días de retraso
-    When el bibliotecario registra la devolución
-    Then el sistema calcula una deuda acumulada de <deuda_esperada> unidades Fibonacci
-
-  Examples:
-    | dias_retraso | deuda_esperada |
-    | 1            | 1              |
-    | 7            | 1              |
-    | 8            | 2              |
-    | 15           | 4              |
-    | 22           | 7              |
+        Scenario: Calcular deuda acumulada por devolución tardía
+        Given existe un préstamo activo vencido
+        And la devolución ocurre después de la fecha límite
+        When el bibliotecario registra la devolución
+        Then el sistema calcula la deuda acumulada correspondiente según la lógica Fibonacci
 ```
 
 ## Justificación de criterios INVEST - HU-04
