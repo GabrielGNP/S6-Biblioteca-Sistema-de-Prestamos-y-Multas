@@ -6,7 +6,7 @@
 Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar su informacion operativa principal antes de registrar acciones sobre el.
 
 ### Subtareas DEV
-> TDEV01-01: UI (input) para indicar el nombre del libro a buscar
+#### TDEV01-01: UI (input) para indicar el nombre del libro a buscar
 
 inputs necesarios: 
     - Nombre del libro (string)
@@ -85,7 +85,7 @@ La información recuperada en esta funcionalidad es:
 
 
 ### Subtareas QA
--  TQA01-01: Diseñar escenarios para consulta de libro disponible, libro prestado y libro inexistente.
+- TQA01-01: Diseñar escenarios para consulta de libro disponible, libro prestado y libro inexistente.
 - TQA01-02: Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
 - TQA01-03: Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
 - TQA01-04: Validar alternos como libro inexistente, o libro con información histórica incompleta.
@@ -188,20 +188,20 @@ Si devuelve:
 
 ---
 
-#### TDEV02-05:- Tabla DB con lectores morosos.
+#### TDEV02-05: Tabla DB con lectores morosos.
 
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
-    - id_dept : integer (id de la multa) (único y autoincremental)
-    - loan_id : integer (ID del préstamo) (clave foranea)
-    - type_id_reader : string, (CEDULA o DNI)
-    - Id_reader : integer (Identificador del lector)
-    - name_reader : string (Nombre del lector responsable)
-    - amount_dept : real (monto de la deuda)
-    - state_dept : string (estado de la deuda: PENDING o PAID)
+- id_dept : integer (id de la multa) (único y autoincremental)
+- loan_id : integer (ID del préstamo) (clave foranea)
+- type_id_reader : string, (CEDULA o DNI)
+- Id_reader : integer (Identificador del lector)
+- name_reader : string (Nombre del lector responsable)
+- amount_dept : real (monto de la deuda)
+- state_dept : string (estado de la deuda: PENDING o PAID)
 
 ---
 
-#### TDEV02-06:- Funcionalidad de búsqueda de lector moroso.
+#### TDEV02-06: Funcionalidad de búsqueda de lector moroso
 
 El servicio busca en la DB si el lector con la ID recibida en el body del endpoint tiene alguna multa
  
@@ -214,11 +214,11 @@ Y se devuelve el state_dept de la tupla recuperada.
 
 #### TDEV02-07: Verificación de morosidad del lector.
 
-si el state_dept es "PENDING" entonces se finaliza la carga del prestamo y el endpoint devuelve el código 409
+si el state_dept es "PENDING" entonces se finaliza la carga del préstamo y el endpoint devuelve el código 409
 
 ---
 
-#### TDEV02-08:- Funcionalidad para calcular fecha límite de devolución del libro (servicio)
+#### TDEV02-08: Funcionalidad para calcular fecha límite de devolución del libro (servicio)
 
 Funcionalidad para evaluación temporal en el servicio. \
 Se valida que la opción recibida en "loan_days" es alguna de las opciones permitidas (7, 14 o 21)
@@ -233,7 +233,7 @@ Por ejemplo: si tomamos prestado el libro por 7 días \
 
 ---
 
-#### TDEV02-09: Tabla DB de historial de prestamos de libros.
+#### TDEV02-09: Tabla DB de historial de prestamos de libros
 
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
@@ -515,7 +515,7 @@ Respuestas posibles:
 
 ---
 
-#### TDEV04-02:- Comunicación UI con endpoint PATCH api/v1/loan
+#### TDEV04-03: Comunicación UI con endpoint PATCH api/v1/loan
 
 Si devuelve:
 200 => 
@@ -529,7 +529,7 @@ Si devuelve:
 
 ---
 
-#### TDEV04-03:- Tabla DB de historial de prestamos de libros
+#### TDEV04-04: Tabla DB de historial de prestamos de libros
 
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
@@ -544,7 +544,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 
 ---
 
-#### TDEV04-04:- Funcionalidad para buscar el libro en el historial
+#### TDEV04-05: Funcionalidad para buscar el libro en el historial
 
 Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
 
@@ -558,7 +558,7 @@ Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se 
 
 ---
 
-#### TDEV04-05:- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+#### TDEV04-06: Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
 
 Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
 
@@ -572,7 +572,7 @@ Si es superior a 0 días entonces está fuera del tiempo
 
 ---
 
-#### TDEV04-06:- Funcionalidad para calcular multa utilizando fibonacci
+#### TDEV04-07: Funcionalidad para calcular multa utilizando fibonacci
 
 Si la diferencia obtenida de de los días es superior a 0, significa que se extendió del tiempo.
 
@@ -611,7 +611,7 @@ Este resultado final será guardado en la carga de la multa
 
 ---
 
-#### TDEV04-07: Funcionalidad para marcar como devuelto el libro
+#### TDEV04-08: Funcionalidad para marcar como devuelto el libro
 
 - Si se cuenta con la "loan_id"
 
@@ -623,7 +623,7 @@ Una vez hecha la modificación en la DB se devuelve la respuesta 200
 
 ---
 
-#### TDEV04-08:Tabla DB con lectores morosos.
+#### TDEV04-09: Tabla DB con lectores morosos.
 
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
     - id_dept : integer (id de la multa) (único y autoincremental)
@@ -636,7 +636,7 @@ Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 
 ---
 
-#### TDEV04-09: Método de guardado de multa. 
+#### TDEV04-10: Método de guardado de multa. 
 
 - si el tiempo de demora es > 0, entonces se debe generar una multa.
 - se requiere "loan_id", "id_reader", "name_reader" obtenidos de la lectura del préstamo en la DB  
@@ -872,7 +872,7 @@ Respuestas posibles:
 
 ---
 
-#### TDEV06-03: Comunicación UI y endpoint GEt api/v1/debt/{identificador}
+#### TDEV06-03: Comunicación UI y endpoint Endpoint GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre*
 
 Si devuelve:
 200 => 
