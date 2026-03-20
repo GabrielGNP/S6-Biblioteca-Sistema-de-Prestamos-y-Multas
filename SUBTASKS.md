@@ -7,10 +7,70 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 
 ### Subtareas DEV
 - UI (input) para indicar el nombre del libro a buscar
+    >inputs necesarios: 
+    >    - Nombre del libro (string)
+    >
+    >No puede ser una cadena vacía
+    >
+    >Debe haber:
+    >- un input para el texto. Debe tener un placeholder de ejemplo "El señor de los anillos". Debe tener validación para impedir campo vacio
+    >- un botón de "Buscar"
+
+
 - Exponer un endpoint GET api/v1/loan/{name} que reciba el identificador del libro a buscar y devuelva el contexto mínimo necesario del libro en concreto. (ID, nombre, disponibilidad)
+    > La ruta debe recibir name como parámetro \
+    > El name será el nombre del libro
+    >
+    >Endpoint con 3 códigos de respuesta: \
+    >200=>
+    >{
+    >    "results": [
+    >    {"id":integer,"name":string,"status":"AVAILABLE"},
+    >    {"id":integer,"name":string,"status":"ON_LOAN"}
+    >    ],
+    >}
+    >
+    >si no se encuentra el libro en la tabla de historial, quiere decir que nunca fue prestado por lo que está disponible
+    >
+    >400 =>
+    >- si name está vacío o inválido
+    >
+    >500 =>
+    >- Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+
 - Integrar UI y endpoint.
+    >Si devuelve: \
+    >200 => 
+    >- se renderiza en pantalla todas las opciones del libro disponible devueltas por el endpoint
+    >400 => 
+    >- no se renderiza indicando que el nombre es inválido o está vacío
+    >500 => 
+    >- Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+
 - Tabla DB de historial de prestamos de libros.
+    >Tabla de la DB llamada loan_books que contiene los siguientes atributos:
+    >    - loan_id : integer (ID del préstamo) (único y autoincremental)
+    >    - id_book : integer (Identificador del libro)
+    >    - title : string (Título del libro)
+    >    - state: string (Estado del libro: AVAILABLE o ON_LOAN)
+    >    - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
+    >    - Id_reader : integer (Identificador del lector)
+    >    - name_reader : string (Nombre del lector responsable)
+    >    - date_limite : Date (Fecha límite del préstamo)
+    >    - date_return : Date (Fecha de devolución)
+
 - Funcionalidad de búsqueda de libro que busque en la DB.
+    >Se busca todas las coincidencias del nombre pasado mediante el endpoint  \
+    >La búsqueda no es key sensitive
+    >
+    >Se devuelven todos los libros con el mismo nombre pero distinto ID y que tengan state en AVAILABLE.  \
+    >Si se repite ID se devuelve el más actual según date_return
+    >
+    >La información recuperada en esta funcionalidad es:
+    >   - ID : integer
+    >   - title : string 
+    >   - state: string
+
 
 ### Subtareas QA
 - Diseñar escenarios para consulta de libro disponible, libro prestado y libro inexistente.
@@ -31,12 +91,14 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ### Subtareas DEV
 - UI (inputs) para ingresar datos necesarios para un préstamo.
+- Funcionalidad para calcular fecha límite de devolución del libro
 - Exponer endpoint POST api/v1/loan para registrar un préstamo.
 - Integrar UI y endpoint POST api/v1/loan
 - Tabla DB con lectores morosos.
 - Funcionalidad de búsqueda de lector moroso. 
 - Verificación de morosidad del lector.
 - Tabla DB de historial de prestamos de libros.
+- Funcionalidad de verificación de si el libro está prestado
 - Guardado de préstamo en el historial
 
 ### Subtareas QA
