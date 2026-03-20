@@ -84,6 +84,7 @@
 
 - El préstamo solo puede registrarse si el libro está disponible.
 - El préstamo solo puede registrarse si el lector no tiene multas pendientes.
+- El lector se considera habilitado únicamente cuando no tiene deuda pendiente activa.
 - El sistema calcula una fecha de devolución según el plazo elegido.
 - Si alguna regla falla, el sistema impide el registro y lo informa.
 
@@ -97,6 +98,14 @@
     Then el sistema guarda el préstamo
     And deja el libro como no disponible
     And muestra la fecha de devolución calculada
+```
+```gherkin
+    Scenario: Registrar préstamo a lector rehabilitado tras pago
+    Given el lector tuvo una deuda pendiente
+    And la deuda fue pagada totalmente
+    And el libro está disponible
+    When el bibliotecario registra un préstamo
+    Then el sistema permite la operación
 ```
 ```gherkin
     Scenario: Intentar prestar a un lector con deuda
@@ -144,6 +153,7 @@
 ## Criterio de Aceptación
 - Una devolución en fecha o antes de la fecha no genera multa.
 - El préstamo debe quedar cerrado al registrar la devolución válida.
+- El préstamo cerrado debe permanecer visible en el historial del libro con su fecha de devolución.
 - El libro vuelve a quedar disponible.
 - Si no existe un préstamo activo, la operación no debe avanzar.
 
@@ -220,6 +230,7 @@
 - El cálculo de la multa debe coincidir con los ejemplos oficiales del PRD para retrasos de 1, 7, 8, 15 y 22 días.
 - El sistema deja registrada la deuda del lector.
 - El préstamo queda cerrado aunque exista deuda pendiente.
+- El préstamo cerrado por devolución tardía debe permanecer en el historial del libro, junto con la deuda generada para trazabilidad.
 
 **Gherkin**:
 ```gherkin
@@ -349,8 +360,9 @@
 ## Criterio de Aceptación
 - El sistema permite registrar el pago total de una deuda pendiente.
 - Después del pago, el lector vuelve a quedar habilitado.
+- Después del pago total, el lector no debe seguir figurando como bloqueado por deuda.
 - Si no existe deuda pendiente, el sistema no debe registrar el pago.
-- La operación debe dejar trazabilidad mínima del cambio.
+- El pago debe dejar registro mínimo del lector, la deuda cancelada y la fecha en que se realizó.
 
 **Gherkin**:
 

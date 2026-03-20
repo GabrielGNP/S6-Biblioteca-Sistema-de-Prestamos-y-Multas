@@ -17,6 +17,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 - Preparar datos con al menos un libro disponible, uno prestado y uno con historial de préstamos más extenso.
 - Validar que el sistema muestre correctamente el estado del libro, préstamo activo e historial básico.
 - Validar alternos como libro inexistente, o libro con información histórica incompleta.
+- Validar que la consulta del libro distinga préstamos activos y préstamos cerrados dentro del historial.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
@@ -155,6 +156,7 @@ Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado
 - Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
 - Preparar datos con al menos un lector bloqueado por multa pendiente y otro lector ya habilitado sin deuda.
 - Validar que el pago elimine la deuda pendiente y rehabilite correctamente al lector para futuros préstamos.
+- Validar que, después del pago total, el lector pueda registrar un nuevo préstamo válido sin ser rechazado por deuda previa.
 - Validar alternos como multa ya pagada, identificación incorrecta del lector o inconsistencia entre deuda y estado de habilitación.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
