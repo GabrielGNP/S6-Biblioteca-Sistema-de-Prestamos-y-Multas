@@ -113,6 +113,14 @@
     When el bibliotecario intenta registrar un préstamo
     Then el sistema rechaza la operación
 ```
+```gherkin
+    Scenario: Intentar registrar un préstamo con plazo no permitido
+    Given el libro está disponible
+    And el lector no tiene multas impagas
+    And el plazo elegido no es de 7, 14 ni 21 días
+    When el bibliotecario registra el préstamo
+    Then el sistema rechaza la operación
+```
 
 ## Justificación de criterios INVEST - HU-02
 
