@@ -96,7 +96,32 @@ La consulta de préstamos vencidos cubre únicamente la visualización de prést
 
 
 ## Riesgos Técnicos
+
+### Riesgo T-1
 - Una implementación inconsciente del estado de deuda puede impedir o habilitar préstamos de forma errónea.
+    **Mitigaciones**
+
+    - Definir que la deuda pendiente y la habilitación del lector se revisan como una sola regla de negocio coherente.
+    - Incluir criterios de aceptación para el antes y después del pago.
+    - Validar en QA que pagar elimine deuda y rehabilite al lector, y que sin deuda no se registre pago.
+### Riesgo T-2
 - Si el historial de préstamos no se registra bien, se pierde trazabilidad del libro.
+    **Mitigaciones**
+
+    - Exigir trazabilidad mínima en préstamo, devolución y pago cuando afecten el estado del lector o del libro.
+    - Añadir criterio explícito de que el préstamo cerrado siga quedando en historial.
+    - Incluir pruebas de consulta de libro con historial y préstamo activo/inactivo.
+### Riesgo T-3
 - Calcular mal la fecha de vencimiento puede generar multas incorrectas.
+    **Mitigaciones**
+
+    - Restringir explícitamente los únicos plazos válidos a 7, 14 y 21 días.
+    - Agregar validaciones para rechazar cualquier plazo fuera de esas opciones.
+    - Probar borde exacto de devolución en fecha límite y antes/después de ella.
+### Riesgo T-4
 - Interpretar mal los cortes semanales o la acumulación Fibonacci puede generar multas inconsistentes.
+    **Mitigaciones**
+
+    - Dejar una sola definición oficial en el PRD y referenciarla desde las historias.
+    - Cubrir en Gherkin los casos 1, 7, 8, 15 y 22 días.
+    - En subtareas QA, exigir validación del conteo por corte semanal.
