@@ -455,6 +455,7 @@ inputs necesarios:
 - [input] nombre del libro (string)
 - [select] selector de DNI o Cédula (opciones: DNI o Cédula)
 - [input] id del lector (integer) 
+- [input] multa base (real)     
 
 uno de los siguientes inputs puede estar vacío
 - [input] id del libro (integer)
@@ -463,6 +464,8 @@ Ambos pueden estar con datos, pero no pueden estar vacíos o nulos los dos campo
  
 nombre del libro puede ser nulo solo si se define el la id del libro.
  
+input de multa base no puede estar vacío
+
 Cada input debe tener un placeholder de ejemplo : \
 id del libro = 000000 \
 nombre del libro = "el señor de los anillos" \
@@ -594,7 +597,7 @@ la cantidad de semanas será la cantidad de iteraciones de fibonacci. Se debe te
 ... -> ...
 
 
-Esto se multiplicará por el valor de multa especificado por la biblioteca. 
+Esto se multiplicará por el valor de multa especificado por la biblioteca en el input inicial UI.
 
 Por ejemplo, si la multa es de 2 U$D (dólares) como valor base, entonces:
 - 1-7 días → 1 semana -> 1 * 2 = 2 U$D (dólares)
@@ -680,14 +683,14 @@ Elementos importantes:
     - identificador del lector (id_reader)
     - nombre del lector (name_reader)
     - fecha límite del préstamo (date_limite)
-    - multa acumulada
+
 
 - Esta tabla debe cargar los datos al mostrarse la pantalla
 - Solo se mostrarán los pedidos cuya fecha límite se haya excedido.
 - El orden de los datos será en orden alfabético del título del libro
 - No hay filtros ni métodos de ordenamientos configurables
 
- - Si la lista está vacía se debe mostrar el mensaje: "No hay libros con retrasos"
+- Si la lista está vacía se debe mostrar el mensaje: "No hay libros con retrasos"
 
 ---
 
@@ -697,38 +700,37 @@ el endpoint no recibe parámetros, solo tiene una tarea no configurable. Traer t
 
 Respuestas posibles:
 
-200=>
-{
-  "loans": [
-    {
-      "loan_id": integer,
-      "id_book": integer,
-      "title": string
-      "type_id_reader" : string (CEDULA o DNI) 
-      "id_reader": integer,
-      "name_reader": string,
-      "date_limite": date,
-      "exceeded_days": integer,
-      "dept_amount": 2.5
-    },
-    {...}
-  ],
-
+200=> \
+{ \
+  "loans": [ \
+    { \
+      "loan_id": integer, \
+      "id_book": integer, \
+      "title": stringv
+      "type_id_reader" : string (CEDULA o DNI)  \
+      "id_reader": integer, \
+      "name_reader": string, \
+      "date_limite": date, \
+      "exceeded_days": integer, \
+    }, \
+    {...} \
+  ], \
 }
 
 500 =>
 - Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
 
-Los valores devueltos son: 
-"loan_id" => id del préstamo
-"id_book" => id del libro
-"title" => título del libro
-"type_id_reader" => tipo de identificador del lector
-"id_reader" => identificador del lector
-"name_reader" => nombre del lector
-"date_limite" => fecha límite de devolución
+
+Los valores devueltos son:  \
+"loan_id" => id del préstamo \
+"id_book" => id del libro \
+"title" => título del libro \
+"type_id_reader" => tipo de identificador del lector \
+"id_reader" => identificador del lector \
+"name_reader" => nombre del lector \
+"date_limite" => fecha límite de devolución \
 "exceeded_days" => días excedidos de préstamo
-"dept_amount" => multa actual
+
 
 ---
 
@@ -749,7 +751,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 - loan_id : integer (ID del préstamo) (único y autoincremental)
 - id_book : integer (Identificador del libro)
 - title : string (Título del libro)
-- state: string (Estado del libro: RETURNED o ON_LOAN)
+- state: string (Estado del libro: AVAILABLE o ON_LOAN)
 - type_id_reader: string (tipo de identificador de lector: DNI o CEDULA)
 - Id_reader : integer (Identificador del lector)
 - name_reader : string (Nombre del lector responsable)
@@ -760,7 +762,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 
 >TDEV05-05: Funcionalidad de filtrado de prestamos fuera de tiempo
 
-debe buscar todos los préstamos fuera de tiempo en la base de datos y que aún no estén devueltos
+debe buscar todos los préstamos fuera de tiempo en la base de datos y que aún no estén devueltos \
 Las condiciones son:
 - fecha de devolución excedido
 - estado en "ON_LOAN"
@@ -774,6 +776,7 @@ Debe recuperar:
 - el identificador del lector
 - el nombre del lector
 - la fecha límite
+
 
 ---
 
@@ -791,43 +794,6 @@ debe ser superior a 0, de otra forma, significa que hay un error en la recuperac
 
 Este valor será devuelto en el parámetro "exceeded_days" de la respuesta del endpoint
 
----
-
->TDEV05-07: Funcionalidad para calcular multa utilizando fibonacci
-
-Si la diferencia obtenida de de los días es superior a 0, significa que se excedió del tiempo.
-
-Para calcular la multa se utiliza la fórmula Fibonacci:
-1, 1, 2, 3, 5, 8, 13, 21, 34, ...
-
-Lo primero será calcular la cantidad de semanas de demora, para esto se dividirá la cantidad de días de demora por 7.
-El resultado de esto se redondeará hacia arriba para obtener la semana de demora teniendo como resultado:
-- 1-7 días → 1 semana
-- 8-14 días → 2 semanas
-- 15-21 días → 3 semanas
-- 22-28 días → 4 semanas
-- ...
-
-la cantidad de semanas será la cantidad de iteraciones de fibonacci. Se debe tener en cuenta que la secuencia se relacionará de la siguiente manera:
-1 -> semana 1
-2 -> semana 2
-3 -> semana 3
-5 -> semana 4
-8 -> semana 5
-13 -> semana 6
-... -> ...
-
-Esto se multiplicará por el valor de multa especificado por la biblioteca. 
-
-Por ejemplo, si la multa es de 2 U$D (dólares) como valor base, entonces:
-- 1-7 días → 1 semana -> 1 * 2 = 2 U$D (dólares)
-- 8-14 días → 2 semanas -> 2 * 2 = 4 U$D (dólares)
-- 15-21 días → 3 semanas -> 3 * 2 = 6 U$D (dólares)
-- 22-28 días → 4 semanas -> 5 * 2 = 10 U$D (dólares)
-- 29-35 días → 5 semanas -> 8 * 2 = 16 U$D (dólares)
-- ...
-
-este resultado final será devuelto en el parámetro "dept_amount" de la respuesta del endpoint
 
 ### Subtareas QA
 - Diseñar escenarios para préstamos vencidos, préstamos aún vigentes y lista vacía sin atrasos.
