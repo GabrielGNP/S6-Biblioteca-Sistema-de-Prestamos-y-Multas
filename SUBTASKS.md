@@ -854,8 +854,59 @@ Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado
 
 
 - UI (elemento de confirmación) para confirmar el pago de la multa
-- Endpoint PATCH api/v1/debt{identificador} para cambiar el estado de la multa a pagado
+>se renderiza toda la información devuelta por el endpoint:
+GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre*
+>
+>- se activa/muestra/renderiza un botón para confirmar la multa como pagada. 
+>El confirmar el pago de la multa debe tener una doble confirmación por seguridad y evitar errores.
+>
+>el botón de pago llama al endpoint:
+>- Endpoint PATCH api/v1/debt/{identificador} para cambiar el estado de la multa a pagado
+>pasándole como parámetro en identificador el "id_dept" de la multa
+
+- Endpoint PATCH api/v1/debt/{identificador} para cambiar el estado de la multa a pagado
+>Endpoint encargado de editar  el estado de la multa cuando se confirma el pago de esta. Permitiendo que el lector pueda volver a tomar prestado un libro
+>
+>el endpoint recibe la id de la multa como identificador en la url.
+>
+>Estructura del request Body:
+>{
+>    "state_dept" : "PAID"
+>}
+>
+>Respuestas posibles:
+>{
+>  "id_dept": integer,
+>  "loan_id": integer,
+>  "type_id_reader": string, (CEDULA o DNI)
+>  "id_reader" : integer,
+>  "name_reader": string,
+>  "amount_dept": real,
+>  "state" : string (debería devolver PAID si todo sale bien)
+>}
+>
+>404 =>
+>- si no se encuentra la multa con el identificador dado
+>409 =>
+>- si la multa ya tiene el estado PENDING
+>500 =>
+>- Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
+
 - Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
+>Si devuelve:
+>200 => 
+>- se renderiza un mensaje de feedback indicando que la información fue actualizada y la multa se registró como pagada
+>
+>404 =>
+>- se muestra un mensaje de feedback indicando que no existe la multa con esta id
+>
+>409 =>
+>- se muestra un mensaje indicando que la multa ya está pagada
+>
+>500 =>
+>- Se muestra un mensaje indicando el error que surgió
+
+
 
 ### Subtareas QA
 - Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
