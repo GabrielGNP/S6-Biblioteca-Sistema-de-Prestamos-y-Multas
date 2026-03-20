@@ -158,6 +158,20 @@
     And deja el libro disponible
 ```
 ```gherkin
+    Scenario Outline: Registrar devolución sin multa dentro del plazo permitido
+    Given existe un préstamo activo
+    And la devolución ocurre <momento> de la fecha límite
+    When el bibliotecario registra la devolución
+    Then el sistema cierra el préstamo
+    And no genera multa
+    And deja el libro disponible
+
+  Examples:
+    | momento                      |
+    | antes de la fecha límite     |
+    | el mismo día de la fecha límite |
+```
+```gherkin
     Scenario: Intentar devolver un préstamo no activo
     Given no existe un préstamo activo para el libro consultado
     When el bibliotecario intenta registrar la devolución
@@ -218,10 +232,18 @@
     And deja la deuda asociada al lector
 ```
 ```gherkin
-    Scenario: Registrar una devolución con ocho días de retraso
-    Given existe un préstamo vencido con ocho días de retraso
+    Scenario Outline: Calcular deuda acumulada según los cortes oficiales de mora
+    Given existe un préstamo vencido con <dias_retraso> días de retraso
     When el bibliotecario registra la devolución
-    Then el sistema calcula la multa correspondiente a dos semanas de mora acumulada
+    Then el sistema calcula una deuda acumulada de <deuda_esperada> unidades Fibonacci
+
+  Examples:
+    | dias_retraso | deuda_esperada |
+    | 1            | 1              |
+    | 7            | 1              |
+    | 8            | 2              |
+    | 15           | 4              |
+    | 22           | 7              |
 ```
 
 ## Justificación de criterios INVEST - HU-04
