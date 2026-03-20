@@ -228,7 +228,16 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 
 - Guardado de préstamo en el historial
->
+> Si todas las comprobaciones pasan, entonces se guarda en la tabla "loan_books" los datos:
+>    - loan_id : integer (generado automáticamente por la DB)
+>    - id_book : integer (obtenido del body del endpoint)
+>    - title : string (obtenido del body del endpoint)
+>    - state: string (puesto en ON_LOAN)
+>    - type_id_reader: string (obtenido del body del endpoint)
+>    - Id_reader : integer (obtenido del body del endpoint)
+>    - name_reader : string (obtenido del body del endpoint)
+>    - date_limite : Date (generado en la funcionlidad)
+>    - date_return : Date (NULL porque aún no se devolvió)
 
 
 ### Subtareas QA
