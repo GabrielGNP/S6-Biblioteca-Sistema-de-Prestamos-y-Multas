@@ -88,7 +88,7 @@ Permitir al bibliotecario ver si un libro esta disponible o prestado y consultar
 ## HU-02 - Registrar libro disponible a un lector habilitado
 
 ### Objetivo de la historia
-Permitir al bibliotecario registrar el préstamo de un libro disponible a un lector sin multas impagas, definiendo correctamente el plazo y la fecha de devolución.
+Permitir al bibliotecario registrar el préstamo de un libro disponible a un lector sin deuda pendiente por multa, definiendo correctamente el plazo y la fecha de devolución.
 
 ### Subtareas DEV
 - UI (inputs) para ingresar datos necesarios para un préstamo.
@@ -242,14 +242,14 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 
 ### Subtareas QA
-- Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con multa impaga y plazo no permitido.
+- Diseñar escenarios para préstamos exitosos, libros ya prestados, lector con deuda pendiente y plazo no permitido.
 - Preparar datos con al menos un libro disponible, uno prestado, un lector habilitado y un lector bloqueado por deuda.
 - Validar que el sistema registre correctamente un préstamo cuando se cumplen todas las reglas del negocio.
 - Validar alternos como libro inexistente, lector inexistente o error en el cálculo de la fecha de devolución.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
 ### Riesgo o notas de calidad
-- Riesgo funcional: permitir un préstamo sobre un libro no disponible o a un lector moroso rompería reglas centrales del negocio.
+- Riesgo funcional: permitir un préstamo sobre un libro no disponible o a un lector con deuda pendiente rompería reglas centrales del negocio.
 - Riesgo técnico: si el sistema calcula mal la fecha límite o no persiste el estado del préstamo, se afectarían devoluciones y multas posteriores.
 - Calidad: conviene verificar los tres plazos permitidos y asegurar que cualquier otro valor quede explícitamente rechazado.
 
@@ -378,7 +378,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 
 ### Subtareas QA
-- Permitir cerrar un préstamo a tiempo para que el libro vuelva a estar utilizable sin generar deuda.
+- Diseñar validaciones para confirmar el cierre de un préstamo a tiempo sin generación de deuda.
 - Diseñar escenarios para devolución en la fecha límite, devolución antes de la fecha limite y devolución sobre préstamo no activo.
 - Preparar datos con al menos un préstamo vigente, un libro asociado y casos de fecha exacta y fecha anticipada.
 - Validar que el sistema cierre correctamente el préstamo, no genere multa y deje el libro disponible para futuros préstamos.
@@ -410,10 +410,10 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 - Método de guardado de multa. 
                                             
 ### Subtareas QA
-- Diseñar escenarios para retrasos de 1, 7, 8, 15 y 22 días.
+- Diseñar matriz de validación para retrasos de 1, 7, 8, 15 y 22 días.
 - Preparar datos con préstamos vencidos y fechas de devolución que permitan validar los cortes semanales y la acumulación Fibonacci.
-- Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por multa pendiente.
-- Validar deuda acumulada esperada de 1, 1, 2, 4 y 7 unidades Fibonacci.
+- Validar que el sistema calcule correctamente la deuda, cierre el préstamo y bloquee al lector cuando corresponda por deuda pendiente.
+- Validar deuda acumulada esperada de 1, 1, 2, 4 y 7 unidades Fibonacci para cada caso definido en la matriz.
 - Validar alternos como errores en el conteo de días, préstamo sin lector asociado o multa duplicada sobre la misma devolución.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
 
@@ -437,7 +437,7 @@ Permitir al bibliotecario registrar el préstamo de un libro disponible a un lec
 
 ### Subtareas QA
 - Diseñar escenarios para préstamos vencidos, préstamos aún vigentes y lista vacía sin atrasos.
-- Preparar datos con al menos un libro fuera de plazo, uno dentro del plazo y lectores distintos sin validar asignación correcta.
+- Preparar datos con al menos un libro fuera de plazo, uno dentro del plazo y lectores distintos para validar la asignación correcta.
 - Validar que el sistema liste sólo los préstamos vencidos y muestre el lector responsable correcto en cada caso.
 - Validar alternos como fechas límite mal calculadas, préstamos ya cerrados o datos incompletos del lector.
 - Registrar evidencia del resultado esperado y obtenido para cada escenario, y documentar defectos si aparecen inconsistencias.
@@ -465,7 +465,7 @@ Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado
 
 ### Subtareas QA
 - Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
-- Preparar datos con al menos un lector bloqueado por multa pendiente y otro lector ya habilitado sin deuda.
+- Preparar datos con al menos un lector bloqueado por deuda pendiente y otro lector ya habilitado sin deuda.
 - Validar que el pago elimine la deuda pendiente y rehabilite correctamente al lector para futuros préstamos.
 - Validar que, después del pago total, el lector pueda registrar un nuevo préstamo válido sin ser rechazado por deuda previa.
 - Validar alternos como multa ya pagada, identificación incorrecta del lector o inconsistencia entre deuda y estado de habilitación.

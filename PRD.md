@@ -5,19 +5,19 @@
 Construir un sistema simple y claro para gestionar préstamos de libros y multas por retraso de estos, permitiendo a la biblioteca controlar la disponibilidad, fechas de devolución, deudas pendientes y rehabilitación del lector tras el pago.
 
 ### Problemas que resolver
-Actualmente la biblioteca necesita una forma consistente de registrar préstamos y devoluciones, evitar prestar libros a lectores morosos y calcular las multas generadas por retrasos.
+Actualmente la biblioteca necesita una forma consistente de registrar préstamos y devoluciones, evitar prestar libros a lectores con deuda pendiente por multa y calcular las multas generadas por retrasos.
 
 
 ### Reglas del Negocio
 1. Un libro solo puede prestrarse si está disponible.
-2. Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
+2. Un lector solo puede recibir un nuevo préstamo si no tiene deuda pendiente por multa.
 3. Cada préstamo se registra con una fecha de inicio y una fecha de devolución calculada.
 4. Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
 5. Si un libro se devuelve en o antes de la fecha límite, no se genera multa.
 6. Si un libro se devuelve después de la fecha límite, se genera una multa acumulativa.
 7. La fecha límite se evalúa por fecha calendario de la biblioteca. Si la devolución ocurre el mismo día de la fecha límite, no genera multa. La mora inicia al día calendario siguiente.
 8. El modelo de multa es **Fibonacci**; la deuda aumenta siguiendo esta escala por cada semana de retraso completa.
-9. El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+9. El pago total de la multa pendiente habilita nuevamente al lector para solicitar préstamos.
 10. Cada libro conserva un historial de préstamos realizados.
 11. Cada lector se identifica con un documento oficial; cédula o DNI.
 
@@ -38,6 +38,9 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 | 15 días | 3 | 1 + 1 + 2 | 4 |
 | 22 días | 4 | 1 + 1 + 2 + 3 | 7 |
 
+Estos ejemplos oficiales se usan como referencia de validación para criterios y subtareas QA.
+No es necesario replicar toda la matriz numérica en escenarios Gherkin.
+
 
 ## Alcance del MVP
 
@@ -50,8 +53,8 @@ Actualmente la biblioteca necesita una forma consistente de registrar préstamos
 | Aumento de multa cada semana sin devolución del libro siguiendo la fórmula de Fibonacci | Pagos parciales de multas |
 | Registrar el pago total de la multa | Notificaciones automáticas |
 | Consultar préstamos vencidos y el lector responsable para gestionar deudas atrasadas |  |
-| Consultar lectores con multas pendientes luego de una devolución tardía |   |
-| Bloquear préstamos a lectores con deudas impagas |  |
+| Consultar lectores con deuda pendiente luego de una devolución tardía |   |
+| Bloquear préstamos a lectores con deuda pendiente por multa |  |
 | Mantener historial de préstamos por libro |  |
 
 ### Consulta de préstamos vencidos
@@ -79,26 +82,26 @@ La consulta de préstamos vencidos cubre únicamente la visualización de prést
 ## Riesgos de Negocio
 
 ### Riesgo N-1
-- Si no se bloquean correctamente los préstamos a los lectores con deudas, la mora podría aumentar.
+- Si no se bloquean correctamente los préstamos a los lectores con deuda pendiente por multa, la mora podría aumentar.
     **Mitigaciones**
 
-  - Definir en historias y criterios de aceptación que la validación de deuda es obligatoria antes de registrar el préstamo.
-  - Incluir un escenario Gherkin explícito de rechazo a lector con multa impaga.
-  - Verificar en Subtareas QA datos de prueba con lector habilitado y lector bloqueado.
+    - Definir en historias y criterios de aceptación que la validación de deuda pendiente es obligatoria antes de registrar el préstamo.
+    - Incluir un escenario Gherkin explícito de rechazo a lector con deuda pendiente por multa.
+        - Verificar en Subtareas QA datos de prueba con lector habilitado y lector bloqueado.
 ### Riesgo N-2
 - La complejidad de la escala de Fibonacci puede generar confusión en los usuarios; si el cálculo no es transparente o varía por errores de carga, el usuario lo percibirá como arbitrario o injusto.
     **Mitigaciones**
 
     - Mantener en el PRD una definición operativa inequívoca del cálculo por semanas.
     - Incluir tabla de ejemplos oficiales de retraso y deuda acumulada.
-    - Alinear USER_STORIES y SUBTASKS con esos mismos ejemplos sin redefinir la regla en cada documento.
+    - Alinear USER_STORIES y SUBTASKS con esos mismos ejemplos como referencia de validación, sin redefinir la regla ni replicar toda la matriz en Gherkin.
 
 
 
 ## Riesgos Técnicos
 
 ### Riesgo T-1
-- Una implementación inconsciente del estado de deuda puede impedir o habilitar préstamos de forma errónea.
+- Una implementación inconsciente del estado de deuda pendiente puede impedir o habilitar préstamos de forma errónea.
     **Mitigaciones**
 
     - Definir que la deuda pendiente y la habilitación del lector se revisan como una sola regla de negocio coherente.

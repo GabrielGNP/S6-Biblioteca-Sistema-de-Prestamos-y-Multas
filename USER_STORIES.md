@@ -59,7 +59,7 @@
 ## Descripción
 ```md
 **Como** Bibliotecario
-**Quiero** Registrar el préstamo de un libro disponible a un lector sin multas impagas
+**Quiero** Registrar el préstamo de un libro disponible a un lector sin deuda pendiente por multa
 **Para** Controlar la salida del libro y definir correctamente su fecha de devolución
 ```
 
@@ -69,7 +69,7 @@
 
 ## Reglas de Negocio relacionadas
 - Regla 1: Un libro solo puede prestrarse si está disponible.
-- Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
+- Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene deuda pendiente por multa.
 - Regla 3: Cada préstamo se registra con una fecha de inicio y una fecha de devolución calculada.
 - Regla 4: Solo permitimos tres plazos de préstamo: 7, 14 y 21 días.
 
@@ -83,7 +83,7 @@
 ## Criterio de Aceptación
 
 - El préstamo solo puede registrarse si el libro está disponible.
-- El préstamo solo puede registrarse si el lector no tiene multas pendientes.
+- El préstamo solo puede registrarse si el lector no tiene deuda pendiente por multa.
 - El lector se considera habilitado únicamente cuando no tiene deuda pendiente activa.
 - El sistema calcula una fecha de devolución según el plazo elegido.
 - Si alguna regla falla, el sistema impide el registro y lo informa.
@@ -92,7 +92,7 @@
 ```gherkin
     Scenario: Registrar un préstamo válido
     Given el libro está disponible
-    And el lector no tiene multas impagas
+    And el lector no tiene deuda pendiente por multa
     And el plazo elegido es permitido
     When el bibliotecario registra el préstamo
     Then el sistema guarda el préstamo
@@ -116,7 +116,7 @@
 ```gherkin
     Scenario: Intentar registrar un préstamo con plazo no permitido
     Given el libro está disponible
-    And el lector no tiene multas impagas
+    And el lector no tiene deuda pendiente por multa
     And el plazo elegido no es de 7, 14 ni 21 días
     When el bibliotecario registra el préstamo
     Then el sistema rechaza la operación
@@ -333,8 +333,8 @@
 - Reestablece su capacidad de volver a usar el servicio de préstamo.
 
 ## Reglas de Negocio relacionadas
-- Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene multas impagas.
-- Regla 9: El pago de la multa habilita nuevamente al lector para solicitar préstamos.
+- Regla 2: Un lector solo puede recibir un nuevo préstamo si no tiene deuda pendiente por multa.
+- Regla 9: El pago total de la multa pendiente habilita nuevamente al lector para solicitar préstamos.
 - Regla 11: Cada lector se identifica con un documento oficial; cédula o DNI.
 
 ## Dependencias
@@ -362,7 +362,7 @@
 ```
 ```gherkin
     Scenario: Intentar pagar una deuda inexistente
-    Given el lector no tiene multas pendientes
+    Given el lector no tiene deuda pendiente por multa
     When el bibliotecario intenta registrar el pago
     Then el sistema rechaza la operación
 ```
