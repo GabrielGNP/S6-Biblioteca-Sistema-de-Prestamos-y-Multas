@@ -1,23 +1,22 @@
-# 📚 Biblioteca: Sistema de Préstamos y Multas
+# Biblioteca: Sistema de Préstamos y Multas
 
-```
-Calcular fechas de devolución y multas acumulativas (Fibonacci o lineal) por retraso.
-```
+MVP documental para definir cómo una biblioteca controla préstamos de libros, fechas de devolución, multas por retraso y rehabilitación del lector después del pago.
 
-## Grupo 5
-- Alexander Molina
-- Gabriel Perero
+## Equipo
 
-## Alcance de este repositorio
+- Alexander Molina - QA
+- Gabriel Perero - DEV
 
-En esta entrega no se construye el software todavia.
-El objetivo es dejar definidos los artefactos base del MVP:
+## Qué problema resuelve
 
-- PRD con vision, alcance y riesgos.
-- Historias de usuario con criterios de aceptacion (enlistados y Gherkin).
-- Subtareas DEV y QA por historia.
-- Estimacion en Story Points.
-- Tablero de GitHub Projects como soporte del backlog.
+La biblioteca necesita una forma clara y consistente de:
+
+- saber si un libro está disponible o prestado;
+- registrar préstamos con fecha de devolución válida;
+- detectar devoluciones tardías;
+- calcular multas acumulativas por retraso;
+- bloquear nuevos préstamos a lectores con deuda pendiente;
+- rehabilitar al lector cuando paga la multa completa.
 
 ## Documentos principales
 
