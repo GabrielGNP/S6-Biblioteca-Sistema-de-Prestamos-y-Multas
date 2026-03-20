@@ -4,8 +4,8 @@ MVP documental para definir cómo una biblioteca controla préstamos de libros, 
 
 ## Equipo
 
-- Alexander Molina - QA
-- Gabriel Perero - DEV
+- [Alexander Molina](https://github.com/AlexRieger47) - QA
+- [Gabriel Perero](https://github.com/GabrielGNP) - DEV
 
 ## Qué problema resuelve
 
@@ -52,11 +52,38 @@ Esta entrega no construye todavía el software. Su objetivo es dejar una base de
 - Pagos parciales.
 - Reportería avanzada.
 
+## Historias del MVP
+
+- HU-01: Consultar estado y disponibilidad de un libro.
+- HU-02: Registrar libro disponible a un lector habilitado.
+- HU-03: Registrar devolución de un libro dentro del plazo.
+- HU-04: Registrar devolución tardía y generar multa Fibonacci.
+- HU-05: Consultar libros fuera de plazo y lector responsable.
+- HU-06: Registrar el pago total de una multa y rehabilitación del lector.
+
+## Reparto de trabajo DEV y QA
+
+### DEV
+
+- Traducir cada historia a componentes técnicos concretos.
+- Definir subtareas de UI, endpoints, persistencia, validaciones y lógica de dominio.
+- Aterrizar el comportamiento esperado del sistema en trabajo implementable.
+
+### QA
+
+- Definir criterios de aceptación verificables.
+- Redactar escenarios Gherkin centrados en comportamiento de negocio.
+- Diseñar validaciones, alternos, bordes, datos de prueba y notas de calidad.
+
 ## Documentos principales
 
-- PRD.md
-- USER_STORIES.md
-- SUBTASKS.md
+- [PRD.md](https://github.com/GabrielGNP/S6-Biblioteca-Sistema-de-Prestamos-y-Multas/blob/main/PRD.md)
+- [USER_STORIES.md](https://github.com/GabrielGNP/S6-Biblioteca-Sistema-de-Prestamos-y-Multas/blob/main/USER_STORIES.md)
+- [SUBTASKS.md](https://github.com/GabrielGNP/S6-Biblioteca-Sistema-de-Prestamos-y-Multas/blob/main/SUBTASKS.md)
+
+## Tablero de trabajo
+
+- GitHub Projects del repositorio: https://github.com/users/GabrielGNP/projects/8/
 
 ## Definition of Ready
 
