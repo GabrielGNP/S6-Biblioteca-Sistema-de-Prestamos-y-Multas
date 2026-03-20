@@ -27,7 +27,7 @@
 - El bibliotecario puede consultar un libro usando un dato identificador.
 - El sistema indica si el libro está disponible o si tiene un préstamo activo.
 - El sistema muestra información suficiente para interpretar el estado del libro.
-- Si el libro no existe, el sistema lo muestra sin ambiguedad.
+- Si el libro no existe, el sistema lo muestra sin ambigüedad.
 
 **Gherkin**:
 ```gherkin

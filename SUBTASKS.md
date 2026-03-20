@@ -137,6 +137,7 @@ Por ejemplo: si tomamos prestado el libro por 7 días \
 01/01/2026 => 08/01/2026
 
 >TDEV02-03:- Exponer endpoint POST api/v1/loan para registrar un préstamo.
+
 Request Body recivido:
 { \
   "id_book": integer \
@@ -448,15 +449,16 @@ Una vez hecha la modificación en la DB se devuelve la respuesta 200
 
 ### Subtareas DEV
 >TDEV04-01: UI (inputs) para indicar identificador del libro o el identificador del lector, y nombre del libro
+
 inputs necesarios: 
-    - [input] id del libro (integer)
-    - [input] nombre del libro (string)
-    - [select] selector de DNI o Cédula (opciones: DNI o Cédula)
-    - [input] id del lector (integer) 
+- [input] id del libro (integer)
+- [input] nombre del libro (string)
+- [select] selector de DNI o Cédula (opciones: DNI o Cédula)
+- [input] id del lector (integer) 
 
 uno de los siguientes inputs puede estar vacío
-    - [input] id del libro (integer)
-    - [input] id del lector (integer) 
+- [input] id del libro (integer)
+- [input] id del lector (integer) 
 Ambos pueden estar con datos, pero no pueden estar vacíos o nulos los dos campos
  
 nombre del libro puede ser nulo solo si se define el la id del libro.
@@ -473,6 +475,7 @@ Se debe controlar bien la combinación de campos vacíos.
 ---
 
 >TDEV04-02: Endpoint PATCH api/v1/loan con la información actualizada del libro
+
 Body del endpoint: \
 { \
   "date_return": Date \
@@ -510,6 +513,7 @@ Respuestas posibles:
 ---
 
 >TDEV04-02:- Comunicación UI con endpoint PATCH api/v1/loan
+
 Si devuelve:
 200 => 
 - se muestra confirmación de devolución exitosa
@@ -523,6 +527,7 @@ Si devuelve:
 ---
 
 >TDEV04-03:- Tabla DB de historial de prestamos de libros
+
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
     - loan_id : integer (ID del préstamo) (único y autoincremental)
     - id_book : integer (Identificador del libro)
@@ -537,6 +542,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 ---
 
 >TDEV04-04:- Funcionalidad para buscar el libro en el historial
+
 Se busca la coincidencia más actual del id del libro pasado mediante el endpoint
 
 Para esto busca en la tabla:
@@ -550,6 +556,7 @@ Si el state es RETURNED, entonces se devuelve código 409. En caso contrario se 
 ---
 
 >TDEV04-05:- Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+
 Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
 
 se necesita que:
@@ -563,6 +570,7 @@ Si es superior a 0 días entonces está fuera del tiempo
 ---
 
 >TDEV04-06:- Funcionalidad para calcular multa utilizando fibonacci
+
 Si la diferencia obtenida de de los días es superior a 0, significa que se extendió del tiempo.
 
 Para calcular la multa se utiliza la fórmula Fibonacci: \
@@ -601,6 +609,7 @@ Este resultado final será guardado en la carga de la multa
 ---
 
 >TDEV04-07: Funcionalidad para marcar como devuelto el libro
+
 - Si se cuenta con la "loan_id"
 
 entonces se actualiza en la DB el state: string (se pone en RETURNED)
@@ -612,6 +621,7 @@ Una vez hecha la modificación en la DB se devuelve la respuesta 200
 ---
 
 >TDEV04-08:Tabla DB con lectores morosos.
+
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
     - id_dept : integer (id de la multa) (único y autoincremental)
     - loan_id : integer (ID del préstamo) (clave foranea)
@@ -624,6 +634,7 @@ Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 ---
 
 >TDEV04-09: Método de guardado de multa. 
+
 - si el tiempo de demora es > 0, entonces se debe generar una multa.
 - se requiere "loan_id", "id_reader", "name_reader" obtenidos de la lectura del préstamo en la DB  
 - se utiliza el monto de la multa en la funcionalidad para almacenarlo en "amount_dept"
@@ -659,6 +670,7 @@ Si se cuenta con toda esta información, entonces se guarda en la DB la siguient
 
 ### Subtareas DEV
 >TDEV05-01: UI de lista de préstamos
+
 Elementos importantes:
 - Tabla con columnas:
     - id de préstamo (loan_id) (no visible en la tabla)
@@ -680,6 +692,7 @@ Elementos importantes:
 ---
 
 >TDEV05-02: Endpoint GET api/v1/loan/outTime
+
 el endpoint no recibe parámetros, solo tiene una tarea no configurable. Traer todos los préstamos con fechas límites excedidas en orden alfabético según el título del libro
 
 Respuestas posibles:
@@ -720,6 +733,7 @@ Los valores devueltos son:
 ---
 
 >TDEV05-03: Comunicación UI con endpoint
+
 Si devuelve:
 200 => 
 - se renderiza la información en la tabla
@@ -730,6 +744,7 @@ Si devuelve:
 ---
 
 >TDEV05-04:- Tabla DB de historial de prestamos de libros
+
 Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 - loan_id : integer (ID del préstamo) (único y autoincremental)
 - id_book : integer (Identificador del libro)
@@ -744,6 +759,7 @@ Tabla de la DB llamada loan_books que contiene los siguientes atributos:
 ---
 
 >TDEV05-05: Funcionalidad de filtrado de prestamos fuera de tiempo
+
 debe buscar todos los préstamos fuera de tiempo en la base de datos y que aún no estén devueltos
 Las condiciones son:
 - fecha de devolución excedido
@@ -762,6 +778,7 @@ Debe recuperar:
 ---
 
 >TDEV05-06: Funcionalidad para calcular el tiempo de demora y evaluar cumplimiento de tiempo
+
 Funcionalidad para evaluar que el tiempo de préstamo esté dentro del tiempo estipulado
 
 se necesita que:
@@ -777,6 +794,7 @@ Este valor será devuelto en el parámetro "exceeded_days" de la respuesta del e
 ---
 
 >TDEV05-07: Funcionalidad para calcular multa utilizando fibonacci
+
 Si la diferencia obtenida de de los días es superior a 0, significa que se excedió del tiempo.
 
 Para calcular la multa se utiliza la fórmula Fibonacci:
@@ -830,6 +848,7 @@ Registrar que la multa de un lector fue totalmente pagada y puede tomar prestado
 
 ### Subtareas DEV
 >TDEV06-01: UI (Inputs) para indicar el identificador del lector
+
 inputs necesarios: 
     - [input] nombre del lector (string)
     - [select] selector de DNI o Cédula
@@ -850,6 +869,7 @@ Cada input debe tener validación para impedir que los campos estén vacíos
 ---
 
 >TDEV06-02: Endpoint GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre* para obtener la multa
+
 el endpoint puede recibir 3 parámetros:
 - "name" : string 
 y
@@ -887,6 +907,7 @@ Respuestas posibles:
 ---
 
 >TDEV06-03: Comunicación UI y endpoint GEt api/v1/debt/{identificador}
+
 Si devuelve:
 200 => 
 - se renderiza la información en la UI
@@ -904,6 +925,7 @@ Si devuelve:
 ---
 
 >TDEV06-04: Tabla DB con lectores morosos.
+
 Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
     - id_dept : integer (id de la multa) (único y autoincremental)
     - loan_id : integer (ID del préstamo) (clave foranea)
@@ -916,6 +938,7 @@ Tabla de la DB llamada dept_reader que contiene los siguientes atributos:
 ---
 
 >TDEV06-05: Método de búsqueda de lector moroso.
+
 El servicio busca en la DB si el lector con la ID o el nombre recibida en el body del endpoint tiene alguna multa
 
 Para esto busca en la tabla:
@@ -925,8 +948,10 @@ Para esto busca en la tabla:
 
 Y se devuelve toda la información correspondiente a esta multa obtenida
 
+---
 
 >TDEV06-06: UI (elemento de confirmación) para confirmar el pago de la multa
+
 se renderiza toda la información devuelta por el endpoint:
 GET /api/v1/readers/debt?typeId=*tipo de id*&id=*identificador*&name=*nombre*
 
@@ -937,7 +962,10 @@ el botón de pago llama al endpoint:
 - Endpoint PATCH api/v1/debt/{identificador} para cambiar el estado de la multa a pagado
 pasándole como parámetro en identificador el "id_dept" de la multa
 
+---
+
 >TDEV06-07: Endpoint PATCH api/v1/debt/{identificador} para cambiar el estado de la multa a pagado
+
 Endpoint encargado de editar  el estado de la multa cuando se confirma el pago de esta. Permitiendo que el lector pueda volver a tomar prestado un libro
 
 el endpoint recibe la id de la multa como identificador en la url.
@@ -965,7 +993,10 @@ Respuestas posibles:
 500 =>
 - Error interno del servidor. Se intenta devolver un mensaje de error que de información sobre el error resultante
 
+---
+
 >TDEV06-08: Comunicación UI y endpoint PATCH api/v1/debt/{identificador}
+
 Si devuelve:
 200 => 
 - se renderiza un mensaje de feedback indicando que la información fue actualizada y la multa se registró como pagada
@@ -978,8 +1009,6 @@ Si devuelve:
 
 500 =>
 - Se muestra un mensaje indicando el error que surgió
-
-
 
 ### Subtareas QA
 - Diseñar escenarios para pago total exitoso, lector sin deuda pendiente e intento de registrar pagos duplicados.
